@@ -22,11 +22,15 @@ function handleMovieResult(resultData) {
     for (let i = 0; i < resultData.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
+        // TODO:
+        // ADD LINK TO SINGLE MOVIE PAGE
         rowHTML += `<td>${resultData[i].movie_title}</td>`;
         rowHTML += `<td>${resultData[i].movie_year}</td>`;
         rowHTML += `<td>${resultData[i].movie_director}</td>`;
         let genres = resultData[i].movie_genres.map(genre => genre.name).join(", ");
         rowHTML += `<td>${genres}</td>`;
+        // TODO:
+        // ADD LINK TO SINGLE STAR PAGE
         let stars = resultData[i].movie_stars.map(star => star.name).join(", ");
         rowHTML += `<td>${stars}</td>`;
         rowHTML += `<td>${resultData[i].movie_rating}</td>`;

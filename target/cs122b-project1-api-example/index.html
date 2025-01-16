@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>Movies</title>
+  <link rel="stylesheet" href="globals.css">
 </head>
 <body>
-
-<h1>Movies</h1>
-<!-- Id "star_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
-<table id="movie_table">
+<!-- Page Title -->
+<h1 class="page_title">Movies</h1>
+<!-- Wrapper for styling -->
+<div class="tableWrapper">
+<!-- Create table -->
+<table id="movie_table" class="table">
   <!-- Create a table header -->
   <thead>
   <tr>
@@ -21,10 +24,10 @@
     <th>Rating</th>
   </tr>
   </thead>
-  <!-- Table body is left empty here, will be populated with the data retrieved with index.js -->
-  <!-- Again, id "star_table_body" is useful for jQuery to find this html element -->
+  <!-- Inject movie data here -->
   <tbody id="movie_table_body"></tbody>
 </table>
+</div>
 
 <!--jQuery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
