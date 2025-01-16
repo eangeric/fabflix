@@ -42,49 +42,63 @@ public class MoviesServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
+        // Get request parameter (?id=movieId)
+        String requestedMovieId = request.getParameter("id");
+
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
-            // Declare a query statement
-            Statement statement = conn.createStatement();
             // Create query string for movies
-            String query =  "SELECT m.id, m.title, m.year, m.director, r.rating " +
+            StringBuilder queryBuilder = new StringBuilder(
+                    "SELECT m.id, m.title, m.year, m.director, r.rating " +
                             "FROM movies m " +
-                            "JOIN ratings r ON m.id = r.movieId " +
-                            "ORDER by r.rating DESC " +
-                            "LIMIT 20";
-            // Perform the query for movies
-            ResultSet rs = statement.executeQuery(query);
+                            "JOIN ratings r ON m.id = r.movieId "
+            );
+
+            if (requestedMovieId != null && !requestedMovieId.isEmpty()) {
+                queryBuilder.append("WHERE m.id = ?");
+            } else {
+                queryBuilder.append("ORDER BY r.rating DESC LIMIT 20");
+            }
+
+            String query = queryBuilder.toString();
+            PreparedStatement statement = conn.prepareStatement(query);
+            if (requestedMovieId != null && !requestedMovieId.isEmpty()) {
+                statement.setString(1, requestedMovieId);
+            }
+
+            // Get results
+            ResultSet rs = statement.executeQuery();
             // json array to hold our json object
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
             while (rs.next()) {
                 // Get from query results for movies
-                String movies_id = rs.getString("m.id");
-                String movie_title = rs.getString("m.title");
-                String movie_year = rs.getString("m.year");
-                String movie_director = rs.getString("m.director");
-                String movie_rating = rs.getString("r.rating");
+                String moviesId = rs.getString("m.id");
+                String movieTitle = rs.getString("m.title");
+                String movieYear = rs.getString("m.year");
+                String movieDirector = rs.getString("m.director");
+                String movieRating = rs.getString("r.rating");
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("movies_id", movies_id);
-                jsonObject.addProperty("movie_title", movie_title);
-                jsonObject.addProperty("movie_year", movie_year);
-                jsonObject.addProperty("movie_director", movie_director);
-                jsonObject.addProperty("movie_rating", movie_rating);
+                jsonObject.addProperty("movies_id", moviesId);
+                jsonObject.addProperty("movie_title", movieTitle);
+                jsonObject.addProperty("movie_year", movieYear);
+                jsonObject.addProperty("movie_director", movieDirector);
+                jsonObject.addProperty("movie_rating", movieRating);
 
                 // QUERY TO GET STARS
                 // query string
                 String starsQuery = "SELECT s.id, s.name, s.birthyear " +
-                                    "FROM stars s " +
-                                    "JOIN stars_in_movies sim ON s.id = sim.starId " +
-                                    "WHERE sim.movieId = ?";
+                        "FROM stars s " +
+                        "JOIN stars_in_movies sim ON s.id = sim.starId " +
+                        "WHERE sim.movieId = ?";
                 // Declare the query statement for stars
                 // PreparedStatement accepts ? vs Statement is just regular query string
                 PreparedStatement starsStatement = conn.prepareStatement(starsQuery);
                 // Set the parameter represented by "?" in the query to the id we get from url,
                 // num 1 indicates the first "?" in the query
-                starsStatement.setString(1, movies_id);
+                starsStatement.setString(1, moviesId);
                 // Perform the query
                 ResultSet rsStars = starsStatement.executeQuery();
                 // json array to hold each star
@@ -105,15 +119,15 @@ public class MoviesServlet extends HttpServlet {
                 // QUERY TO GET GENRES
                 // query string
                 String genresQuery = "SELECT g.id, g.name " +
-                                     "FROM genres g " +
-                                     "JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                                     "WHERE gim.movieId = ?";
+                        "FROM genres g " +
+                        "JOIN genres_in_movies gim ON g.id = gim.genreId " +
+                        "WHERE gim.movieId = ?";
 
                 // Declare the statement
                 PreparedStatement genresStatement = conn.prepareStatement(genresQuery);
                 // Set the parameter represented by "?" in the query to the id we get from url,
                 // num 1 indicates the first "?" in the query
-                genresStatement.setString(1, movies_id);
+                genresStatement.setString(1, moviesId);
                 // Perform the query
                 ResultSet rsGenres = genresStatement.executeQuery();
 
