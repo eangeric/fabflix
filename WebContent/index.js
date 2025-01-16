@@ -8,7 +8,6 @@
  *      2. Populate the data to correct html elements.
  */
 
-
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
@@ -29,41 +28,26 @@ function handleMovieResult(resultData) {
         rowHTML += `<td>${resultData[i].movie_director}</td>`;
         // TODO:
         // SHOW ONLY 3
+        let max_entries = 3;
+        let comma = 0;
         let genres = resultData[i].movie_genres.map(genre => genre.name).join(", ");
+
+        genres = getMaxEntries(genres, ',', 3);
+
         rowHTML += `<td>${genres}</td>`;
         // TODO:
         // ADD LINK TO SINGLE STAR PAGE
         // SHOW ONLY 3
         let stars = resultData[i].movie_stars.map(star => star.name).join(", ");
+        stars = getMaxEntries(stars, ',', 3);
+
         rowHTML += `<td>${stars}</td>`;
         rowHTML += `<td>${resultData[i].movie_rating}</td>`;
         rowHTML += "</tr>";
         movieTableBodyElement.append(rowHTML);
     }
 
-
-
-    // Iterate through resultData, no more than 10 entries
-    // for (let i = 0; i < Math.min(10, resultData.length); i++) {
-    //
-    //     // Concatenate the html tags with resultData jsonObject
-    //     let rowHTML = "";
-    //     rowHTML += "<tr>";
-    //     rowHTML +=
-    //         "<th>" +
-    //         // Add a link to single-star.html with id passed with GET url parameter
-    //         '<a href="single-star.html?id=' + resultData[i]['star_id'] + '">'
-    //         + resultData[i]["star_name"] +     // display star_name for the link text
-    //         '</a>' +
-    //         "</th>";
-    //     rowHTML += "<th>" + resultData[i]["star_dob"] + "</th>";
-    //     rowHTML += "</tr>";
-    //
-    //     // Append the row created to the table body, which will refresh the page
-    //     starTableBodyElement.append(rowHTML);
-    // }
 }
-
 
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
@@ -76,3 +60,16 @@ jQuery.ajax({
     url: "api/movies", // Setting request url, which is mapped by StarsServlet in Stars.java
     success: (resultData) => handleMovieResult(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
 });
+
+function getMaxEntries(str, sep, maxEntries) {
+    if (str.indexOf(sep) > 0) {
+        let temp = str.split(sep);
+        let new_str = "";
+        for (let j = 0; j < Math.min(temp.length, maxEntries); j++) {
+            new_str += temp[j] + ",";
+        }
+        return new_str.substring(0,new_str.length-1);
+    } else {
+        return str;
+    }
+}
