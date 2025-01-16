@@ -78,8 +78,7 @@ public class MoviesServlet extends HttpServlet {
                 String starsQuery = "SELECT s.id, s.name, s.birthyear " +
                                     "FROM stars s " +
                                     "JOIN stars_in_movies sim ON s.id = sim.starId " +
-                                    "WHERE sim.movieId = ? " +
-                                    "LIMIT 3";
+                                    "WHERE sim.movieId = ?";
                 // Declare the query statement for stars
                 // PreparedStatement accepts ? vs Statement is just regular query string
                 PreparedStatement starsStatement = conn.prepareStatement(starsQuery);
@@ -108,8 +107,7 @@ public class MoviesServlet extends HttpServlet {
                 String genresQuery = "SELECT g.id, g.name " +
                                      "FROM genres g " +
                                      "JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                                     "WHERE gim.movieId = ? " +
-                                     "LIMIT 3";
+                                     "WHERE gim.movieId = ?";
 
                 // Declare the statement
                 PreparedStatement genresStatement = conn.prepareStatement(genresQuery);
