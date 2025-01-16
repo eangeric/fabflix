@@ -4,6 +4,21 @@
      padding: 0;
      margin: 0;
      box-sizing: border-box;
+     font-family: "Lexend", serif;
+ }
+
+ .web_header {
+    display: flex;
+    justify-content: center;
+    background-color:rgb(160, 0, 0);
+    
+    min-height: 150px;
+ }
+
+ .web_header h1{
+    margin:auto;
+    color:white;
+    font-size: 100px;
  }
 
  .page_title {
@@ -16,10 +31,16 @@
 .tableWrapper {
     display: flex;
     justify-content: center;
+    
+}
+
+table {
+    width: 80%;
 }
 
 table, tr, td {
     border: 1px solid;
+    height:40px;
 }
 
 thead {
@@ -29,3 +50,4 @@ thead {
 td {
     padding: 0 1rem;
 }
+
