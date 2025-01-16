@@ -38,7 +38,13 @@ function handleMovieResult(resultData) {
         // TODO:
         // ADD LINK TO SINGLE STAR PAGE
         // SHOW ONLY 3
-        let stars = resultData[i].movie_stars.map(star => star.name).join(", ");
+        let stars = resultData[i].movie_stars.map((star) => {
+            const starId = star.id;
+            const starName = star.name;
+            return `<a href="pages/single-star/single-star.html?id=${starId}">${starName}</a>`
+        }).join(", ");
+
+
         stars = getMaxEntries(stars, ',', 3);
 
         rowHTML += `<td>${stars}</td>`;
