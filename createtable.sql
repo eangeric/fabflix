@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS moviedb; 
 USE moviedb;
 
 CREATE TABLE IF NOT EXISTS movies (
@@ -37,6 +38,14 @@ CREATE TABLE IF NOT EXISTS genres_in_movies (
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 
+CREATE TABLE IF NOT EXISTS creditcards (
+    id VARCHAR(20) NOT NULL,
+    firstName VARCHAR(50) NOT NULL,
+    lastName VARCHAR(50) NOT NULL,
+    expiration DATE NOT NULL,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS customers (
     id INT NOT NULL AUTO_INCREMENT,
     firstName VARCHAR(50) NOT NULL,
@@ -59,13 +68,6 @@ CREATE TABLE IF NOT EXISTS sales (
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 
-CREATE TABLE IF NOT EXISTS creditcards (
-    id VARCHAR(20) NOT NULL,
-    firstName VARCHAR(50) NOT NULL,
-    lastName VARCHAR(50) NOT NULL,
-    expiration DATE NOT NULL,
-    PRIMARY KEY (id)
-);
 
 CREATE TABLE IF NOT EXISTS ratings (
     movieId VARCHAR(10) NOT NULL,
