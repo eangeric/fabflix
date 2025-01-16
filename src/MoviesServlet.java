@@ -101,7 +101,7 @@ public class MoviesServlet extends HttpServlet {
                 rsStars.close();
                 starsStatement.close();
                 // Add stars list to main json object
-                jsonObject.add("stars", jsonStars);
+                jsonObject.add("movie_stars", jsonStars);
 
                 // QUERY TO GET GENRES
                 // query string
@@ -131,7 +131,7 @@ public class MoviesServlet extends HttpServlet {
                 rsGenres.close();
                 genresStatement.close();
                 // Add genres list to main json object
-                jsonObject.add("genres", jsonGenres);
+                jsonObject.add("movie_genres", jsonGenres);
 
 
                 // Add all json objects into json array
