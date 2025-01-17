@@ -44,7 +44,7 @@ function handleResult(resultData) {
     // find the empty h3 body by id "star_info"
     let starInfoElement = jQuery("#star_info");
 
-    document.title = resultData[0]["star_name"];
+    document.title = "Fabflix | " + resultData[0]["star_name"];
 
     // If birthday is null set to N/A, else use the birthday
     const birthDay = resultData[0]["star_dob"] === null ? "N/A" : resultData[0]["star_dob"]

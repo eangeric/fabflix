@@ -58,7 +58,7 @@
 table {
     width: 85%;
     background-color: rgb(57, 106, 147);
-    letter-spacing:1.5px;
+    margin-bottom: 2rem;
 }
 
 table, tr, td {
@@ -67,6 +67,10 @@ table, tr, td {
     height:40px;
     background:none;
 }
+tr, td {
+    margin-top:20px;
+    margin-bottom:20px;
+}
 
 tr:nth-child(odd){
     background-color: rgb(71, 127, 174);
@@ -74,7 +78,7 @@ tr:nth-child(odd){
 tr:nth-child(even){
     background-color: rgb(101, 140, 172);
 }
-tr:first-child{
+thead tr:first-child{
     background-color:#404657;
 }
 td {
