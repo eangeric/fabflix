@@ -32,15 +32,14 @@
 
 <!-- H3 body is left empty here, will be populated with the data retrieved with single-star.js -->
 <!-- single-star.js will find this html element by it's id "star_info" -->
-<div class="starInfoWrapper">
-    <h1 id="star_info">
-    </h1>
+<div class="singleInfoWrapper">
+    <h1 id="star_info"></h1>
 </div>
 
 <div class="tableWrapper">
 <table id="movie_table" class="table">
     <thead>
-    <tr>
+    <tr class="table_info_header">
         <th>Movie Title</th>
         <th>Release Year</th>
         <th>Director</th>
@@ -54,7 +53,6 @@
 </div>
 <!-- Load jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 
 <!-- Load our own JS file -->
 <!-- The path is relative to single-star.html, since these two files are in the same directory -->

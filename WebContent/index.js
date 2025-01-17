@@ -20,34 +20,27 @@ function handleMovieResult(resultData) {
     console.log(resultData);
     for (let i = 0; i < resultData.length; i++) {
         let rowHTML = "";
-        rowHTML += "<tr>";
+        let max_entries = 3;
+        let separator = ",";
+        rowHTML += "<tr class='table_info_alternate'>";
         // TODO:
         // ADD LINK TO SINGLE MOVIE PAGE
-        rowHTML += `<td>${resultData[i].movie_title}</td>`;
+        rowHTML += `<td><a href="pages/single-movie/single-movie.html?id=${resultData[i].movies_id}">${resultData[i].movie_title}</a></td>`;
         rowHTML += `<td>${resultData[i].movie_year}</td>`;
         rowHTML += `<td>${resultData[i].movie_director}</td>`;
-        // TODO:
-        // SHOW ONLY 3
-        let max_entries = 3;
-        let comma = 0;
+
         let genres = resultData[i].movie_genres.map(genre => genre.name).join(", ");
-
-        genres = getMaxEntries(genres, ',', 3);
-
+        genres = getMaxEntries(genres, ',', max_entries);
         rowHTML += `<td>${genres}</td>`;
-        // TODO:
-        // ADD LINK TO SINGLE STAR PAGE
-        // SHOW ONLY 3
+
         let stars = resultData[i].movie_stars.map((star) => {
             const starId = star.id;
             const starName = star.name;
             return `<a href="pages/single-star/single-star.html?id=${starId}">${starName}</a>`
         }).join(", ");
-
-
-        stars = getMaxEntries(stars, ',', 3);
-
+        stars = getMaxEntries(stars, separator, max_entries);
         rowHTML += `<td>${stars}</td>`;
+
         rowHTML += `<td>${resultData[i].movie_rating}</td>`;
         rowHTML += "</tr>";
         movieTableBodyElement.append(rowHTML);
