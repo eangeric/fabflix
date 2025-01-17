@@ -41,6 +41,10 @@
     }
  }
 
+ .logo {
+     text-decoration: none;
+ }
+
  .page_title {
     margin-top: 30px;
     margin-bottom: 30px;
