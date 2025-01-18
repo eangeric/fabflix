@@ -42,9 +42,6 @@ public class MoviesServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
-        // Get request parameter (?id=movieId)
-        String requestedMovieId = request.getParameter("id");
-
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Create query string for movies
@@ -54,14 +51,22 @@ public class MoviesServlet extends HttpServlet {
                             "JOIN ratings r ON m.id = r.movieId "
             );
 
+            // Get request parameter (?id=movieId)
+            String requestedMovieId = request.getParameter("id");
+
+            // If request has a parameter add to query string to fetch that specific movie
             if (requestedMovieId != null && !requestedMovieId.isEmpty()) {
                 queryBuilder.append("WHERE m.id = ?");
-            } else {
+            }
+            // If not add 20 movie results to query string
+            else {
                 queryBuilder.append("ORDER BY r.rating DESC LIMIT 20");
             }
-
+            // Convert query to string
             String query = queryBuilder.toString();
+            // Create statement to execute
             PreparedStatement statement = conn.prepareStatement(query);
+            // If query parameter provided inject it into the (?) of the string
             if (requestedMovieId != null && !requestedMovieId.isEmpty()) {
                 statement.setString(1, requestedMovieId);
             }

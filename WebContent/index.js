@@ -23,21 +23,21 @@ function handleMovieResult(resultData) {
         let max_entries = 3;
         let separator = ",";
         rowHTML += "<tr class='table_info_alternate'>";
-        // TODO:
-        // ADD LINK TO SINGLE MOVIE PAGE
         rowHTML += `<td><a href="pages/single-movie/single-movie.html?id=${resultData[i].movies_id}">${resultData[i].movie_title}</a></td>`;
         rowHTML += `<td>${resultData[i].movie_year}</td>`;
         rowHTML += `<td>${resultData[i].movie_director}</td>`;
-
+        // Map genre object to get name
         let genres = resultData[i].movie_genres.map(genre => genre.name).join(", ");
+        // Limit to 3
         genres = getMaxEntries(genres, ',', max_entries);
         rowHTML += `<td>${genres}</td>`;
-
+        // Map star object to create link with name
         let stars = resultData[i].movie_stars.map((star) => {
             const starId = star.id;
             const starName = star.name;
             return `<a href="pages/single-star/single-star.html?id=${starId}">${starName}</a>`
         }).join(", ");
+        // Limit to 3
         stars = getMaxEntries(stars, separator, max_entries);
         rowHTML += `<td>${stars}</td>`;
 

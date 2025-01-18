@@ -39,25 +39,27 @@ function getParameterByName(target) {
 function handleResult(resultData) {
 
     console.log("handleResult: populating movie info from resultData");
-    console.log(resultData);
 
-    // populate the star info h3
-    // find the empty h3 body by id "star_info"
+    // populate the movie info h3
+    // find the empty h3 body by id "movie_info"
     let movieInfoElement = jQuery("#movie_info");
     movieInfoElement.append(`<p id='singleName'>${resultData[0].movie_title}</p>`)
 
+    // Set tab title
     document.title = "Fabflix | " + resultData[0].movie_title;
 
+    // Populate the movie table
+    // Find the empty table body by id "movie_table_body"
     console.log("handleResult: populating movie table from resultData");
     let movieTableBodyElement = jQuery("#movie_table_body");
     let rowHTML = "";
     rowHTML += `<tr class='table_info_alternate'><td class="table_info_header">Year Released</td><td>${resultData[0].movie_year}</td></tr>`;
 
     rowHTML += `<tr class='table_info_alternate'><td class="table_info_header">Director</td><td>${resultData[0].movie_director}</td></tr>`;
-
+    // Map genres to get them all as one string
     let genres = resultData[0].movie_genres.map(genre => genre.name).join(", ");
     rowHTML += `<tr class='table_info_alternate'><td class="table_info_header">Genres</td><td>${genres}</td></tr>`;
-
+    // Map stars to get them all as one string and as a link
     let stars = resultData[0].movie_stars.map((star) => {
         const starId = star.id;
         const starName = star.name;
