@@ -44,9 +44,13 @@ function handleResult(resultData) {
     // find the empty h3 body by id "star_info"
     let starInfoElement = jQuery("#star_info");
 
+    document.title = "Fabflix | " + resultData[0]["star_name"];
+
+    // If birthday is null set to N/A, else use the birthday
+    const birthDay = resultData[0]["star_dob"] === null ? "N/A" : resultData[0]["star_dob"]
     // append two html <p> created to the h3 body, which will refresh the page
-    starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] + "</p>" +
-        "<p>Date Of Birth: " + resultData[0]["star_dob"] + "</p>");
+    starInfoElement.append("<p id='singleName'>" + resultData[0]["star_name"] + "</p>" +
+        "<p id= 'starBirth'>Date of Birth: " + birthDay + "</p>");
 
     console.log("handleResult: populating movie table from resultData");
 
@@ -55,12 +59,12 @@ function handleResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
 
     // Concatenate the html tags with resultData jsonObject to create table rows
-    for (let i = 0; i < Math.min(10, resultData.length); i++) {
+    for (let i = 0; i < resultData.length; i++) {
         let rowHTML = "";
-        rowHTML += "<tr>";
-        rowHTML += "<th>" + resultData[i]["movie_title"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
+        rowHTML += "<tr class='table_info_alternate'>";
+        rowHTML += `<td><a href="../single-movie/single-movie.html?id=${resultData[i].movie_id}">${resultData[i].movie_title}</a></td>`;
+        rowHTML += `<td>${resultData[i].movie_year}</td>`;
+        rowHTML += `<td>${resultData[i].movie_director}</td>`;
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
@@ -75,10 +79,12 @@ function handleResult(resultData) {
 // Get id from URL
 let starId = getParameterByName('id');
 
+console.log(starId);
+
 // Makes the HTTP GET request and registers on success callback function handleResult
 jQuery.ajax({
     dataType: "json",  // Setting return data type
     method: "GET",// Setting request method
-    url: "api/single-star?id=" + starId, // Setting request url, which is mapped by StarsServlet in Stars.java
+    url: "/cs122b_project1_api_example_war/api/single-star?id=" + starId, // Setting request url, which is mapped by StarsServlet in Stars.java
     success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
 });
