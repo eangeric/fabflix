@@ -78,13 +78,13 @@ function handleResult(resultData) {
 
 // Get id from URL
 let movieId = getParameterByName('id');
-
+let basePath = window.location.pathname.split("/")[1];
 console.log(movieId);
 
 // Makes the HTTP GET request and registers on success callback function handleResult
 jQuery.ajax({
     dataType: "json",  // Setting return data type
     method: "GET",// Setting request method
-    url: "/cs122b_project1_api_example_war/api/movies?id=" + movieId, // Setting request url, which is mapped by StarsServlet in Stars.java
+    url: `/${basePath}/api/movies?id=${movieId}`, // Setting request url, which is mapped by StarsServlet in Stars.java
     success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
 });
