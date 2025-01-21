@@ -40,7 +40,7 @@ function handleResult(resultData) {
     starInfoElement.append("<p id='singleName'>" + resultData[0]["star_name"] + "</p>" +
         "<p id= 'starBirth'>Date of Birth: " + birthDay + "</p>");
 
-    console.log("handleResult: populating movie table from resultData");
+    console.log("handleResult: populating star table from resultData");
 
     // Populate the star table
     // Find the empty table body by id "movie_table_body"
