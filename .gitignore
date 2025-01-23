@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/java,maven,eclipse,java-web,intellij
 
+### React Development
+FrontendDevelopment/node_modules/
+
 ### Eclipse ###
 
 .metadata
@@ -167,7 +170,6 @@ buildNumber.properties
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
-
 
 # End of https://www.gitignore.io/api/java,maven,eclipse,java-web,intellij
 
