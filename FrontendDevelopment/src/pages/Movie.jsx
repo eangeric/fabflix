@@ -1,53 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SingleMovieTable } from "../components/SingleMovieTable";
+import { useFetch } from "../hooks/useFetch";
 
 export default function Movie() {
   // Get movie id from link
-  const params = useParams();
-  const movieID = params.id;
+  const { id: movieID } = useParams();
 
-  // State to hold movie data
-  const [movieData, setMovieData] = useState(null);
+  // Make API call using custom hook function
+  const { data, loading, error } = useFetch(
+    `/fabflix/api/movies?id=${movieID}`
+  );
 
-  // API call
-  useEffect(() => {
-    const getMovie = async () => {
-      try {
-        // Fetch the API
-        const response = await fetch(`/fabflix/api/movies?id=${movieID}`);
-
-        // Check if not successful
-        if (!response.ok) {
-          throw new Error(
-            `HTTP error! Failed to fetch with status: ${response.status}`
-          );
-        }
-        // Read the response
-        const data = await response.json();
-        // Set the movie data state
-        setMovieData(data[0]);
-      } catch (error) {
-        console.log(`Error fetching movie: ${error}`);
-      }
-    };
-
-    if (movieID) {
-      getMovie();
-    }
-  }, [movieID]);
+  // Set movieData if data is avaliable else set to null
+  const movieData = data?.[0] || null;
 
   return (
     <div className="text-white">
-      {/* If movieData loaded display information, if not display loading text */}
-      {movieData ? (
+      {/* If data is still loading */}
+      {loading && <h1>Loading movie data...</h1>}
+
+      {/* If error */}
+      {error && <h1>Error: {error}</h1>}
+
+      {/* If movieData loaded display information */}
+      {movieData && (
         <div>
           <h1>Movie Title: {movieData.movie_title}</h1>
           <SingleMovieTable movieData={movieData} />
         </div>
-      ) : (
-        <h1>Loading movie data</h1>
       )}
+
+      {/* Fallback for unexpected states */}
+      {!loading && !error && !movieData && <h1>No movie data available</h1>}
     </div>
   );
 }
