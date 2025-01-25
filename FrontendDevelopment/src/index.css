@@ -1,0 +1,26 @@
+/* Import font */
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+/* Import tailwind */
+@import "tailwindcss";
+
+/* Add custom styles to tailwind */
+@theme {
+  --color-fabflix-primary: rgb(14, 93, 167);
+  --color-fabflix-secondary: #1f2126;
+
+  --font-logo: "Lexend", serif;
+
+  --animate-dissolve-right: dissolveRight 1s 0s;
+
+  @keyframes dissolveRight {
+    from {
+      transform: translateX(-40px);
+      opacity: 0%;
+      color: rgb(14, 93, 167);
+    }
+    to {
+      opacity: 100%;
+      color: white;
+    }
+  }
+}
