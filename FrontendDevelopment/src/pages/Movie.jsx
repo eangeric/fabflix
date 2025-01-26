@@ -25,10 +25,10 @@ export default function Movie() {
 
       {/* If movieData loaded display information */}
       {movieData && (
-        <div>
+        <>
           <h1>Movie Title: {movieData.movie_title}</h1>
           <SingleMovieTable movieData={movieData} />
-        </div>
+        </>
       )}
 
       {/* Fallback for unexpected states */}

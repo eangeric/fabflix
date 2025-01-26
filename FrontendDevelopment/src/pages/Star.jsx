@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
+import { SingleStarTable } from "../components/SingleStarTable";
 
 export default function Movie() {
   // Get star id from link
@@ -12,7 +13,8 @@ export default function Movie() {
   );
 
   // Set the data if data is avaliable else set to null
-  const starData = data?.[0] || null;
+  const starData = data || null;
+  console.log(starData);
 
   return (
     <div className="text-white">
@@ -24,9 +26,14 @@ export default function Movie() {
 
       {/* If data loaded display information */}
       {starData && (
-        <div>
-          <h1>Star: {starData.star_name}</h1>
-        </div>
+        <>
+          <h1>Star: {starData[0].star_name}</h1>
+          <h2>
+            Date of Birth:{" "}
+            {starData[0].star_dob === null ? "N/A" : starData[0].star_dob}
+          </h2>
+          <SingleStarTable starData={starData} />
+        </>
       )}
 
       {/* Fallback for unexpected states */}
