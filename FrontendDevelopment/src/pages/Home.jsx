@@ -1,12 +1,14 @@
 import React from "react";
-/*import { useParams } from "react-router-dom"; */
+import { useParams } from "react-router-dom";
 import { MovieTable } from "../components/MovieTable.jsx";
+//import { SearchBar } from "../components/SearchBar.jsx";
 import { useFetch } from "../hooks/useFetch";
 
 export default function Home() {
+
+    // --- BEGIN: Movie Table from Stage 1 ----
     const { data, loading, error } = useFetch(
         '/fabflix/api/movies');
-
     const movieData = data || null;
     //console.log(data);
     return (
@@ -29,4 +31,5 @@ export default function Home() {
             {!loading && !error && !movieData && <h1>No movie data available</h1>}
         </div>
     );
+    // --- END: Movie Table from Stage 1 ----
 }

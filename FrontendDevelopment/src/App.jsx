@@ -4,6 +4,7 @@ import { Navbar } from "./components/Navbar";
 import Home from "./pages/Home";
 import Movie from "./pages/Movie";
 import Star from "./pages/Star";
+import Search from "./pages/Search";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/movie/:id" element={<Movie />} />
         <Route path="/star/:id" element={<Star />} />
+          <Route path="/search" element={<Search />} />
       </Routes>
     </>
   );
