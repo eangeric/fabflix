@@ -17,7 +17,7 @@ export const SearchBar = ({ onSearchUrl }) => {
         if (director) queryParams.append("director", director);
 
         // Call the parent function with the query string
-        const queryString = `?${queryParams.toString()}`;
+        const queryString = `/fabflix/api/search?${queryParams.toString()}`;
         console.log("Generated Query String:", queryString);
         onSearchUrl(queryString); // Pass query string to parent component
     };
