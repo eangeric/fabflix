@@ -12,7 +12,7 @@ export default function Movie() {
     `/fabflix/api/movies?id=${movieID}`
   );
 
-  // Set movieData if data is avaliable else set to null
+  // Set movieData if data is available else set to null
   const movieData = data?.[0] || null;
 
   return (
