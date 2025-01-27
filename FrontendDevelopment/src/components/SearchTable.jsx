@@ -9,6 +9,7 @@ export const SearchTable = ({ movieData }) => {
                 <th>Year</th>
                 <th>Director</th>
                 <th>Stars</th>
+                <th>Genres</th>
                 <th>Rating</th>
             </tr>
             </thead>
@@ -23,6 +24,7 @@ export const SearchTable = ({ movieData }) => {
                         <td>{movie.movie_year}</td>
                         <td>{movie.movie_director}</td>
                         <td>{movie.movie_stars}</td>
+                        <td>{movie.movie_genres}</td>
                         <td>{movie.movie_rating}</td>
                     </tr>
                 );
