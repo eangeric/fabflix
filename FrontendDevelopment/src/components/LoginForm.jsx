@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export const LoginForm = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
@@ -9,8 +9,8 @@ export const LoginForm = () => {
     event.preventDefault();
     console.log("Clicked!");
     // Validation: Ensure username and password are filled in
-    if (!username || !password) {
-      setMessage("Please enter both username and password.");
+    if (!email || !password) {
+      setMessage("Please enter both email and password.");
       return;
     }
 
@@ -19,7 +19,7 @@ export const LoginForm = () => {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
-          username: username,
+          email: email,
           password: password,
         }),
       });
@@ -38,9 +38,9 @@ export const LoginForm = () => {
       <p>Email: </p>
       <input
         type="text"
-        id="username"
-        value={username}
-        onChange={(event) => setUsername(event.target.value)}
+        id="email"
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
         className="border-2 border-white"
       />
       <p>Password: </p>
