@@ -9,6 +9,15 @@ export const SearchBar = ({ onSearchUrl }) => {
     const searchHandler = (event) => {
         event.preventDefault(); // Prevent default form submission behavior
 
+        // Preventing empty query
+        //console.log("Empty query check");
+        //console.log(title, star, year, director);
+        //console.log(typeof(title), typeof(star),typeof(year),typeof(director));
+        if (title === "" && star === "" && year === "" && director === ""){
+
+            return;
+        }
+
         // Build the query string
         const queryParams = new URLSearchParams();
         if (title) queryParams.append("title", title);
@@ -32,12 +41,6 @@ export const SearchBar = ({ onSearchUrl }) => {
                 onChange={(e) => setTitle(e.target.value)}
             />
             <input
-                type="text"
-                placeholder="Star Name"
-                value={star}
-                onChange={(e) => setStar(e.target.value)}
-            />
-            <input
                 type="number"
                 placeholder="Year Released"
                 value={year}
@@ -49,7 +52,17 @@ export const SearchBar = ({ onSearchUrl }) => {
                 value={director}
                 onChange={(e) => setDirector(e.target.value)}
             />
-            <button type="submit">Search</button>
+            <input
+                type="text"
+                placeholder="Star Name"
+                value={star}
+                onChange={(e) => setStar(e.target.value)}
+            />
+            <button type="submit"
+                    className = "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4
+                    focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2
+                    dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none
+                    dark:focus:ring-blue-800">Search</button>
         </form>
     );
 };

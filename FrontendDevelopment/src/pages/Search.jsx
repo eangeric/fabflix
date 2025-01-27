@@ -5,10 +5,19 @@ import { useFetch } from "../hooks/useFetch.js";
 
 export default function Search() {
     const [searchUrl, setSearchUrl] = useState(null); // URL for the API call
-    const { data : movieData, loading, error } = useFetch(searchUrl); // Call the fetchData function
+    const [movieData, setMovieData] = useState(null); // Handling old and new movieData
+    const { data, loading, error } = useFetch(searchUrl); // Call the fetchData function
+
+    // Clear the old stuff first (buffer)
+    React.useEffect(() => {
+        if (data) {
+            setMovieData(data);
+        }
+    }, [data]);
 
     // When SearchBar provides a new URL, trigger the fetch
     const handleSearch = (url) => {
+        setMovieData(null);
         setSearchUrl(url); // Trigger `useFetch` by updating the `searchUrl`
     };
 

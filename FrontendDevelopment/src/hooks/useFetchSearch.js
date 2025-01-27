@@ -12,6 +12,7 @@ export const useFetchSearch = (options = {}) => {
         }
         setLoading(true);
         setError(null); // Reset any previous errors
+        setData(null); // Clears old data
         try {
             const response = await fetch(url, options);
             if (!response.ok) {
