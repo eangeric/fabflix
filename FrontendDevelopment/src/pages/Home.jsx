@@ -22,7 +22,6 @@ export default function Home() {
             {/* If movieData loaded display information */}
             {movieData && (
                 <>
-                    <h1>Movie List</h1>
                     <MovieTable movieData={movieData}/>
                 </>
             )}
