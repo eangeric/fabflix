@@ -14,7 +14,6 @@ export const SearchBar = ({ onSearchUrl }) => {
         //console.log(title, star, year, director);
         //console.log(typeof(title), typeof(star),typeof(year),typeof(director));
         if (title === "" && star === "" && year === "" && director === ""){
-
             return;
         }
 
@@ -32,37 +31,64 @@ export const SearchBar = ({ onSearchUrl }) => {
     };
 
     return (
-        <form id="Search" className="flex items-center text-white" onSubmit={searchHandler}>
-            <h2>Search</h2>
-            <input
-                type="text"
-                placeholder="Movie Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-            />
-            <input
-                type="number"
-                placeholder="Year Released"
-                value={year}
-                onChange={(e) => setYear(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="Director"
-                value={director}
-                onChange={(e) => setDirector(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="Star Name"
-                value={star}
-                onChange={(e) => setStar(e.target.value)}
-            />
-            <button type="submit"
-                    className = "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4
-                    focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2
-                    dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none
-                    dark:focus:ring-blue-800">Search</button>
-        </form>
-    );
-};
+        <div className="relative">
+            {/* Background Wrapper */}
+            <div
+                className="absolute inset-0 -z-10 bg-cover bg-center"
+                style={{
+                    backgroundImage: "url('https://img.goodfon.com/original/5500x3200/c/af/sssssss-aaaaaaaaaaa-ddddddddd-fffffffff-rrrrrrr.jpg')",
+                    filter: "blur(4px)",
+                    WebkitFilter: "blur(4px)",
+                }}
+            ></div>
+
+            <div className="flex justify-center">
+                <div
+                    className="relative mx-10 my-8 max-w-xl items-center justify-between overflow-x-auto bg-fabflix-primary p-6 text-white shadow-md sm:rounded-lg">
+                    <h2 className="mb-4 text-lg font-medium text-gray-900 dark:text-white text-center">
+                        Search by title / stars / year / director
+                    </h2>
+                    <form id="Search" className="flex flex-col text-white" onSubmit={searchHandler}>
+                        <div className="max-w-full">
+                            <input
+                                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-400 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-100 dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                type="text"
+                                placeholder="Movie Title"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                            />
+                            <input
+                                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-400 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-100 dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                type="text"
+                                placeholder="Star Name"
+                                value={star}
+                                onChange={(e) => setStar(e.target.value)}
+                            />
+                            <input
+                                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-400 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-100 dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                type="number"
+                                placeholder="Year Released"
+                                value={year}
+                                onChange={(e) => setYear(e.target.value)}
+                            />
+                            <input
+                                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-400 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-100 dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                type="text"
+                                placeholder="Director"
+                                value={director}
+                                onChange={(e) => setDirector(e.target.value)}
+                            />
+                            <button
+                                className="me-2 mb-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                type="submit">
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+            );
+            };

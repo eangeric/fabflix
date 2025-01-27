@@ -22,11 +22,13 @@ export default function Search() {
     };
 
     return (
+
         <div className="text-white">
+
             <SearchBar onSearchUrl={handleSearch}/>
 
             {/* Loading State */}
-            {loading && <p>Enter a search</p>}
+            {loading && <p></p>}
 
             {/* Error State */}
             {error && <p>Error: {error}</p>}
@@ -35,6 +37,7 @@ export default function Search() {
             {movieData && <SearchTable movieData={movieData}/>}
 
             {/* Fallback for unexpected states */}
+            {!movieData && <h1>Please enter a field</h1>}
             {!loading && !error && !movieData && <h1>No movie data available</h1>}
         </div>
     );

@@ -1,37 +1,51 @@
 import React from "react";
 
 export const MovieTable = ({ movieData }) => {
-    return (
-        <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" className="px-6 py-1">Title</th>
-                    <th scope="col" className="px-6 py-1">Year</th>
-                    <th scope="col" className="px-6 py-1">Director</th>
-                    <th scope="col" className="px-6 py-1">Genres</th>
-                    <th scope="col" className="px-6 py-1">Stars</th>
-                    <th scope="col" className="px-6 py-1">Rating</th>
-                </tr>
-                </thead>
-                <tbody>
-                {movieData.map((movie) => {
-                    //console.log(movie.movie_title, movie.movie_year, movie.movie_director);
-                    //console.log(movie.movie_genres[0].name, movie.movie_stars[0].name, movie.movie_rating);
+  return (
+    <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" className="px-6 py-1">
+              Title
+            </th>
+            <th scope="col" className="px-6 py-1">
+              Year
+            </th>
+            <th scope="col" className="px-6 py-1">
+              Director
+            </th>
+            <th scope="col" className="px-6 py-1">
+              Genres
+            </th>
+            <th scope="col" className="px-6 py-1">
+              Stars
+            </th>
+            <th scope="col" className="px-6 py-1">
+              Rating
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {movieData.map((movie) => {
+            //console.log(movie.movie_title, movie.movie_year, movie.movie_director);
+            //console.log(movie.movie_genres[0].name, movie.movie_stars[0].name, movie.movie_rating);
 
-                    return (
-                        <tr key={movie.movie_rating}> {/* Use a unique key here */}
-                            <td className="px-6 py-1">{movie.movie_title}</td>
-                            <td className="px-6 py-1">{movie.movie_year}</td>
-                            <td className="px-6 py-1">{movie.movie_director}</td>
-                            <td className="px-6 py-1">{movie.movie_genres[0].name}</td>
-                            <td className="px-6 py-1">{movie.movie_stars[0].name}</td>
-                            <td className="px-6 py-1">{movie.movie_rating}</td>
-                        </tr>
-                    );
-                })}
-                </tbody>
-            </table>
-        </div>
+            return (
+              <tr key={movie.movie_rating}>
+                {" "}
+                {/* Use a unique key here */}
+                <td className="px-6 py-1">{movie.movie_title}</td>
+                <td className="px-6 py-1">{movie.movie_year}</td>
+                <td className="px-6 py-1">{movie.movie_director}</td>
+                <td className="px-6 py-1">{movie.movie_genres[0].name}</td>
+                <td className="px-6 py-1">{movie.movie_stars[0].name}</td>
+                <td className="px-6 py-1">{movie.movie_rating}</td>
+              </tr>
             );
-            };
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
