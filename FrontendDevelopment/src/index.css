@@ -3,6 +3,15 @@
 /* Import tailwind */
 @import "tailwindcss";
 
+:root {
+  --navbar-height: 75px;
+}
+
+body {
+  padding-top: var(--navbar-height);
+}
+
+
 /* Add custom styles to tailwind */
 @theme {
   --color-fabflix-primary: rgb(14, 93, 167);
