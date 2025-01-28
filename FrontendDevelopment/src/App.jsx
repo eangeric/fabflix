@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
-import { LoginNavbar } from "./components/LoginNavbar";
+import { LoginNavbar } from "./components/Login/LoginNavbar";
 import Home from "./pages/Home";
 import Movie from "./pages/Movie";
 import Star from "./pages/Star";
@@ -23,11 +23,10 @@ export default function App() {
       {isLoginPage ? <LoginNavbar /> : <Navbar />}
       {/* Define routes for app */}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Browse />} />
         <Route path="/movie/:id" element={<Movie />} />
         <Route path="/star/:id" element={<Star />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/browse" element={<Browse />} />
         <Route path="/browse/genre/:genre" element={<BrowseGenres />} />
         <Route path="/browse/title/:char" element={<BrowseMovieTitle />} />
         <Route path="/login" element={<Login />} />

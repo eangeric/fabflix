@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SearchBar } from "../components/SearchBar.jsx";
-import { SearchTable } from "../components/SearchTable.jsx";
 import { useFetch } from "../hooks/useFetch.js";
+import { MovieTable } from "../components/MovieTable.jsx";
 
 export default function Search() {
   const [searchUrl, setSearchUrl] = useState(null); // URL for the API call
@@ -32,7 +32,7 @@ export default function Search() {
       {error && <p>Error: {error}</p>}
 
       {/* Display Movie Data */}
-      {movieData && <SearchTable movieData={movieData} />}
+      {movieData && <MovieTable movieData={movieData} />}
 
       {/* Fallback for unexpected states */}
       {!movieData && <h1>Please enter a field</h1>}

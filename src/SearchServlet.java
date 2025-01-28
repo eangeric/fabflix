@@ -46,7 +46,8 @@ public class SearchServlet extends HttpServlet {
             StringBuilder queryBuilder = new StringBuilder(
                     "SELECT m.id, m.title, m.year, m.director, "+
                             "GROUP_CONCAT(distinct s.name SEPARATOR ', ') AS stars, " +
-                            "GROUP_CONCAT(distinct g.name SEPARATOR ', ') AS genres, r.rating "+
+                            "GROUP_CONCAT(distinct g.name SEPARATOR ', ') AS genres, r.rating, "+
+                            "GROUP_CONCAT(s.id SEPARATOR ', ') AS starsId " +
                             "FROM movies m " +
                             "JOIN stars_in_movies sim ON m.id = sim.movieId " +
                             "JOIN stars s ON sim.starId = s.id " +
@@ -140,6 +141,7 @@ public class SearchServlet extends HttpServlet {
                 jsonObject.addProperty("movie_year", rs.getString("m.year"));
                 jsonObject.addProperty("movie_director", rs.getString("m.director"));
                 jsonObject.addProperty("movie_stars", rs.getString("stars"));
+                jsonObject.addProperty("movie_starsId", rs.getString("starsId"));
                 jsonObject.addProperty("movie_genres", rs.getString("genres"));
                 jsonObject.addProperty("movie_rating", rs.getString("r.rating"));
                 jsonArray.add(jsonObject);

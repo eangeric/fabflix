@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const MovieTable = ({ movieData }) => {
   return (
@@ -32,21 +33,17 @@ export const MovieTable = ({ movieData }) => {
             //console.log(movie.movie_genres[0].name, movie.movie_stars[0].name, movie.movie_rating);
 
             return (
-              <tr key={movie.movie_rating}>
+              <tr key={movie.movie_id}>
                 {/* Use a unique key here */}
-                <td className="px-6 py-1">{movie.movie_title}</td>
+                <td className="px-6 py-1">
+                  <Link to={`/movie/${movie.movie_id}`}>
+                    {movie.movie_title}
+                  </Link>
+                </td>
                 <td className="px-6 py-1">{movie.movie_year}</td>
                 <td className="px-6 py-1">{movie.movie_director}</td>
-                <td className="px-6 py-1">
-                  {movie.movie_genres[0].name
-                    ? movie.movie_genres[0].name
-                    : movie.movie_genres}
-                </td>
-                <td className="px-6 py-1">
-                  {movie.movie_stars[0].name
-                    ? movie.movie_stars[0].name
-                    : movie.movie_stars}
-                </td>
+                <td className="px-6 py-1">{movie.movie_genres}</td>
+                <td className="px-6 py-1">{movie.movie_stars}</td>
                 <td className="px-6 py-1">{movie.movie_rating}</td>
               </tr>
             );
