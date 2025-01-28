@@ -36,8 +36,7 @@ export const SearchBar = ({ onSearchUrl }) => {
       <div
         className="absolute inset-0 -z-10 bg-cover bg-center"
         style={{
-          backgroundImage:
-            "url('https://img.goodfon.com/original/5500x3200/c/af/sssssss-aaaaaaaaaaa-ddddddddd-fffffffff-rrrrrrr.jpg')",
+          backgroundImage: "url('/fabflix/images/movieBg.jpg')",
           filter: "blur(4px)",
           WebkitFilter: "blur(4px)",
         }}

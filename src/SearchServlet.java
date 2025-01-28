@@ -44,10 +44,16 @@ public class SearchServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
             // Create query string for movies
             StringBuilder queryBuilder = new StringBuilder(
-                    "SELECT m.id, m.title, m.year, m.director, "+
-                            "GROUP_CONCAT(distinct s.name SEPARATOR ', ') AS stars, " +
-                            "GROUP_CONCAT(distinct g.name SEPARATOR ', ') AS genres, r.rating, "+
-                            "GROUP_CONCAT(s.id SEPARATOR ', ') AS starsId " +
+                    "SELECT m.id, m.title, m.year, m.director, " +
+                            "SUBSTRING_INDEX(" +
+                            "GROUP_CONCAT(DISTINCT s.name ORDER BY " +
+                            "(SELECT COUNT(*) FROM stars_in_movies WHERE stars_in_movies.starId = s.id) DESC, " +
+                            "s.name ASC SEPARATOR ', '), ', ', 3) AS stars, " +
+                            "SUBSTRING_INDEX(" +
+                            "GROUP_CONCAT(DISTINCT s.id ORDER BY " +
+                            "(SELECT COUNT(*) FROM stars_in_movies WHERE stars_in_movies.starId = s.id) DESC, " +
+                            "s.name ASC SEPARATOR ', '), ', ', 3) AS starsId, " +
+                            "GROUP_CONCAT(DISTINCT g.name SEPARATOR ', ') AS genres, r.rating " +
                             "FROM movies m " +
                             "JOIN stars_in_movies sim ON m.id = sim.movieId " +
                             "JOIN stars s ON sim.starId = s.id " +

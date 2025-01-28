@@ -13,27 +13,35 @@ export const MovieTitle = () => {
   numbers.push("*");
 
   return (
-    <div>
-      <ul>
+    <>
+      <ul className="flex gap-2">
         {letters.map((letter) => {
           return (
             <li key={letter}>
-              <Link to={`/browse/title/${letter.toLowerCase()}`}>{letter}</Link>
+              <Link
+                to={`/browse/title/${letter.toLowerCase()}`}
+                className="hover:text-fabflix-primary"
+              >
+                {letter}
+              </Link>
             </li>
           );
         })}
       </ul>
-      <ul>
+      <ul className="flex gap-2">
         {numbers.map((number) => {
           return (
             <li key={number}>
-              <Link to={`/browse/title/${number === "*" ? "other" : number}`}>
+              <Link
+                to={`/browse/title/${number === "*" ? "other" : number}`}
+                className="hover:text-fabflix-primary"
+              >
                 {number}
               </Link>
             </li>
           );
         })}
       </ul>
-    </div>
+    </>
   );
 };
