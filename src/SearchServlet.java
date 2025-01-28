@@ -85,8 +85,13 @@ public class SearchServlet extends HttpServlet {
 
             String requestedChar = request.getParameter("char");
             if (requestedChar != null && !requestedChar.isEmpty()) {
-                queryBuilder.append(" AND m.title LIKE ?");
+                if ( !requestedChar.equals("other")) {
+                    queryBuilder.append(" AND m.title LIKE ?");
+                } else {
+                    queryBuilder.append(" AND m.title NOT REGEXP '^[0-9a-zA-Z]'");
+                }
             }
+
 
             // Makes sure stars are grouped together
             queryBuilder.append(" GROUP BY m.id order by r.rating desc");
@@ -113,12 +118,13 @@ public class SearchServlet extends HttpServlet {
             if (requestedGenre != null && !requestedGenre.isEmpty()) {
                 statement.setString(paramIndex++, "%" + requestedGenre + "%");
             }
-            if (requestedChar != null && !requestedChar.isEmpty()) {
+            if (requestedChar != null && !requestedChar.isEmpty() && !requestedChar.equals("other")) {
                 statement.setString(paramIndex++, requestedChar + "%");
             }
             
 
             System.out.println("Correct query: " + query);
+            System.out.println(requestedChar);
 
             // Get results
             ResultSet rs = statement.executeQuery();
