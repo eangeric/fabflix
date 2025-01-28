@@ -8,12 +8,11 @@ export const SearchBar = ({ onSearchUrl }) => {
 
   const searchHandler = (event) => {
     event.preventDefault(); // Prevent default form submission behavior
+    console.log("Form submitted");
 
     // Preventing empty query
-    //console.log("Empty query check");
-    //console.log(title, star, year, director);
-    //console.log(typeof(title), typeof(star),typeof(year),typeof(director));
     if (title === "" && star === "" && year === "" && director === "") {
+      console.log("Empty search")
       return;
     }
 
@@ -31,17 +30,11 @@ export const SearchBar = ({ onSearchUrl }) => {
   };
 
   return (
-    <div className="relative">
-      {/* Background Wrapper */}
-      <div
-        className="absolute inset-0 -z-10 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://img.goodfon.com/original/5500x3200/c/af/sssssss-aaaaaaaaaaa-ddddddddd-fffffffff-rrrrrrr.jpg')",
-          filter: "blur(4px)",
-          WebkitFilter: "blur(4px)",
-        }}
-      ></div>
+    <div className="relative bg-cover" style={{
+      backgroundImage:
+        "linear-gradient(rgba(3, 20, 50, 0.9), rgba(31, 33, 38, 1))," +
+        "url(/fabflix/images/movieBg.jpg)"
+    }}>
 
       <div className="flex justify-center">
         <div className="relative mx-10 my-8 max-w-xl items-center justify-between overflow-x-auto bg-fabflix-primary p-6 text-white shadow-md sm:rounded-lg">

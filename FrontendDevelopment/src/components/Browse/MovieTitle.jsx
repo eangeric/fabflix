@@ -8,32 +8,32 @@ export const MovieTitle = () => {
   );
   // Generate an array of numbers 0-9
   const numbers = Array.from({ length: 10 }, (_, i) => i.toString());
-  // TODO:
-  // In backend configure this symbol to get movies starting with nonalphanumerical characters
-  numbers.push("*");
+  letters.push("*");
+
+  const allCharacters = [ ...numbers, ...letters];
+
+  // Chunk into 4 columns for readability
+  const chunkSize = Math.ceil(allCharacters.length / 4);
+  const chunks = Array.from({ length: 4 }, (_, i) =>
+    allCharacters.slice(i * chunkSize, (i + 1) * chunkSize)
+  );
 
   return (
-    <div>
-      <ul>
-        {letters.map((letter) => {
-          return (
-            <li key={letter}>
-              <Link to={`/browse/title/${letter.toLowerCase()}`}>{letter}</Link>
-            </li>
-          );
-        })}
-      </ul>
-      <ul>
-        {numbers.map((number) => {
-          return (
-            <li key={number}>
-              <Link to={`/browse/title/${number === "*" ? "other" : number}`}>
-                {number}
+    <div className="grid grid-cols-4 gap-4 p-4">
+      {chunks.map((chunk, index) => (
+        <ul key={index} className="space-y-2 text-center">
+          {chunk.map((char) => (
+            <li key={char}>
+              <Link
+                to={`/browse/title/${char === "*" ? "other" : char.toLowerCase()}`}
+                className="text-white hover:text-blue-700 transition duration-300 ease-in-out"
+              >
+                {char}
               </Link>
             </li>
-          );
-        })}
-      </ul>
+          ))}
+        </ul>
+      ))}
     </div>
   );
 };

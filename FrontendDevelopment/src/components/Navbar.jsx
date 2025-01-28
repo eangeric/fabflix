@@ -1,24 +1,23 @@
-// Template taken from: https://flowbite.com/docs/components/navbar/
-
 import React from "react";
 import { Link } from "react-router-dom";
-//<img src="logo.png" alt="logo"/> for later
 
 export const Navbar = () => {
   return (
-    <nav className="bg-fabflix-primary fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
+    <nav className="bg-fabflix-primary fixed w-full z-20 top-0 start-0">
+      <div className="max-w-screen-xl-2 mx-auto flex items-center justify-between px-4 md:px-6 relative">
+        {/* Logo Section */}
         <Link to="/" className="flex items-center space-x-2">
           <img
-            src="https://images.vexels.com/media/users/3/321854/isolated/preview/412dcc4113ea66cd34d04b9789952b84-clapperboard-doodle.png"
-            className="h-8"
+            src="/fabflix/images/logo.png"
+            style={{ height: "50px", width: "auto" }} // Custom size
             alt="Fabflix Logo"
           />
-          <h1 className="text-4xl font-bold  text-gray-900 dark:text-white">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
             Fabflix
           </h1>
         </Link>
 
+        {/* Search Section */}
         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <Link
             to="/search"
@@ -32,33 +31,22 @@ export const Navbar = () => {
           </Link>
         </div>
 
+        {/* Centered Browse Section */}
         <div
-          className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+          className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none"
           id="navbar-sticky"
         >
           <ul
-            className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg
-                                bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0
-                                md:bg-white dark:bg-fabflix-primary  dark:border-gray-700"
+            className="flex flex-col p-4 md:p-0 mt-4 font-medium
+                md:flex-row md:mt-0 dark:bg-fabflix-primary dark:border-gray-700 items-center"
           >
             <li>
               <Link
                 to="/"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100
-                                        md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500
-                                        dark:text-white dark:hover:bg-gray-700 dark:hover:text-white
-                                        md:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/browse"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100
-                             md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500
-                             dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent
-                              dark:border-gray-700"
+                className="block py-2 px-3 md:p-0 md:dark:hover:text-blue-500
+                dark:text-white dark:hover:text-white
+                dark:border-gray-700
+                transition duration-300 ease-in-out"
               >
                 Browse
               </Link>

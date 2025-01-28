@@ -45,9 +45,9 @@ public class SearchServlet extends HttpServlet {
             // Create query string for movies
             StringBuilder queryBuilder = new StringBuilder(
                     "SELECT m.id, m.title, m.year, m.director, "+
-                            "GROUP_CONCAT(distinct s.name SEPARATOR ', ') AS stars, " +
-                            "GROUP_CONCAT(distinct g.name SEPARATOR ', ') AS genres, r.rating, "+
-                            "GROUP_CONCAT(s.id SEPARATOR ', ') AS starsId " +
+                            "GROUP_CONCAT(distinct s.name order by s.id SEPARATOR ', ') AS stars, " +
+                            "GROUP_CONCAT(distinct s.id order by s.id SEPARATOR ', ') AS starsId, " +
+                            "GROUP_CONCAT(distinct g.name SEPARATOR ', ') AS genres, r.rating "+
                             "FROM movies m " +
                             "JOIN stars_in_movies sim ON m.id = sim.movieId " +
                             "JOIN stars s ON sim.starId = s.id " +
@@ -93,16 +93,20 @@ public class SearchServlet extends HttpServlet {
                 }
             }
 
-
             // Makes sure stars are grouped together
-            queryBuilder.append(" GROUP BY m.id order by r.rating desc");
+            queryBuilder.append(" GROUP BY m.id ");
+
+            // -- SORTING STEP --
+            String requestedSortOrder = request.getParameter("sortOrder");
+
+            queryBuilder.append( "order by r.rating desc"); //
 
             // Convert query to string
             String query = queryBuilder.toString();
             // Create statement to execute
             PreparedStatement statement = conn.prepareStatement(query);
 
-            // Dynamically set parameters (tried to do in for loop but didn't work on year-only search)
+            // Dynamically set parameters
             int paramIndex = 1;
             if (requestedTitle != null && !requestedTitle.isEmpty()) {
                 statement.setString(paramIndex++, "%" + requestedTitle + "%");
@@ -125,12 +129,13 @@ public class SearchServlet extends HttpServlet {
             
 
             System.out.println("Correct query: " + query);
-            System.out.println(requestedChar);
+            //System.out.println(requestedChar);
 
             // Get results
             ResultSet rs = statement.executeQuery();
             // json array to hold our json object
             JsonArray jsonArray = new JsonArray();
+
 
             // Iterate through each row of rs
             while (rs.next()) {
@@ -146,6 +151,7 @@ public class SearchServlet extends HttpServlet {
                 jsonObject.addProperty("movie_rating", rs.getString("r.rating"));
                 jsonArray.add(jsonObject);
             }
+            System.out.println(jsonArray.get(0).toString());
 
             rs.close();
             statement.close();
