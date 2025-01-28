@@ -43,7 +43,22 @@ export const MovieTable = ({ movieData }) => {
                 <td className="px-6 py-1">{movie.movie_year}</td>
                 <td className="px-6 py-1">{movie.movie_director}</td>
                 <td className="px-6 py-1">{movie.movie_genres}</td>
-                <td className="px-6 py-1">{movie.movie_stars}</td>
+                <td className="px-6 py-1">
+                  {movie.movie_stars.split(", ").map((star, index) => {
+                    const starIds = movie.movie_starsId.split(", ");
+                    const starId = starIds[index];
+                    {
+                      /* Put comma except for last item */
+                    }
+                    return (
+                      <Link to={`/star/${starId}`}>
+                        {star}
+                        {index < movie.movie_stars.split(", ").length - 1 &&
+                          ", "}
+                      </Link>
+                    );
+                  })}
+                </td>
                 <td className="px-6 py-1">{movie.movie_rating}</td>
               </tr>
             );
