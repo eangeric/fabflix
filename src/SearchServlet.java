@@ -1,6 +1,5 @@
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import jakarta.servlet.ServletConfig;
@@ -14,7 +13,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 // Declaring a WebServlet called SearchServlet, which maps to url "/api/search"
 @WebServlet(name = "SearchServlet", urlPatterns = "/api/search")
@@ -47,14 +45,15 @@ public class SearchServlet extends HttpServlet {
             // Create query string for movies
             StringBuilder queryBuilder = new StringBuilder(
                     "SELECT m.id, m.title, m.year, m.director, "+
-                            "GROUP_CONCAT(s.name SEPARATOR ', ') AS stars, " +
+                            "GROUP_CONCAT(distinct s.name SEPARATOR ', ') AS stars, " +
                             "GROUP_CONCAT(distinct g.name SEPARATOR ', ') AS genres, r.rating "+
-                            "from movies m join stars_in_movies sim on m.id = sim.movieId "+
-                            "join stars s on sim.starId = s.id "+
-                            "join ratings r on m.id = r.movieId " +
-                            "join genres_in_movies gim on m.id = gim.movieId " +
-                            "join genres g on gim.genreId = g.id " +
-                            "where 1=1"
+                            "FROM movies m " +
+                            "JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                            "JOIN stars s ON sim.starId = s.id " +
+                            "JOIN ratings r ON m.id = r.movieId " +
+                            "JOIN genres_in_movies gim ON m.id = gim.movieId " +
+                            "JOIN genres g ON gim.genreId = g.id " +
+                            "WHERE 1=1"
             ); // 1=1 makes it easier to add search params
 
             // Get title, year, director, star params
@@ -78,6 +77,12 @@ public class SearchServlet extends HttpServlet {
                 queryBuilder.append(" AND s.name LIKE ?");
             }
 
+            String requestedGenre = request.getParameter("genre");
+            if (requestedGenre != null && !requestedGenre.isEmpty()) {
+                queryBuilder.append(" AND m.id IN (SELECT gim.movieId FROM genres_in_movies gim " +
+                                    "JOIN genres g ON gim.genreId = g.id WHERE g.name LIKE ?)");
+            }
+
             // Makes sure stars are grouped together
             queryBuilder.append(" GROUP BY m.id order by r.rating desc");
 
@@ -99,6 +104,9 @@ public class SearchServlet extends HttpServlet {
             }
             if (requestedStar != null && !requestedStar.isEmpty()) {
                 statement.setString(paramIndex++, "%" + requestedStar + "%");
+            }
+            if (requestedGenre != null && !requestedGenre.isEmpty()) {
+                statement.setString(paramIndex++, "%" + requestedGenre + "%");
             }
 
             System.out.println("Correct query: " + query);

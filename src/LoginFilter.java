@@ -17,9 +17,13 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-
         // Check if this URL is allowed to access without logging in
         if (isUrlAllowedWithoutLogin(httpRequest)) {
+            // If the user is already logged in and tries to access the login page, redirect to home page
+            if (httpRequest.getRequestURI().endsWith("/login") && httpRequest.getSession().getAttribute("user") != null) {
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/");
+                return;
+            }
             chain.doFilter(request, response); // Allow access
             return;
         }
@@ -28,7 +32,7 @@ public class LoginFilter implements Filter {
         if (httpRequest.getSession().getAttribute("user") == null) {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
         } else {
-            chain.doFilter(request, response); // Allow access for authenticated users
+            chain.doFilter(request, response); // Allow access
         }
     }
 

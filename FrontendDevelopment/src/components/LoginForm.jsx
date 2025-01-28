@@ -1,19 +1,24 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  const navigate = useNavigate(); // Hook for navigation
+
   const handleLogin = async (event) => {
     event.preventDefault();
-    console.log("Clicked!");
     // Validation: Ensure username and password are filled in
     if (!email || !password) {
       setMessage("Please enter both email and password.");
       return;
     }
 
+    setMessage("Logging you in...");
+
+    // Try logging in
     try {
       const response = await fetch("/fabflix/api/login", {
         method: "POST",
@@ -26,7 +31,10 @@ export const LoginForm = () => {
 
       const data = await response.json();
 
-      setMessage(data.message);
+      // Redirect to home page
+      if (data.status === "success") {
+        navigate("/", { replace: true });
+      }
     } catch (error) {
       setMessage("An error occurred. Please try again.");
       console.log("Error:", error);

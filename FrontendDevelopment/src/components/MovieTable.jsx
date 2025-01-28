@@ -33,13 +33,20 @@ export const MovieTable = ({ movieData }) => {
 
             return (
               <tr key={movie.movie_rating}>
-                {" "}
                 {/* Use a unique key here */}
                 <td className="px-6 py-1">{movie.movie_title}</td>
                 <td className="px-6 py-1">{movie.movie_year}</td>
                 <td className="px-6 py-1">{movie.movie_director}</td>
-                <td className="px-6 py-1">{movie.movie_genres[0].name}</td>
-                <td className="px-6 py-1">{movie.movie_stars[0].name}</td>
+                <td className="px-6 py-1">
+                  {movie.movie_genres[0].name
+                    ? movie.movie_genres[0].name
+                    : movie.movie_genres}
+                </td>
+                <td className="px-6 py-1">
+                  {movie.movie_stars[0].name
+                    ? movie.movie_stars[0].name
+                    : movie.movie_stars}
+                </td>
                 <td className="px-6 py-1">{movie.movie_rating}</td>
               </tr>
             );
