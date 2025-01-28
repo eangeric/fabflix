@@ -21,6 +21,7 @@
         <jsp-file>/index.html</jsp-file>
     </servlet>
 
+    <!-- React Router -->
     <servlet-mapping>
         <servlet-name>ReactRoutingServlet</servlet-name>
         <url-pattern>/</url-pattern>
@@ -30,5 +31,11 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
+
+        <!-- Static resources for images -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/images/*</url-pattern>
     </servlet-mapping>
 </web-app>
