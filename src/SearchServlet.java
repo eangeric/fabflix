@@ -83,6 +83,11 @@ public class SearchServlet extends HttpServlet {
                                     "JOIN genres g ON gim.genreId = g.id WHERE g.name LIKE ?)");
             }
 
+            String requestedChar = request.getParameter("char");
+            if (requestedChar != null && !requestedChar.isEmpty()) {
+                queryBuilder.append(" AND m.title LIKE ?");
+            }
+
             // Makes sure stars are grouped together
             queryBuilder.append(" GROUP BY m.id order by r.rating desc");
 
@@ -108,6 +113,10 @@ public class SearchServlet extends HttpServlet {
             if (requestedGenre != null && !requestedGenre.isEmpty()) {
                 statement.setString(paramIndex++, "%" + requestedGenre + "%");
             }
+            if (requestedChar != null && !requestedChar.isEmpty()) {
+                statement.setString(paramIndex++, requestedChar + "%");
+            }
+            
 
             System.out.println("Correct query: " + query);
 

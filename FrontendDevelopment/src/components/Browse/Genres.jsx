@@ -8,7 +8,7 @@ export const Genres = ({ data }) => {
         data.map((genre) => {
           return (
             <li key={genre.id}>
-              <Link to={`/browse/${genre.name.toLowerCase()}`}>
+              <Link to={`/browse/genre/${genre.name.toLowerCase()}`}>
                 {genre.name}
               </Link>
             </li>

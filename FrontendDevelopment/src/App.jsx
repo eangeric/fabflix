@@ -9,6 +9,7 @@ import Search from "./pages/Search";
 import Login from "./pages/Login";
 import Browse from "./pages/Browse/Browse";
 import BrowseGenres from "./pages/Browse/BrowseGenres";
+import BrowseMovieTitle from "./pages/Browse/BrowseMovieTitle";
 
 export default function App() {
   const location = useLocation();
@@ -27,7 +28,8 @@ export default function App() {
         <Route path="/star/:id" element={<Star />} />
         <Route path="/search" element={<Search />} />
         <Route path="/browse" element={<Browse />} />
-        <Route path="/browse/:genre" element={<BrowseGenres />} />
+        <Route path="/browse/genre/:genre" element={<BrowseGenres />} />
+        <Route path="/browse/title/:char" element={<BrowseMovieTitle />} />
         <Route path="/login" element={<Login />} />
       </Routes>
     </>
