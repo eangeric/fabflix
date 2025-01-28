@@ -37,8 +37,8 @@ export const Navbar = () => {
           id="navbar-sticky"
         >
           <ul
-            className="flex flex-col p-4 md:p-0 mt-4 font-medium
-                md:flex-row md:mt-0 dark:bg-fabflix-primary dark:border-gray-700 items-center"
+            className="flex flex-col p-4  font-medium
+            dark:border-gray-700 items-center"
           >
             <li>
               <Link
