@@ -26,17 +26,17 @@ export default function Search() {
       <SearchBar onSearchUrl={handleSearch} />
 
       {/* Loading State */}
-      {loading && <p></p>}
+      {/*loading && <p className="text-white justify-center">Loading results...</p>}
 
       {/* Error State */}
-      {error && <p>Error: {error}</p>}
+      {/*error && <p className="text-white justify-center">Error: {error}</p>}
 
       {/* Display Movie Data */}
       {movieData && <MovieTable movieData={movieData} />}
 
       {/* Fallback for unexpected states */}
-      {!movieData && <h1>Please enter a field</h1>}
-      {!loading && !error && !movieData && <h1>No movie data available</h1>}
+      {/*!movieData && <h1 className="text-white justify-center">Please enter a field</h1>*/}
+      {!loading && !error && !movieData && <h1 className="text-white justify-center">No movie data available</h1>}
     </div>
   );
 }
