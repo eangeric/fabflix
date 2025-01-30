@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+// DEPRECATED FOR NOW
+
 export const SearchTable = ({ movieData }) => {
   return (
     <table>
@@ -22,7 +24,7 @@ export const SearchTable = ({ movieData }) => {
           return (
             <tr key={movie.movie_id}>
               {/* Use a unique key here */}
-              <td>
+              <td >
                 <Link to={`/movie/${movie.movie_id}`}>{movie.movie_title}</Link>
               </td>
               <td>{movie.movie_year}</td>

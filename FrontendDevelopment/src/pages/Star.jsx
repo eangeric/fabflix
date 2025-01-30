@@ -1,43 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 import { SingleStarTable } from "../components/SingleStarTable";
+import {useImageSearch} from "../hooks/useImageSearch.js";
+import {BgMain} from "../components/Assets/BgMain.jsx";
 
 export default function Movie() {
   // Get star id from link
   const { id: starID } = useParams();
 
   // Make API call using custom hook function
-  const { data, loading, error } = useFetch(
+  const { data: starData, loading, error } = useFetch(
     `/fabflix/api/single-star?id=${starID}`
   );
 
-  // Set the data if data is avaliable else set to null
-  const starData = data || null;
-  console.log(starData);
+  // Grabbing image thru Google Search API
+  const star = starData?.[0] || null;
+  const { data: imageData, loading: imageLoading, error: imageError}
+    = useImageSearch(star);
 
   return (
-    <div className="text-white">
+    <BgMain>
+      <div className="relative p-4 flex justify-center"> {/* This is the star photo */}
+        <figure className="relative">
+          {imageData ? (
+            <img className="rounded-lg" src={imageData} alt="star photo"
+                 style={{
+                   width: "40vh",
+                   height: "60vh",
+                   objectFit: "cover",
+                   boxShadow: "0px 0px 100px 5px rgba(0, 153, 255, 0.1)"
+                 }}/>
+          ) : (
+            <h1>Loading Image...</h1>
+          )}
+        </figure>
+
+        {star && (
+          <div className="absolute tm-xl bottom-4 left-1 text-white p-4 rounded-lg">
+            <h1 className="text-2xl font-bold">{star.star_name}</h1>
+            <h2 className="text-lg">Born: {star.star_dob || "N/A"}</h2>
+          </div>
+        )}
+      </div>
+
       {/* If data is still loading */}
       {loading && <h1>Loading star data...</h1>}
-
       {/* If error */}
       {error && <h1>Error: {error}</h1>}
 
       {/* If data loaded display information */}
-      {starData && (
-        <>
-          <h1>Star: {starData[0].star_name}</h1>
-          <h2>
-            Date of Birth:{" "}
-            {starData[0].star_dob === null ? "N/A" : starData[0].star_dob}
-          </h2>
-          <SingleStarTable starData={starData} />
-        </>
+      {star ? (
+        <div className = "p-4">
+          <SingleStarTable starData={starData}/>
+        </div>
+      ) : (
+        !loading && !error && <h1>No star data available</h1>
       )}
-
-      {/* Fallback for unexpected states */}
-      {!loading && !error && !starData && <h1>No star data available</h1>}
-    </div>
+    </BgMain>
   );
 }

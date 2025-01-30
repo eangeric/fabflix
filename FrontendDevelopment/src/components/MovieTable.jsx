@@ -36,7 +36,8 @@ export const MovieTable = ({ movieData }) => {
               <tr key={movie.movie_id}>
                 {/* Use a unique key here */}
                 <td className="px-6 py-1">
-                  <Link to={`/movie/${movie.movie_id}`}>
+                  <Link to={`/movie/${movie.movie_id}`}
+                        className = "hover:text-blue-700 transition duration-300 ease-in-out">
                     {movie.movie_title}
                   </Link>
                 </td>
@@ -44,16 +45,17 @@ export const MovieTable = ({ movieData }) => {
                 <td className="px-6 py-1">{movie.movie_director}</td>
                 <td className="px-6 py-1">{movie.movie_genres}</td>
                 <td className="px-6 py-1">
-                  {movie.movie_stars.split(", ").map((star, index) => {
+                  {movie.movie_stars.split(", ").slice(0,3).map((star, index) => {
                     const starIds = movie.movie_starsId.split(", ");
                     const starId = starIds[index];
                     {
                       /* Put comma except for last item */
                     }
                     return (
-                      <Link to={`/star/${starId}`}>
+                      <Link to={`/star/${starId}`}
+                            className = "hover:text-blue-700 transition duration-300 ease-in-out">
                         {star}
-                        {index < movie.movie_stars.split(", ").length - 1 &&
+                        {index < movie.movie_stars.split(", ").slice(0,3).length - 1 &&
                           ", "}
                       </Link>
                     );
