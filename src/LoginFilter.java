@@ -48,7 +48,8 @@ public class LoginFilter implements Filter {
         // Add allowed routes
         allowedURIs.add("/login");          // React login route
         allowedURIs.add("/api/login");      // API for login
-        allowedURIs.add("/assets/");        // Static files like JS, CSS, images
+        allowedURIs.add("/assets/");        // Static files like JS, CSS
+        allowedURIs.add("/images/");        // Public files like images
     }
 
     public void destroy() {
