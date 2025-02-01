@@ -31,7 +31,8 @@ public class SearchServlet extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -40,22 +41,22 @@ public class SearchServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
-        // Get a connection from dataSource and let resource manager close the connection after usage.
+        // Get a connection from dataSource and let resource manager close the
+        // connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Create query string for movies
             StringBuilder queryBuilder = new StringBuilder(
-                    "SELECT m.id, m.title, m.year, m.director, "+
+                    "SELECT m.id, m.title, m.year, m.director, m.price, " +
                             "GROUP_CONCAT(distinct s.name order by s.id SEPARATOR ', ') AS stars, " +
                             "GROUP_CONCAT(distinct s.id order by s.id SEPARATOR ', ') AS starsId, " +
-                            "GROUP_CONCAT(distinct g.name SEPARATOR ', ') AS genres, r.rating "+
+                            "GROUP_CONCAT(distinct g.name SEPARATOR ', ') AS genres, r.rating " +
                             "FROM movies m " +
                             "JOIN stars_in_movies sim ON m.id = sim.movieId " +
                             "JOIN stars s ON sim.starId = s.id " +
                             "JOIN ratings r ON m.id = r.movieId " +
                             "JOIN genres_in_movies gim ON m.id = gim.movieId " +
                             "JOIN genres g ON gim.genreId = g.id " +
-                            "WHERE 1=1"
-            ); // 1=1 makes it easier to add search params
+                            "WHERE 1=1"); // 1=1 makes it easier to add search params
 
             // Get title, year, director, star params
             String requestedTitle = request.getParameter("title");
@@ -81,12 +82,12 @@ public class SearchServlet extends HttpServlet {
             String requestedGenre = request.getParameter("genre");
             if (requestedGenre != null && !requestedGenre.isEmpty()) {
                 queryBuilder.append(" AND m.id IN (SELECT gim.movieId FROM genres_in_movies gim " +
-                                    "JOIN genres g ON gim.genreId = g.id WHERE g.name LIKE ?)");
+                        "JOIN genres g ON gim.genreId = g.id WHERE g.name LIKE ?)");
             }
 
             String requestedChar = request.getParameter("char");
             if (requestedChar != null && !requestedChar.isEmpty()) {
-                if ( !requestedChar.equals("other")) {
+                if (!requestedChar.equals("other")) {
                     queryBuilder.append(" AND m.title LIKE ?");
                 } else {
                     queryBuilder.append(" AND m.title NOT REGEXP '^[0-9a-zA-Z]'");
@@ -96,7 +97,7 @@ public class SearchServlet extends HttpServlet {
             // Makes sure stars are grouped together
             queryBuilder.append(" GROUP BY m.id ");
 
-            queryBuilder.append( "order by r.rating desc"); //
+            queryBuilder.append("order by r.rating desc"); //
 
             // Convert query to string
             String query = queryBuilder.toString();
@@ -123,16 +124,14 @@ public class SearchServlet extends HttpServlet {
             if (requestedChar != null && !requestedChar.isEmpty() && !requestedChar.equals("other")) {
                 statement.setString(paramIndex++, requestedChar + "%");
             }
-            
 
             System.out.println("Correct query: " + query);
-            //System.out.println(requestedChar);
+            // System.out.println(requestedChar);
 
             // Get results
             ResultSet rs = statement.executeQuery();
             // json array to hold our json object
             JsonArray jsonArray = new JsonArray();
-
 
             // Iterate through each row of rs
             while (rs.next()) {
@@ -146,6 +145,7 @@ public class SearchServlet extends HttpServlet {
                 jsonObject.addProperty("movie_starsId", rs.getString("starsId"));
                 jsonObject.addProperty("movie_genres", rs.getString("genres"));
                 jsonObject.addProperty("movie_rating", rs.getString("r.rating"));
+                jsonObject.addProperty("movie_price", rs.getDouble("m.price"));
                 jsonArray.add(jsonObject);
             }
             System.out.println(jsonArray.get(0).toString());
@@ -175,7 +175,8 @@ public class SearchServlet extends HttpServlet {
             out.close();
         }
 
-        // Always remember to close db connection after usage. Here it's done by try-with-resources
+        // Always remember to close db connection after usage. Here it's done by
+        // try-with-resources
 
     }
 }

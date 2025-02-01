@@ -6,13 +6,13 @@ public class Movie {
   private String id;
   private String title;
   private int quantity;
-  private double price; 
+  private double price;
 
   public Movie(String id, String title, int quantity, double price) {
-      this.id = id;
-      this.title = title;
-      this.quantity = quantity;
-      this.price = price;
+    this.id = id;
+    this.title = title;
+    this.quantity = quantity;
+    this.price = price;
   }
 
   public String getId() {

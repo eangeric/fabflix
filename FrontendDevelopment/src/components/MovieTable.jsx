@@ -5,7 +5,7 @@ export const MovieTable = ({ movieData }) => {
   const [addedMovie, setAddedMovie] = useState("");
   const [showMessage, setShowMessage] = useState(false);
 
-  const addToCart = async (movieId, movieTitle) => {
+  const addToCart = async (movieId, movieTitle, moviePrice) => {
     try {
       const response = await fetch("/fabflix/api/cart", {
         method: "POST",
@@ -13,6 +13,7 @@ export const MovieTable = ({ movieData }) => {
         body: new URLSearchParams({
           movieId: movieId,
           movieTitle: movieTitle,
+          moviePrice: moviePrice,
         }),
       });
 
@@ -111,7 +112,11 @@ export const MovieTable = ({ movieData }) => {
                 <td className="px-6 py-1">
                   <button
                     onClick={() => {
-                      addToCart(movie.movie_id, movie.movie_title);
+                      addToCart(
+                        movie.movie_id,
+                        movie.movie_title,
+                        movie.movie_price
+                      );
                     }}
                   >
                     Add

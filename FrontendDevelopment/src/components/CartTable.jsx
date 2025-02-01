@@ -98,9 +98,9 @@ export const CartTable = ({ cartData, setCart }) => {
                     +
                   </button>
                 </td>
-                <td className="px-6 py-1">{movie.price}</td>
+                <td className="px-6 py-1">${movie.price}</td>
                 <td className="px-6 py-1">
-                  {(movie.quantity * movie.price).toFixed(2)}
+                  ${(movie.quantity * movie.price).toFixed(2)}
                 </td>
                 <td className="px-6 py-1">
                   <button
@@ -109,7 +109,6 @@ export const CartTable = ({ cartData, setCart }) => {
                       updateQuantity(movie.id, "delete");
                     }}
                   >
-                    {" "}
                     Delete
                   </button>
                 </td>

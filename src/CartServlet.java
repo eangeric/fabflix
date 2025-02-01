@@ -62,6 +62,7 @@ public class CartServlet extends HttpServlet {
     // Check params
     String movieId = request.getParameter("movieId");
     String movieTitle = request.getParameter("movieTitle");
+    String moviePrice = request.getParameter("moviePrice");
     String operation = request.getParameter("operation");
 
     // Get shopping cart
@@ -88,10 +89,9 @@ public class CartServlet extends HttpServlet {
     }
 
     // If the movie wasn't found, add it as a new entry
+    double price = Double.parseDouble(moviePrice);
     if (!movieExists) {
-      double randomPrice = 1.00 + (Math.random() * 99.00);
-      randomPrice = Math.round(randomPrice * 100.0) / 100.0;
-      Movie newMovie = new Movie(movieId, movieTitle, 1, randomPrice);
+      Movie newMovie = new Movie(movieId, movieTitle, 1, price);
       shoppingCart.add(newMovie);
     }
 
