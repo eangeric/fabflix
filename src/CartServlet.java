@@ -89,8 +89,8 @@ public class CartServlet extends HttpServlet {
     }
 
     // If the movie wasn't found, add it as a new entry
-    double price = Double.parseDouble(moviePrice);
     if (!movieExists) {
+      double price = Double.parseDouble(moviePrice);
       Movie newMovie = new Movie(movieId, movieTitle, 1, price);
       shoppingCart.add(newMovie);
     }
