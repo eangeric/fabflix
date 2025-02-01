@@ -2,6 +2,25 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export const MovieTable = ({ movieData }) => {
+  const addToCart = async (movieId, movieTitle, quantity) => {
+    try {
+      const response = await fetch("/fabflix/api/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          movieId: movieId,
+          movieTitle: movieTitle,
+          quantity: quantity,
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -25,6 +44,9 @@ export const MovieTable = ({ movieData }) => {
             <th scope="col" className="px-6 py-1">
               Rating
             </th>
+            <th scope="col" className="px-6 py-1">
+              Cart
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -36,8 +58,10 @@ export const MovieTable = ({ movieData }) => {
               <tr key={movie.movie_id}>
                 {/* Use a unique key here */}
                 <td className="px-6 py-1">
-                  <Link to={`/movie/${movie.movie_id}`}
-                        className = "hover:text-blue-700 transition duration-300 ease-in-out">
+                  <Link
+                    to={`/movie/${movie.movie_id}`}
+                    className="hover:text-blue-700 transition duration-300 ease-in-out"
+                  >
                     {movie.movie_title}
                   </Link>
                 </td>
@@ -45,23 +69,38 @@ export const MovieTable = ({ movieData }) => {
                 <td className="px-6 py-1">{movie.movie_director}</td>
                 <td className="px-6 py-1">{movie.movie_genres}</td>
                 <td className="px-6 py-1">
-                  {movie.movie_stars.split(", ").slice(0,3).map((star, index) => {
-                    const starIds = movie.movie_starsId.split(", ");
-                    const starId = starIds[index];
-                    {
-                      /* Put comma except for last item */
-                    }
-                    return (
-                      <Link to={`/star/${starId}`}
-                            className = "hover:text-blue-700 transition duration-300 ease-in-out">
-                        {star}
-                        {index < movie.movie_stars.split(", ").slice(0,3).length - 1 &&
-                          ", "}
-                      </Link>
-                    );
-                  })}
+                  {movie.movie_stars
+                    .split(", ")
+                    .slice(0, 3)
+                    .map((star, index) => {
+                      const starIds = movie.movie_starsId.split(", ");
+                      const starId = starIds[index];
+                      {
+                        /* Put comma except for last item */
+                      }
+                      return (
+                        <Link
+                          to={`/star/${starId}`}
+                          className="hover:text-blue-700 transition duration-300 ease-in-out"
+                        >
+                          {star}
+                          {index <
+                            movie.movie_stars.split(", ").slice(0, 3).length -
+                              1 && ", "}
+                        </Link>
+                      );
+                    })}
                 </td>
                 <td className="px-6 py-1">{movie.movie_rating}</td>
+                <td className="px-6 py-1">
+                  <button
+                    onClick={() => {
+                      addToCart(movie.movie_id, movie.movie_title);
+                    }}
+                  >
+                    Add
+                  </button>
+                </td>
               </tr>
             );
           })}

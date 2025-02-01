@@ -96,9 +96,6 @@ public class SearchServlet extends HttpServlet {
             // Makes sure stars are grouped together
             queryBuilder.append(" GROUP BY m.id ");
 
-            // -- SORTING STEP --
-            String requestedSortOrder = request.getParameter("sortOrder");
-
             queryBuilder.append( "order by r.rating desc"); //
 
             // Convert query to string

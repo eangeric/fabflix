@@ -16,6 +16,11 @@ public class User {
   }
 
   // Get Shopping cart
+  public String getUsername() {
+    return username;
+  }
+
+  // Get Shopping cart
   public List<Movie> getShoppingCart() {
     return shoppingCart;
   }

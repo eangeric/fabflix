@@ -1,109 +1,97 @@
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 // Declaring a WebServlet called ShoppingCartServlet, which maps to url "/api/shopping"
-@WebServlet(name = "SearchServlet", urlPatterns = "/api/cart")
+@WebServlet(name = "CartServlet", urlPatterns = "/api/cart")
 public class CartServlet extends HttpServlet {
 
-    // // Create a dataSource which registered in web.
-    // private DataSource dataSource;
+  // // Create a dataSource which registered in web.
+  // private DataSource dataSource;
 
-    // public void init(ServletConfig config) {
-    //     try {
-    //         dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
-    //     } catch (NamingException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+  // public void init(ServletConfig config) {
+  // try {
+  // dataSource = (DataSource) new
+  // InitialContext().lookup("java:comp/env/jdbc/moviedb");
+  // } catch (NamingException e) {
+  // e.printStackTrace();
+  // }
+  // }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json"); // Response mime type
-        PrintWriter out = response.getWriter();
-        // Get user from session
-        User user = (User) request.getSession().getAttribute("user");
-       // Retrieve the shopping cart from the user.
-        List<Movie> shoppingCart = user.getShoppingCart();
+  /**
+   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+   *      response)
+   */
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("application/json"); // Response mime type
+    PrintWriter out = response.getWriter();
+    // Get user from session
+    User user = (User) request.getSession().getAttribute("user");
+    // Retrieve the shopping cart from the user.
+    List<Movie> shoppingCart = user.getShoppingCart();
 
-        // Build a JSON array of items.
-        JsonArray cartArray = new JsonArray();
-        for (Movie movie : shoppingCart) {
-            JsonObject movieJson = new JsonObject();
-            movieJson.addProperty("id", movie.getId());
-            movieJson.addProperty("title", movie.getTitle());
-            movieJson.addProperty("quantity", movie.getQuantity());
-            movieJson.addProperty("price", movie.getPrice());
-            cartArray.add(movieJson);
-        }
-
-        // Write the JSON response.
-        out.write(cartArray.toString());
-        out.close();
+    // Build a JSON array of items.
+    JsonArray cartArray = new JsonArray();
+    for (Movie movie : shoppingCart) {
+      JsonObject movieJson = new JsonObject();
+      movieJson.addProperty("id", movie.getId());
+      movieJson.addProperty("title", movie.getTitle());
+      movieJson.addProperty("quantity", movie.getQuantity());
+      movieJson.addProperty("price", movie.getPrice());
+      cartArray.add(movieJson);
     }
 
+    // Write the JSON response.
+    out.write(cartArray.toString());
+    out.close();
+  }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      response.setContentType("application/json");
-      PrintWriter out = response.getWriter();
-    
-      // Retrieve the user from the session.
-      User user = (User) request.getSession().getAttribute("user");
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("application/json");
+    PrintWriter out = response.getWriter();
 
-      String movieId = request.getParameter("movieId");
-      String movieTitle = request.getParameter("movieTitle");
-      String quantity= request.getParameter("quantity");
+    // Retrieve the user from the session.
+    User user = (User) request.getSession().getAttribute("user");
 
-      // Update the shopping cart.
-      List<Movie> shoppingCart = user.getShoppingCart(); 
-      int newQuantity = Integer.parseInt(quantity);
-      boolean updated = false;
+    // Check params
+    String movieId = request.getParameter("movieId");
+    String movieTitle = request.getParameter("movieTitle");
+    String operation = request.getParameter("operation");
 
-      for (int i = 0; i < shoppingCart.size(); i++) {
-        Movie movie = shoppingCart.get(i);
-        if (movie.getId().equals(movieId)) {
-            updated = true;
-            if (newQuantity <= 0) {
-              // Remove the item if the quantity is zero or negative.
-              shoppingCart.remove(i);
+    // Get shopping cart
+    List<Movie> shoppingCart = user.getShoppingCart();
+    boolean movieExists = false;
+
+    for (Movie movie : shoppingCart) {
+      if (movie.getId().equals(movieId)) {
+        // If movie exists, apply operation or default to increasing quantity
+        if (operation == null || operation.equals("increase")) {
+          movie.setQuantity(movie.getQuantity() + 1);
+        } else if (operation.equals("decrease")) {
+          if (movie.getQuantity() <= 1) {
+            shoppingCart.remove(movie); // Remove if quantity reaches 1
           } else {
-              // Update the item's quantity.
-              movie.setQuantity(newQuantity);
+            movie.setQuantity(movie.getQuantity() - 1);
           }
-            break;
         }
+        movieExists = true;
+        break;
       }
-
-      // If the movie is not found and quantity > 0, add it to the cart.
-      if (!updated) {
-        double randomPrice = Math.round(Math.random() * 100.0) / 100.0;
-        Movie newMovie = new Movie(movieId, movieTitle, 1, randomPrice);
-        newMovie.setQuantity(1);
-        shoppingCart.add(newMovie);
     }
 
-    // Build JSON response with updated shopping cart.
-    // JsonArray cartArray = new JsonArray();
-    // for (Movie movie : shoppingCart) {
-    //     JsonObject movieJson = new JsonObject();
-    //     movieJson.addProperty("id", movie.getId());
-    //     movieJson.addProperty("title", movie.getTitle());
-    //     movieJson.addProperty("quantity", movie.getQuantity());
-    //     movieJson.addProperty("price", movie.getPrice());
-    //     cartArray.add(movieJson);
-    // }
+    // If the movie wasn't found, add it as a new entry
+    if (!movieExists) {
+      double randomPrice = 1.00 + (Math.random() * 99.00);
+      randomPrice = Math.round(randomPrice * 100.0) / 100.0;
+      Movie newMovie = new Movie(movieId, movieTitle, 1, randomPrice);
+      shoppingCart.add(newMovie);
+    }
 
     JsonObject message = new JsonObject();
     message.addProperty("status", "success");
