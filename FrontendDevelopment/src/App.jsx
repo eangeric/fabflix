@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Browse from "./pages/Browse/Browse";
 import BrowseGenres from "./pages/Browse/BrowseGenres";
 import BrowseMovieTitle from "./pages/Browse/BrowseMovieTitle";
+import Cart from "./pages/Cart";
 
 export default function App() {
   const location = useLocation();
@@ -19,17 +20,18 @@ export default function App() {
 
   return (
     <>
-      {/* Render the login navbar is login page */}
+      {/* Render the login navbar if login page */}
       {isLoginPage ? <LoginNavbar /> : <Navbar />}
       {/* Define routes for app */}
       <Routes>
         <Route path="/" element={<Browse />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/movie/:id" element={<Movie />} />
         <Route path="/star/:id" element={<Star />} />
-        <Route path="/search" element={<Search />} />
         <Route path="/browse/genre/:genre" element={<BrowseGenres />} />
         <Route path="/browse/title/:char" element={<BrowseMovieTitle />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/cart" element={<Cart />}></Route>
       </Routes>
     </>
   );
