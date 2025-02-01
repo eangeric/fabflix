@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export const MovieTable = ({ movieData }) => {
+  const [addedMovie, setAddedMovie] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
+
   const addToCart = async (movieId, movieTitle, quantity) => {
     try {
       const response = await fetch("/fabflix/api/cart", {
@@ -15,14 +18,28 @@ export const MovieTable = ({ movieData }) => {
       });
 
       const data = await response.json();
-      console.log(data);
+      if (data.status === "success") {
+        setAddedMovie(movieTitle);
+        setShowMessage(true);
+        // Hide message after 2 seconds
+        setTimeout(() => {
+          setShowMessage(false);
+        }, 2000);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div className="max-w-screen-xl flex flex-col items-between justify-center mx-auto p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+      {showMessage && (
+        <div className="toast">
+          <div className="alert bg-fabflix-primary">
+            <span>Added {addedMovie} to the cart.</span>
+          </div>
+        </div>
+      )}
       <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
