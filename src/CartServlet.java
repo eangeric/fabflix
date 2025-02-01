@@ -79,6 +79,8 @@ public class CartServlet extends HttpServlet {
           } else {
             movie.setQuantity(movie.getQuantity() - 1);
           }
+        } else if (operation.equals("delete")) {
+          shoppingCart.remove(movie);
         }
         movieExists = true;
         break;

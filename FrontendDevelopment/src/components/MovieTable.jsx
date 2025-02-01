@@ -5,7 +5,7 @@ export const MovieTable = ({ movieData }) => {
   const [addedMovie, setAddedMovie] = useState("");
   const [showMessage, setShowMessage] = useState(false);
 
-  const addToCart = async (movieId, movieTitle, quantity) => {
+  const addToCart = async (movieId, movieTitle) => {
     try {
       const response = await fetch("/fabflix/api/cart", {
         method: "POST",
@@ -13,7 +13,6 @@ export const MovieTable = ({ movieData }) => {
         body: new URLSearchParams({
           movieId: movieId,
           movieTitle: movieTitle,
-          quantity: quantity,
         }),
       });
 
