@@ -76,3 +76,18 @@ CREATE TABLE IF NOT EXISTS ratings (
     PRIMARY KEY (movieId),
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
+
+ALTER TABLE movies ADD COLUMN price DECIMAL(5,2) NOT NULL DEFAULT 0.00;
+
+DELIMITER //
+
+CREATE TRIGGER set_random_price
+BEFORE INSERT ON movies
+FOR EACH ROW
+BEGIN
+    SET NEW.price = ROUND((5.00 + (RAND() * 15.00)), 2);
+END;
+
+//
+
+DELIMITER ;
