@@ -11,8 +11,8 @@ public class User {
   private final List<Movie> shoppingCart; // Shopping cart holds items
 
   public User(String username) {
-      this.username = username;
-      this.shoppingCart = new ArrayList<>();
+    this.username = username;
+    this.shoppingCart = new ArrayList<>();
   }
 
   // Get Shopping cart
@@ -27,12 +27,20 @@ public class User {
 
   // Add an item to the shopping cart
   public void addMovie(Movie movie) {
-      shoppingCart.add(movie);
+    shoppingCart.add(movie);
   }
 
   // Remove an item from the shopping cart
   public void removeMovie(Movie movie) {
     shoppingCart.remove(movie);
+  }
+
+  public double getTotalPrice() {
+    double total = 0.0;
+    for (Movie movie : shoppingCart) {
+      total += movie.getPrice() * movie.getQuantity(); // Multiply price by quantity
+    }
+    return Math.round(total * 100.0) / 100.0; // Round to 2 decimal places
   }
 
 }

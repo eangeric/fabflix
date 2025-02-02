@@ -125,7 +125,7 @@ public class SearchServlet extends HttpServlet {
                 statement.setString(paramIndex++, requestedChar + "%");
             }
 
-            System.out.println("Correct query: " + query);
+            // System.out.println("Correct query: " + query);
             // System.out.println(requestedChar);
 
             // Get results
