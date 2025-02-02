@@ -2,41 +2,59 @@ import React, { useState } from "react";
 import { SearchBar } from "../components/SearchBar.jsx";
 import { useFetch } from "../hooks/useFetch.js";
 import { MovieTable } from "../components/MovieTable.jsx";
+import {useFetchPages} from "../hooks/useFetchPages.js";
 
 export default function Search() {
-  const [searchUrl, setSearchUrl] = useState(null); // URL for the API call
-  const [movieData, setMovieData] = useState(null); // Handling old and new movieData
-  const { data, loading, error } = useFetch(searchUrl); // Call the fetchData function
+  const [searchUrl, setSearchUrl] = useState(null);
+  const [page, setPage] = useState(1);
+  const { data, maxResults, loading, error } = useFetchPages(searchUrl);
 
-  // Clear the old stuff first (buffer)
-  React.useEffect(() => {
-    if (data) {
-      setMovieData(data);
-    }
-  }, [data]);
-
-  // When SearchBar provides a new URL, trigger the fetch
   const handleSearch = (url) => {
-    setMovieData(null);
-    setSearchUrl(url); // Trigger `useFetch` by updating the `searchUrl`
+    setPage(1); // Reset page on new search
+    setSearchUrl(url + "&page=1"); // Ensure page 1 on initial search
+  };
+
+  const updatePage = (newPage) => {
+    if (newPage > 0 && newPage <= Math.ceil(maxResults / 10)) {
+      setPage(newPage);
+      setSearchUrl(searchUrl.replace(/page=\d+/, `page=${newPage}`)); // Update page param
+    }
   };
 
   return (
     <div className="text-white">
       <SearchBar onSearchUrl={handleSearch} />
 
-      {/* Loading State */}
-      {/*loading && <p className="text-white justify-center">Loading results...</p>}
+      {loading && <p className="text-white text-center">Loading...</p>}
+      {error && <p className="text-white text-center">Error: {error}</p>}
+      {data && <MovieTable movieData={data} />}
 
-      {/* Error State */}
-      {/*error && <p className="text-white justify-center">Error: {error}</p>}
+      {/* Pagination Controls */}
+      {data && data.length > 0 && (
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={() => updatePage(page - 1)}
+            disabled={page === 1}
+            className={`px-5 py-2 text-sm font-medium rounded-lg ${
+              page === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
+            } text-white`}
+          >
+            Previous
+          </button>
+          <span>Page {page} of {Math.ceil(maxResults / 10)}</span>
+          <button
+            onClick={() => updatePage(page + 1)}
+            disabled={page >= Math.ceil(maxResults / 10)}
+            className={`px-5 py-2 text-sm font-medium rounded-lg ${
+              page >= Math.ceil(maxResults / 10) ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
+            } text-white`}
+          >
+            Next
+          </button>
+        </div>
+      )}
 
-      {/* Display Movie Data */}
-      {movieData && <MovieTable movieData={movieData} />}
-
-      {/* Fallback for unexpected states */}
-      {/*!movieData && <h1 className="text-white justify-center">Please enter a field</h1>*/}
-      {!loading && !error && !movieData && <h1 className="text-white justify-center">No movie data available</h1>}
+      {!loading && !error && !data && <h1 className="text-white text-center">No results</h1>}
     </div>
   );
 }

@@ -10,7 +10,7 @@ export const LoginNavbar = () => {
       <div className="max-w-screen-xl-2 mx-auto flex items-center justify-between px-4 md:px-6 relative">
         <Link to="/login" className="flex items-center space-x-2">
           <img
-            src="/fabflix/images/logo.png"
+            src="/fabflix/images/1.png"
             style={{ height: "50px", width: "auto" }}
             alt="Fabflix Logo"
           />

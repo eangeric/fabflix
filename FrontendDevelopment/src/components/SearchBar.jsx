@@ -5,6 +5,7 @@ export const SearchBar = ({ onSearchUrl }) => {
   const [star, setStar] = useState("");
   const [year, setYear] = useState("");
   const [director, setDirector] = useState("");
+  const [num_results, set_num_results] = useState("10");
 
   const searchHandler = (event) => {
     event.preventDefault(); // Prevent default form submission behavior
@@ -22,6 +23,7 @@ export const SearchBar = ({ onSearchUrl }) => {
     if (star) queryParams.append("star", star);
     if (year) queryParams.append("year", year);
     if (director) queryParams.append("director", director);
+    queryParams.append("num_results", num_results || "10");
 
     // Call the parent function with the query string
     const queryString = `/fabflix/api/search?${queryParams.toString()}`;
@@ -75,12 +77,37 @@ export const SearchBar = ({ onSearchUrl }) => {
                 value={director}
                 onChange={(e) => setDirector(e.target.value)}
               />
-              <button
-                className="me-2 mb-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                type="submit"
-              >
-                Search
-              </button>
+
+              <div className="flex justify-between items-center mt-4">
+                <button
+                  className="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800
+               focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600
+               dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  type="submit"
+                >
+                  Search
+                </button>
+
+                <div className="flex items-center space-x-2">
+                  <label htmlFor="num_results" className="text-white">Results per page:</label>
+                  <select
+                    name="num_results"
+                    id="num_results"
+                    value={num_results}
+                    onChange={(e) => set_num_results(e.target.value)}
+                    className="rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm
+                 text-black focus:border-blue-500 focus:ring-blue-500
+                 dark:border-gray-600 dark:bg-white dark:text-black
+                 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                </div>
+              </div>
+
             </div>
           </form>
         </div>
