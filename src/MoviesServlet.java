@@ -59,7 +59,7 @@ public class MoviesServlet extends HttpServlet {
             }
             // If not add 20 movie results to query string
             else {
-                queryBuilder.append("ORDER BY r.rating DESC LIMIT 20");
+                queryBuilder.append("ORDER BY r.rating");
             }
             // Convert query to string
             String query = queryBuilder.toString();

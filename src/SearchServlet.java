@@ -46,7 +46,7 @@ public class SearchServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
             // Create query string for movies
             StringBuilder queryBuilder = new StringBuilder(
-                    "SELECT m.id, m.title, m.year, m.director, m.price, " +
+                    "SELECT m.id, m.title, m.year, m.director, " +
                             "GROUP_CONCAT(distinct s.name order by s.id SEPARATOR ', ') AS stars, " +
                             "GROUP_CONCAT(distinct s.id order by s.id SEPARATOR ', ') AS starsId, " +
                             "GROUP_CONCAT(distinct g.name SEPARATOR ', ') AS genres, r.rating " +
@@ -57,6 +57,22 @@ public class SearchServlet extends HttpServlet {
                             "JOIN genres_in_movies gim ON m.id = gim.movieId " +
                             "JOIN genres g ON gim.genreId = g.id " +
                             "WHERE 1=1"); // 1=1 makes it easier to add search params
+
+
+            // max counts should use this:
+            /*
+            SELECT COUNT(DISTINCT m.id) AS total_results
+                FROM movies m
+                JOIN stars_in_movies sim ON m.id = sim.movieId
+                JOIN stars s ON sim.starId = s.id
+                JOIN ratings r ON m.id = r.movieId
+                JOIN genres_in_movies gim ON m.id = gim.movieId
+                JOIN genres g ON gim.genreId = g.id
+                WHERE m.year = "2002";
+
+             */
+
+
 
             // Get title, year, director, star params
             String requestedTitle = request.getParameter("title");
@@ -94,10 +110,37 @@ public class SearchServlet extends HttpServlet {
                 }
             }
 
+
             // Makes sure stars are grouped together
             queryBuilder.append(" GROUP BY m.id ");
 
-            queryBuilder.append("order by r.rating desc"); //
+            queryBuilder.append("order by r.rating desc "); //
+
+            // Create maxQuery to see how many results there are
+            String maxQuery = queryBuilder.toString();
+            PreparedStatement maxStatement = conn.prepareStatement(maxQuery);
+
+            // LIMIT RESULTS PER PAGE
+            String req_resultNum = request.getParameter("num_results");
+            int num_results = 10; // Default value
+            if (req_resultNum != null && !req_resultNum.isEmpty()) {
+                try {
+                    num_results = Integer.parseInt(req_resultNum);
+                } catch (NumberFormatException ignored) {
+                }
+            }
+            queryBuilder.append(" LIMIT ? ");
+
+            // OFFSET CALCULATION
+            String req_pageNum = request.getParameter("page");
+            int offset = 0; // Default value
+            if (req_pageNum != null && !req_pageNum.isEmpty()) {
+                try {
+                    offset = (Integer.parseInt(req_pageNum)-1) * num_results;
+                } catch (NumberFormatException ignored) {
+                }
+            }
+            queryBuilder.append(" OFFSET ? ");
 
             // Convert query to string
             String query = queryBuilder.toString();
@@ -106,26 +149,46 @@ public class SearchServlet extends HttpServlet {
 
             // Dynamically set parameters
             int paramIndex = 1;
+            int maxParamIndex = 1;
             if (requestedTitle != null && !requestedTitle.isEmpty()) {
                 statement.setString(paramIndex++, "%" + requestedTitle + "%");
+                maxStatement.setString(maxParamIndex++, "%" + requestedTitle + "%");
             }
             if (requestedYear != null && !requestedYear.isEmpty()) {
                 statement.setInt(paramIndex++, Integer.parseInt(requestedYear));
+                maxStatement.setInt(maxParamIndex++, Integer.parseInt(requestedYear));
             }
             if (requestedDirector != null && !requestedDirector.isEmpty()) {
                 statement.setString(paramIndex++, "%" + requestedDirector + "%");
+                maxStatement.setString(maxParamIndex++, "%" + requestedDirector + "%");
             }
             if (requestedStar != null && !requestedStar.isEmpty()) {
                 statement.setString(paramIndex++, "%" + requestedStar + "%");
+                maxStatement.setString(maxParamIndex++, "%" + requestedStar + "%");
             }
             if (requestedGenre != null && !requestedGenre.isEmpty()) {
                 statement.setString(paramIndex++, "%" + requestedGenre + "%");
+                maxStatement.setString(maxParamIndex++, "%" + requestedGenre + "%");
             }
             if (requestedChar != null && !requestedChar.isEmpty() && !requestedChar.equals("other")) {
                 statement.setString(paramIndex++, requestedChar + "%");
+                maxStatement.setString(maxParamIndex++,  requestedChar + "%");
             }
 
-            // System.out.println("Correct query: " + query);
+            // For the max query
+            ResultSet max_rs = maxStatement.executeQuery();
+            int max_results = 0;
+            while (max_rs.next()) {
+                max_results++;
+            }
+            max_rs.close();
+
+            // For the regular query
+            statement.setInt(paramIndex++, num_results);
+            statement.setInt(paramIndex++, offset);
+
+
+            System.out.println("Correct query: " + query);
             // System.out.println(requestedChar);
 
             // Get results
@@ -145,21 +208,33 @@ public class SearchServlet extends HttpServlet {
                 jsonObject.addProperty("movie_starsId", rs.getString("starsId"));
                 jsonObject.addProperty("movie_genres", rs.getString("genres"));
                 jsonObject.addProperty("movie_rating", rs.getString("r.rating"));
-                jsonObject.addProperty("movie_price", rs.getDouble("m.price"));
+                //jsonObject.addProperty("movie_price", rs.getDouble("m.price"));
                 jsonArray.add(jsonObject);
             }
-            System.out.println(jsonArray.get(0).toString());
+            //System.out.println(jsonArray.get(0).toString());
 
             rs.close();
             statement.close();
 
             // Log to localhost log
-            request.getServletContext().log("Returning " + jsonArray.size() + " results.");
+            System.out.println("Returning " + jsonArray.size() + " results");
+            System.out.println("out of "+ max_results +" results");
 
             // Write JSON string to output
-            out.write(jsonArray.toString());
-            // Set response status to 200 (OK)
-            response.setStatus(200);
+// Create response JSON object
+            JsonObject responseJson = new JsonObject();
+            responseJson.add("movies", jsonArray); // Movie list
+            responseJson.addProperty("max_results", max_results); // Total number of results
+
+// Set response type
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+// Write the JSON object as a response
+            out.write(responseJson.toString());
+            out.flush(); // Ensure data is fully written
+            out.close(); // Close output stream
+
 
         } catch (Exception e) {
 
