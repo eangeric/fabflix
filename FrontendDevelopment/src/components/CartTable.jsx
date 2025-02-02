@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const CartTable = ({ cartData, setCart, total, setTotal }) => {
   const updateQuantity = async (movieId, operation) => {
@@ -40,8 +41,10 @@ export const CartTable = ({ cartData, setCart, total, setTotal }) => {
   return (
     <div>
       <div>
-        <p>Total: ${total ? total.total.toFixed(2) : "00.00"}</p>
-        <button>Proceed to payment</button>
+        <p>Total: ${total ? total.total.toFixed(2) : "0.00"}</p>
+        <button>
+          <Link to="/payment">Proceed to payment</Link>
+        </button>
       </div>
       <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">

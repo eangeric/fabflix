@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SearchBar } from "../components/SearchBar.jsx";
 import { useFetch } from "../hooks/useFetch.js";
 import { MovieTable } from "../components/MovieTable.jsx";
-import {useFetchPages} from "../hooks/useFetchPages.js";
+import { useFetchPages } from "../hooks/useFetchPages.js";
 
 export default function Search() {
   const [searchUrl, setSearchUrl] = useState(null);
@@ -12,6 +12,7 @@ export default function Search() {
   const handleSearch = (url) => {
     setPage(1); // Reset page on new search
     setSearchUrl(url + "&page=1"); // Ensure page 1 on initial search
+    console.log(data);
   };
 
   const updatePage = (newPage) => {
@@ -36,17 +37,23 @@ export default function Search() {
             onClick={() => updatePage(page - 1)}
             disabled={page === 1}
             className={`px-5 py-2 text-sm font-medium rounded-lg ${
-              page === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
+              page === 1
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-700 hover:bg-blue-800"
             } text-white`}
           >
             Previous
           </button>
-          <span>Page {page} of {Math.ceil(maxResults / 10)}</span>
+          <span>
+            Page {page} of {Math.ceil(maxResults / 10)}
+          </span>
           <button
             onClick={() => updatePage(page + 1)}
             disabled={page >= Math.ceil(maxResults / 10)}
             className={`px-5 py-2 text-sm font-medium rounded-lg ${
-              page >= Math.ceil(maxResults / 10) ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
+              page >= Math.ceil(maxResults / 10)
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-700 hover:bg-blue-800"
             } text-white`}
           >
             Next
@@ -54,7 +61,9 @@ export default function Search() {
         </div>
       )}
 
-      {!loading && !error && !data && <h1 className="text-white text-center">No results</h1>}
+      {!loading && !error && !data && (
+        <h1 className="text-white text-center">No results</h1>
+      )}
     </div>
   );
 }
