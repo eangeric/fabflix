@@ -112,6 +112,7 @@ export const MovieTable = ({ movieData }) => {
                 <td className="px-6 py-1">{movie.movie_rating}</td>
                 <td className="px-6 py-1">
                   <button
+                    className="bg-gray-700 p-1 cursor-pointer"
                     onClick={() => {
                       addToCart(
                         movie.movie_id,

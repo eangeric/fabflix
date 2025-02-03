@@ -40,9 +40,9 @@ export const CartTable = ({ cartData, setCart, total, setTotal }) => {
 
   return (
     <div>
-      <div>
+      <div className="flex justify-end items-center gap-2 m-2 p-2">
         <p>Total: ${total ? total.total.toFixed(2) : "0.00"}</p>
-        <button>
+        <button className="bg-gray-700 p-1">
           <Link to="/payment">Proceed to payment</Link>
         </button>
       </div>
@@ -98,7 +98,7 @@ export const CartTable = ({ cartData, setCart, total, setTotal }) => {
                   </td>
                   <td className="px-6 py-1">
                     <button
-                      className="bg-gray-700 p-1"
+                      className="bg-gray-700 p-1 cursor-pointer"
                       onClick={() => {
                         updateQuantity(movie.id, "delete");
                       }}

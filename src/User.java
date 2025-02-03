@@ -43,4 +43,8 @@ public class User {
     return Math.round(total * 100.0) / 100.0; // Round to 2 decimal places
   }
 
+  public void clearShoppingCart() {
+    shoppingCart.clear();
+  }
+
 }

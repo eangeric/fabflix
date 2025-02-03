@@ -27,7 +27,11 @@ export default function Cart() {
   return (
     <div className="text-white">
       {cart.length === 0 ? (
-        <h1>Nothing in your cart! Add movies to checkout.</h1>
+        <div className="flex justify-center items-center text-white text-2xl h-[80vh]">
+          <p className="flex justify-center items-center bg-fabflix-primary rounded-lg p-6 w-96 mx-auto shadow-lg">
+            Nothing in your cart yet! Add movies to checkout.
+          </p>
+        </div>
       ) : (
         <CartTable
           cartData={cart}
