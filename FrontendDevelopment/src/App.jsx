@@ -12,6 +12,7 @@ import BrowseGenres from "./pages/Browse/BrowseGenres";
 import BrowseMovieTitle from "./pages/Browse/BrowseMovieTitle";
 import Cart from "./pages/Cart";
 import Payment from "./pages/Payment";
+import Success from "./pages/Success";
 
 export default function App() {
   const location = useLocation();
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
+        <Route path="/success" element={<Success />}></Route>
       </Routes>
     </>
   );
