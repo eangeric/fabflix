@@ -1,28 +1,46 @@
 import { useState, useEffect } from "react";
 
-export const useFetchPages = (url, options = {}) => {
+export const useFetchPages = (
+  searchKey,
+  searchValue,
+  sortOrder,
+  page,
+  numResults
+) => {
   const [data, setData] = useState(null);
-  const [maxResults, setMaxResults] = useState(0); // Ensure we store max results
+  const [maxResults, setMaxResults] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!url) return;
-
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(url, options);
+        const queryParams = new URLSearchParams();
+        const sortParams = sortOrder.split("-");
+
+        queryParams.append("sort", sortParams[0]);
+        queryParams.append("order1", sortParams[1]);
+        queryParams.append("order2", sortParams[3]);
+
+        const updatedUrl = `/fabflix/api/search?${searchKey}=${searchValue}&page=${page}&num_results=${numResults}&${queryParams.toString()}`;
+
+        const response = await fetch(updatedUrl);
+        sessionStorage.setItem(
+          "browseState",
+          JSON.stringify({
+            savedSortOrder: sortOrder,
+            savedPage: page,
+            savedNumResults: numResults,
+          })
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const result = await response.json();
 
-        //console.log("Fetched Data:", result); // Debugging to ensure API response
-
         setMaxResults(result.max_results || 0);
         setData(result.movies);
-
       } catch (error) {
         setError(error.message);
       } finally {
@@ -31,7 +49,7 @@ export const useFetchPages = (url, options = {}) => {
     };
 
     fetchData();
-  }, [url]);
+  }, [sortOrder, page, numResults]);
 
   return { data, maxResults, loading, error };
 };

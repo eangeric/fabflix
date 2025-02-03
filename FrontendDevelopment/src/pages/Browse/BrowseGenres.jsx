@@ -13,29 +13,32 @@ export default function BrowseGenres() {
   const [numResults, setNumResults] = useState(10);
   const [sortOrder, setSortOrder] = useState("title-asc-rating-asc");
   const [searchUrl, setSearchUrl] = useState(
-    `/fabflix/api/search?genre=${genre}&page=1&num_results=${numResults}`
+    `/fabflix/api/search?genre=${genre}&page=${page}&num_results=${numResults}`
   );
 
   if (genre) {
     sessionStorage.setItem("returnPage", `/browse/genre/${genre}`);
   }
 
-  const { data, maxResults, loading, error } = useFetchPages(searchUrl);
+  const { data, maxResults, loading, error } = useFetchPages(
+    "genre",
+    genre,
+    sortOrder,
+    page,
+    numResults
+  );
 
   useEffect(() => {
-    const queryParams = new URLSearchParams();
+    const genreState = sessionStorage.getItem("browseState");
 
-    if (sortOrder) {
-      const sortParams = sortOrder.split("-");
-      queryParams.append("sort", sortParams[0]);
-      queryParams.append("order1", sortParams[1]);
-      queryParams.append("order2", sortParams[3]);
+    if (genreState) {
+      const { savedSortOrder, savedPage, savedNumResults } =
+        JSON.parse(genreState);
+      setSortOrder(savedSortOrder);
+      setPage(savedPage);
+      setNumResults(savedNumResults);
     }
-
-    setSearchUrl(
-      `/fabflix/api/search?genre=${genre}&page=${page}&num_results=${numResults}&${queryParams.toString()}`
-    );
-  }, [genre, page, numResults, sortOrder]);
+  }, []);
 
   return (
     <BgMain>
@@ -44,25 +47,28 @@ export default function BrowseGenres() {
           {genre && genre.charAt(0).toUpperCase() + genre.slice(1)}
         </h1>
 
-        <Sorting setSortOrder={setSortOrder} />
+        <Sorting sortOrder={sortOrder} setSortOrder={setSortOrder} />
         <ResultsPerPage numResults={numResults} setNumResults={setNumResults} />
-
-        {data && <MovieTable movieData={data} />}
-
-        {data && data.length > 0 && (
-          <PageControls
-            page={page}
-            setPage={setPage}
-            maxResults={maxResults}
-            numResults={numResults}
-            setSearchUrl={setSearchUrl} // Pass this for URL updates
-            searchUrl={searchUrl} // Current search URL
-          />
-        )}
 
         {loading && searchUrl && (
           <p className="text-white text-center">Loading...</p>
         )}
+
+        {data && <MovieTable movieData={data} />}
+
+        {data &&
+          // @ts-ignore
+          data.length > 0 && (
+            <PageControls
+              page={page}
+              setPage={setPage}
+              maxResults={maxResults}
+              numResults={numResults}
+              setSearchUrl={setSearchUrl} // Pass this for URL updates
+              searchUrl={searchUrl} // Current search URL
+            />
+          )}
+
         {error && <p className="text-white text-center">Error: {error}</p>}
         {!loading && !error && !data && (
           <h1 className="text-white text-center">No results</h1>

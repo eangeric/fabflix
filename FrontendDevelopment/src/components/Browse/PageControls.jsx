@@ -72,9 +72,14 @@ export function PageControls({
           }}
           onBlur={() => setPageInput(page.toString())}
           className="px-5 py-2 text-sm font-medium rounded-lg"
-          style={{ width: "40px", padding: "5px 4px", textAlign: "center",
-                  border: "1px", solid : "#ccc", backgroundColor: "#f9f9f9",
-                  color: "#666"}}
+          style={{
+            width: "40px",
+            padding: "5px 4px",
+            textAlign: "center",
+            border: "1px",
+            backgroundColor: "#f9f9f9",
+            color: "#666",
+          }}
         />
         of {Math.ceil(maxResults / numResults)}
       </h2>
