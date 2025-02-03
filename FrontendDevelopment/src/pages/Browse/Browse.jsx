@@ -10,7 +10,6 @@ export default function Browse() {
   console.log(data);
 
   return (
-    // REMEMBER TO ISOLATE BACKGROUND LAYER
     <BgMain>
       <div>
         <table className="flex justify-center h-10">
