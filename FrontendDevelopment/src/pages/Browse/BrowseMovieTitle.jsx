@@ -10,7 +10,7 @@ import { Sorting } from "../../components/Browse/Sorting.jsx";
 export default function BrowseMovieTitle() {
   const { char } = useParams();
   const [page, setPage] = useState(1);
-  const [sortOrder, setSortOrder] = useState("t-r-asc");
+  const [sortOrder, setSortOrder] = useState("title-asc-rating-desc");
   const [numResults, setNumResults] = useState(10);
   const [searchUrl, setSearchUrl] = useState(
     `/fabflix/api/search?char=${char}&page=1&num_results=${numResults}`

@@ -2,14 +2,14 @@ import React from "react";
 
 export function Sorting({ setSortOrder }) {
   return (
-    <div className="flex items-center space-x-2 justify-center mt-4">
+    <div className="flex items-center space-x-2 justify-center">
       <label htmlFor="sortOrder" className="text-white">
-        Sort by
+        Sort by:
       </label>
       <select
         id="sortOrder"
         onChange={(e) => setSortOrder(e.target.value)}
-        className="rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-black"
+        className="rounded-lg border border-gray-300 bg-gray-100 p-1 text-sm font-medium text-black"
       >
         <option value="title-asc-rating-asc">Title &uarr; Rating &uarr;</option>
         <option value="title-asc-rating-desc">Title &uarr; Rating &darr;</option>

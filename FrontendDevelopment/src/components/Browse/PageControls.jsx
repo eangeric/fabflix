@@ -50,7 +50,7 @@ export function PageControls({
         Previous
       </button>
 
-      <h2 className="px-5 py-2 text-sm">
+      <h2 className="px-5 py-2 text-sm space-x-3">
         Page
         <input
           type="text"
@@ -71,7 +71,10 @@ export function PageControls({
             }
           }}
           onBlur={() => setPageInput(page.toString())}
-          className="px-5 py-2 mb-2 rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-400"
+          className="px-5 py-2 text-sm font-medium rounded-lg"
+          style={{ width: "40px", padding: "5px 4px", textAlign: "center",
+                  border: "1px", solid : "#ccc", backgroundColor: "#f9f9f9",
+                  color: "#666"}}
         />
         of {Math.ceil(maxResults / numResults)}
       </h2>
