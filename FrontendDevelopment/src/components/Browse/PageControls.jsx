@@ -39,7 +39,10 @@ export function PageControls({
   return (
     <div className="flex justify-center mt-4 mb-4">
       <button
-        onClick={() => updatePage(page - 1)}
+        onClick={() => {
+          updatePage(page - 1);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
         disabled={page === 1}
         className={`px-5 py-2 text-sm font-medium rounded-lg ${
           page === 1
@@ -85,7 +88,10 @@ export function PageControls({
       </h2>
 
       <button
-        onClick={() => updatePage(page + 1)}
+        onClick={() => {
+          updatePage(page + 1);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
         disabled={page >= Math.ceil(maxResults / numResults)}
         className={`px-5 py-2 text-sm font-medium rounded-lg ${
           page >= Math.ceil(maxResults / numResults)
