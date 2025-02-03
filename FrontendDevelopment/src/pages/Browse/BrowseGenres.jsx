@@ -11,7 +11,7 @@ export default function BrowseGenres() {
   const { genre } = useParams();
   const [page, setPage] = useState(1);
   const [numResults, setNumResults] = useState(10);
-  const [sortOrder, setSortOrder] = useState("t-r-asc");
+  const [sortOrder, setSortOrder] = useState("title-asc-rating-asc");
   const [searchUrl, setSearchUrl] = useState(
     `/fabflix/api/search?genre=${genre}&page=1&num_results=${numResults}`
   );
@@ -22,19 +22,10 @@ export default function BrowseGenres() {
     const queryParams = new URLSearchParams();
 
     if (sortOrder) {
-      if (sortOrder === "t-r-asc") {
-        queryParams.append("sort", "title");
-        queryParams.append("order", "ASC");
-      } else if (sortOrder === "t-r-desc") {
-        queryParams.append("sort", "title");
-        queryParams.append("order", "DESC");
-      } else if (sortOrder === "r-t-asc") {
-        queryParams.append("sort", "rating");
-        queryParams.append("order", "ASC");
-      } else if (sortOrder === "r-t-desc") {
-        queryParams.append("sort", "rating");
-        queryParams.append("order", "DESC");
-      }
+      const sortParams = sortOrder.split("-");
+      queryParams.append("sort", sortParams[0]);
+      queryParams.append("order1", sortParams[1]);
+      queryParams.append("order2", sortParams[3]);
     }
 
     setSearchUrl(

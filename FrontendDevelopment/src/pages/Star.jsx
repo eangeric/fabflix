@@ -5,7 +5,7 @@ import { SingleStarTable } from "../components/SingleStarTable";
 import {useImageSearch} from "../hooks/useImageSearch.js";
 import {BgMain} from "../components/Assets/BgMain.jsx";
 
-export default function Movie() {
+export default function Star() {
   // Get star id from link
   const { id: starID } = useParams();
 

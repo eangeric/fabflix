@@ -111,17 +111,17 @@ public class SearchServlet extends HttpServlet {
             queryBuilder.append(" GROUP BY m.id ");
 
             String sortBy = request.getParameter("sort"); // "title" or "rating"
-            String sortOrder = request.getParameter("order"); // "asc" or "desc"
-
-            boolean sorting = (sortBy != null && sortOrder != null);
+            String sortOrder1 = request.getParameter("order1"); // "asc" or "desc"
+            String sortOrder2 = request.getParameter("order2"); // "asc" or "desc"
+            boolean sorting = (sortBy != null && sortOrder1 != null && sortOrder2 != null);
 
             if (!sorting) {
                 queryBuilder.append(" ORDER BY r.rating DESC, m.title ASC");
             } else {
                 if (sortBy.equals("title")) {
-                    queryBuilder.append(" ORDER BY m.title ").append(sortOrder).append(", r.rating ").append(sortOrder);
+                    queryBuilder.append(" ORDER BY m.title ").append(sortOrder1).append(", r.rating ").append(sortOrder2);
                 } else {
-                    queryBuilder.append(" ORDER BY r.rating ").append(sortOrder).append(", m.title ").append(sortOrder);
+                    queryBuilder.append(" ORDER BY r.rating ").append(sortOrder1).append(", m.title ").append(sortOrder2);
                 }
             }
 

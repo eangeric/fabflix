@@ -11,10 +11,15 @@ export function Sorting({ setSortOrder }) {
         onChange={(e) => setSortOrder(e.target.value)}
         className="rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-black"
       >
-        <option value="t-r-asc">Title ASC</option>
-        <option value="t-r-desc">Title DESC</option>
-        <option value="r-t-asc">Rating ASC</option>
-        <option value="r-t-desc">Rating DESC</option>
+        <option value="title-asc-rating-asc">Title &uarr; Rating &uarr;</option>
+        <option value="title-asc-rating-desc">Title &uarr; Rating &darr;</option>
+        <option value="title-desc-rating-asc">Title &darr; Rating &uarr;</option>
+        <option value="title-desc-rating-desc">Title &darr; Rating &darr;</option>
+
+        <option value="rating-asc-title-asc">Rating &uarr; Title &uarr;</option>
+        <option value="rating-asc-title-desc">Rating &uarr; Title &darr;</option>
+        <option value="rating-desc-title-asc">Rating &darr; Title &uarr;</option>
+        <option value="rating-desc-title-desc">Rating &darr; Title &darr;</option>
       </select>
     </div>
   );
