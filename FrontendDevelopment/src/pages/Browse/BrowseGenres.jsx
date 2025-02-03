@@ -47,12 +47,10 @@ export default function BrowseGenres() {
           {genre && genre.charAt(0).toUpperCase() + genre.slice(1)}
         </h1>
 
-        <Sorting sortOrder={sortOrder} setSortOrder={setSortOrder} />
-        <ResultsPerPage numResults={numResults} setNumResults={setNumResults} />
-
-        {loading && searchUrl && (
-          <p className="text-white text-center">Loading...</p>
-        )}
+        <div className="flex mt-4 items-center space-x-2 justify-center text-sm">
+          <ResultsPerPage numResults={numResults} setNumResults={setNumResults} />
+          <Sorting setSortOrder={setSortOrder} />
+        </div>
 
         {data && <MovieTable movieData={data} />}
 
@@ -69,6 +67,9 @@ export default function BrowseGenres() {
             />
           )}
 
+        {loading && searchUrl && (
+          <p className="text-white text-center">Loading...</p>
+        )}
         {error && <p className="text-white text-center">Error: {error}</p>}
         {!loading && !error && !data && (
           <h1 className="text-white text-center">No results</h1>

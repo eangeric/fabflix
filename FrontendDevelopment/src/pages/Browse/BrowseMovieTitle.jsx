@@ -13,7 +13,7 @@ export default function BrowseMovieTitle() {
   const [numResults, setNumResults] = useState(10);
   const [sortOrder, setSortOrder] = useState("title-asc-rating-desc");
   const [searchUrl, setSearchUrl] = useState(
-    `/fabflix/api/search?char=${char}&page=${page}}&num_results=${numResults}`
+    `/fabflix/api/search?char=${char}&page=${page}&num_results=${numResults}`
   );
 
   if (char) {
@@ -50,14 +50,12 @@ export default function BrowseMovieTitle() {
           }
         </h1>
 
-        <Sorting sortOrder={sortOrder} setSortOrder={setSortOrder} />
-        <ResultsPerPage numResults={numResults} setNumResults={setNumResults} />
+        <div className="flex mt-4 items-center space-x-2 justify-center text-sm">
+          <ResultsPerPage numResults={numResults} setNumResults={setNumResults}/>
+          <Sorting setSortOrder={setSortOrder}/>
+        </div>
 
-        {loading && searchUrl && (
-          <p className="text-white text-center">Loading...</p>
-        )}
-
-        {data && <MovieTable movieData={data} />}
+        {data && <MovieTable movieData={data}/>}
 
         {data &&
           // @ts-ignore
@@ -72,6 +70,9 @@ export default function BrowseMovieTitle() {
             />
           )}
 
+        {loading && searchUrl && (
+          <p className="text-white text-center">Loading...</p>
+        )}
         {error && <p className="text-white text-center">Error: {error}</p>}
         {!loading && !error && !data && (
           <h1 className="text-white text-center">No results</h1>

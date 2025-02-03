@@ -8,7 +8,7 @@ export function BgMain ({children}) {
         "url(/fabflix/images/movieBg.jpg)",
       backgroundPosition: "center",
       backgroundAttachment: "fixed",
-      paddingTop: "7rem", paddingBottom: "70vh", overflow:"hidden"
+      paddingTop: "7rem", paddingBottom: "70vh", overflow:"hidden",
     }}>
       {children}
     </div>
