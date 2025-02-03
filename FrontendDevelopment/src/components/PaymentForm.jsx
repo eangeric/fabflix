@@ -62,6 +62,7 @@ export const PaymentForm = () => {
 
   return (
     <form
+      autoComplete="off"
       className="bg-fabflix-primary rounded-lg p-6 w-96 mx-auto shadow-lg"
       onSubmit={handleSubmit}
     >
@@ -112,7 +113,10 @@ export const PaymentForm = () => {
         type="date"
       ></input>
       <br />
-      <button type="submit" className="bg-blue-700 p-2 m-t-2 rounded-xl">
+      <button
+        type="submit"
+        className="bg-blue-700 p-2 m-t-2 rounded-xl cursor-pointer"
+      >
         Place order
       </button>
       {message && <p className="text-red-500">{message}</p>}

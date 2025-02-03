@@ -25,8 +25,6 @@ export default function Search() {
   return (
     <div className="text-white">
       <SearchBar onSearchUrl={handleSearch} />
-
-      {loading && <p className="text-white text-center">Loading...</p>}
       {error && <p className="text-white text-center">Error: {error}</p>}
       {data && <MovieTable movieData={data} />}
 

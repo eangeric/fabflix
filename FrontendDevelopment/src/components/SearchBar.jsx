@@ -13,7 +13,7 @@ export const SearchBar = ({ onSearchUrl }) => {
 
     // Preventing empty query
     if (title === "" && star === "" && year === "" && director === "") {
-      console.log("Empty search")
+      console.log("Empty search");
       return;
     }
 
@@ -32,18 +32,21 @@ export const SearchBar = ({ onSearchUrl }) => {
   };
 
   return (
-    <div className="relative bg-cover" style={{
-      backgroundImage:
-        "linear-gradient(rgba(3, 20, 50, 0.9), rgba(31, 33, 38, 1))," +
-        "url(/fabflix/images/movieBg.jpg)"
-    }}>
-
+    <div
+      className="relative bg-cover"
+      style={{
+        backgroundImage:
+          "linear-gradient(rgba(3, 20, 50, 0.9), rgba(31, 33, 38, 1))," +
+          "url(/fabflix/images/movieBg.jpg)",
+      }}
+    >
       <div className="flex justify-center">
         <div className="relative mx-10 my-8 max-w-xl items-center justify-between overflow-x-auto bg-fabflix-primary p-6 text-white shadow-md sm:rounded-lg">
           <h2 className="mb-4 text-lg font-medium text-gray-900 dark:text-white text-center">
             Search by title / stars / year / director
           </h2>
           <form
+            autoComplete="off"
             id="Search"
             className="flex flex-col text-white"
             onSubmit={searchHandler}
@@ -82,14 +85,16 @@ export const SearchBar = ({ onSearchUrl }) => {
                 <button
                   className="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800
                focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600
-               dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+               dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer"
                   type="submit"
                 >
                   Search
                 </button>
 
                 <div className="flex items-center space-x-2">
-                  <label htmlFor="num_results" className="text-white">Results per page:</label>
+                  <label htmlFor="num_results" className="text-white">
+                    Results per page:
+                  </label>
                   <select
                     name="num_results"
                     id="num_results"
@@ -107,7 +112,6 @@ export const SearchBar = ({ onSearchUrl }) => {
                   </select>
                 </div>
               </div>
-
             </div>
           </form>
         </div>
