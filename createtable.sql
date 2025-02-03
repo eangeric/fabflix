@@ -68,7 +68,6 @@ CREATE TABLE IF NOT EXISTS sales (
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 
-
 CREATE TABLE IF NOT EXISTS ratings (
     movieId VARCHAR(10) NOT NULL,
     rating FLOAT NOT NULL,
@@ -77,19 +76,12 @@ CREATE TABLE IF NOT EXISTS ratings (
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 
-ALTER TABLE movies ADD COLUMN price DECIMAL(5,2) NOT NULL DEFAULT 0.00;
+SET SQL_SAFE_UPDATES = 0;
 
-DELIMITER //
+UPDATE movies 
+SET price = ROUND(RAND() * (20-5) + 5,2) 
+WHERE price = 0;
 
-CREATE TRIGGER set_random_price
-BEFORE INSERT ON movies
-FOR EACH ROW
-BEGIN
-    SET NEW.price = ROUND((5.00 + (RAND() * 15.00)), 2);
-END;
+SET SQL_SAFE_UPDATES = 1;
 
-//
-
-DELIMITER ;
-
-ALTER TABLE sales ADD COLUMN quantity INT NOT NULL DEFAULT 1;
+ALTER TABLE sales modify quantity INT NOT NULL DEFAULT 1;
