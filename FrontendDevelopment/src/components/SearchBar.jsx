@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
   const [title, setTitle] = useState("");
@@ -7,6 +7,20 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
   const [director, setDirector] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [tempNumResults, setTempNumResults] = useState("10"); // Stores temporary user selection
+
+  useEffect(() => {
+    const savedState = sessionStorage.getItem("movieSearchState");
+    if (savedState) {
+      const { title, star, year, director, sortOrder, numResults } =
+        JSON.parse(savedState);
+      setTitle(title);
+      setStar(star);
+      setYear(year);
+      setDirector(director);
+      setSortOrder(sortOrder);
+      setTempNumResults(numResults);
+    }
+  }, []);
 
   const searchHandler = (event) => {
     event.preventDefault();
@@ -42,6 +56,20 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
     console.log(queryString);
     onSearchUrl(queryString);
     onNumResultsChange(parseInt(tempNumResults, 10)); // Only update on Submit
+
+    sessionStorage.setItem(
+      "movieSearchState",
+      JSON.stringify({
+        title,
+        star,
+        year,
+        director,
+        searchUrl: queryString,
+        page: 1,
+        numResults: tempNumResults,
+        sortOrder: sortOrder,
+      })
+    );
   };
 
   return (
@@ -67,7 +95,6 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
             onSubmit={searchHandler}
           >
             <div className="max-w-full">
-              {" "}
               {/* I don't know why input text is now gray, fix later */}
               <input
                 type="text"
@@ -128,6 +155,7 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
                   </label>
                   <select
                     id="sortOrder"
+                    value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value)}
                     className="rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-black"
                   >

@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-export function PageControls({ page, setPage, maxResults, numResults, setSearchUrl, searchUrl }) {
+export function PageControls({
+  page,
+  setPage,
+  maxResults,
+  numResults,
+  setSearchUrl,
+  searchUrl,
+}) {
   const [pageInput, setPageInput] = useState(page.toString());
 
   useEffect(() => {
@@ -11,7 +18,21 @@ export function PageControls({ page, setPage, maxResults, numResults, setSearchU
     const maxPages = Math.ceil(maxResults / numResults);
     if (newPage > 0 && newPage <= maxPages) {
       setPage(newPage);
-      setSearchUrl(searchUrl.replace(/page=\d+/, `page=${newPage}`)); // Ensure URL updates
+      const newUrl = searchUrl.replace(/page=\d+/, `page=${newPage}`);
+      setSearchUrl(newUrl); // Ensure URL updates
+
+      const savedState = sessionStorage.getItem("movieSearchState");
+      if (savedState) {
+        const movieSearchState = JSON.parse(savedState);
+        sessionStorage.setItem(
+          "movieSearchState",
+          JSON.stringify({
+            ...movieSearchState,
+            page: newPage,
+            searchUrl: newUrl,
+          })
+        );
+      }
     }
   };
 
@@ -21,7 +42,9 @@ export function PageControls({ page, setPage, maxResults, numResults, setSearchU
         onClick={() => updatePage(page - 1)}
         disabled={page === 1}
         className={`px-5 py-2 text-sm font-medium rounded-lg ${
-          page === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
+          page === 1
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-700 hover:bg-blue-800"
         } text-white`}
       >
         Previous
@@ -36,7 +59,11 @@ export function PageControls({ page, setPage, maxResults, numResults, setSearchU
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               const newPage = parseInt(pageInput, 10);
-              if (!isNaN(newPage) && newPage >= 1 && newPage <= Math.ceil(maxResults / numResults)) {
+              if (
+                !isNaN(newPage) &&
+                newPage >= 1 &&
+                newPage <= Math.ceil(maxResults / numResults)
+              ) {
                 updatePage(newPage);
               } else {
                 setPageInput(page.toString());
@@ -53,7 +80,9 @@ export function PageControls({ page, setPage, maxResults, numResults, setSearchU
         onClick={() => updatePage(page + 1)}
         disabled={page >= Math.ceil(maxResults / numResults)}
         className={`px-5 py-2 text-sm font-medium rounded-lg ${
-          page >= Math.ceil(maxResults / numResults) ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
+          page >= Math.ceil(maxResults / numResults)
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-700 hover:bg-blue-800"
         } text-white`}
       >
         Next
