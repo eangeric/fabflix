@@ -110,7 +110,20 @@ public class SearchServlet extends HttpServlet {
             // Makes sure stars are grouped together
             queryBuilder.append(" GROUP BY m.id ");
 
-            queryBuilder.append("order by r.rating desc "); //
+            String sortBy = request.getParameter("sort"); // "title" or "rating"
+            String sortOrder = request.getParameter("order"); // "asc" or "desc"
+
+            boolean sorting = (sortBy != null && sortOrder != null);
+
+            if (!sorting) {
+                queryBuilder.append(" ORDER BY r.rating DESC, m.title ASC");
+            } else {
+                if (sortBy.equals("title")) {
+                    queryBuilder.append(" ORDER BY m.title ").append(sortOrder).append(", r.rating ").append(sortOrder);
+                } else {
+                    queryBuilder.append(" ORDER BY r.rating ").append(sortOrder).append(", m.title ").append(sortOrder);
+                }
+            }
 
             // Create maxQuery to see how many results there are
             String maxQuery = queryBuilder.toString();
