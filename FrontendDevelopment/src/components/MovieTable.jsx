@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import {MovieTableLinks} from "./Browse/MovieTableLinks";
 
 export const MovieTable = ({ movieData }) => {
   const [addedMovie, setAddedMovie] = useState("");
@@ -22,7 +23,6 @@ export const MovieTable = ({ movieData }) => {
       if (data.status === "success") {
         setAddedMovie(movieTitle);
         setShowMessage(true);
-        // Hide message after 2 seconds
         setTimeout(() => {
           setShowMessage(false);
         }, 3000);
@@ -43,90 +43,52 @@ export const MovieTable = ({ movieData }) => {
       )}
       <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" className="px-6 py-1">
-              Title
-            </th>
-            <th scope="col" className="px-6 py-1">
-              Year
-            </th>
-            <th scope="col" className="px-6 py-1">
-              Director
-            </th>
-            <th scope="col" className="px-6 py-1">
-              Genres
-            </th>
-            <th scope="col" className="px-6 py-1">
-              Stars
-            </th>
-            <th scope="col" className="px-6 py-1">
-              Rating
-            </th>
-            <th scope="col" className="px-6 py-1">
-              Cart
-            </th>
-          </tr>
+        <tr>
+          <th scope="col" className="px-6 py-1">Title</th>
+          <th scope="col" className="px-6 py-1">Year</th>
+          <th scope="col" className="px-6 py-1">Director</th>
+          <th scope="col" className="px-6 py-1">Genres</th>
+          <th scope="col" className="px-6 py-1">Stars</th>
+          <th scope="col" className="px-6 py-1">Rating</th>
+          <th scope="col" className="px-6 py-1">Cart</th>
+        </tr>
         </thead>
         <tbody>
-          {movieData.map((movie) => {
-            //console.log(movie.movie_title, movie.movie_year, movie.movie_director);
-            //console.log(movie.movie_genres[0].name, movie.movie_stars[0].name, movie.movie_rating);
-
-            return (
-              <tr key={movie.movie_id}>
-                {/* Use a unique key here */}
-                <td className="px-6 py-1">
-                  <Link
-                    to={`/movie/${movie.movie_id}`}
-                    className="hover:text-blue-700 transition duration-300 ease-in-out"
-                  >
-                    {movie.movie_title}
-                  </Link>
-                </td>
-                <td className="px-6 py-1">{movie.movie_year}</td>
-                <td className="px-6 py-1">{movie.movie_director}</td>
-                <td className="px-6 py-1">{movie.movie_genres}</td>
-                <td className="px-6 py-1">
-                  {movie.movie_stars
-                    .split(", ")
-                    .slice(0, 3)
-                    .map((star, index) => {
-                      const starIds = movie.movie_starsId.split(", ");
-                      const starId = starIds[index];
-                      {
-                        /* Put comma except for last item */
-                      }
-                      return (
-                        <Link
-                          to={`/star/${starId}`}
-                          className="hover:text-blue-700 transition duration-300 ease-in-out"
-                        >
-                          {star}
-                          {index <
-                            movie.movie_stars.split(", ").slice(0, 3).length -
-                              1 && ", "}
-                        </Link>
-                      );
-                    })}
-                </td>
-                <td className="px-6 py-1">{movie.movie_rating}</td>
-                <td className="px-6 py-1">
-                  <button
-                    className="bg-gray-700 p-1 cursor-pointer"
-                    onClick={() => {
-                      addToCart(
-                        movie.movie_id,
-                        movie.movie_title,
-                        movie.movie_price
-                      );
-                    }}
-                  >
-                    Add
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
+        {movieData.map((movie) => (
+          <tr key={movie.movie_id}>
+            <td className="px-6 py-1">
+              <Link
+                to={`/movie/${movie.movie_id}`}
+                className="hover:text-blue-700 transition duration-300 ease-in-out"
+              >
+                {movie.movie_title}
+              </Link>
+            </td>
+            <td className="px-6 py-1">{movie.movie_year}</td>
+            <td className="px-6 py-1">{movie.movie_director}</td>
+            <td className="px-6 py-1">
+              <MovieTableLinks
+                items={movie.movie_genres}
+                basePath="/browse/genre" />
+            </td>
+            <td className="px-6 py-1">
+              <MovieTableLinks
+                items={movie.movie_stars}
+                itemIds={movie.movie_starsId}
+                basePath="/star"
+              />
+            </td>
+            <td className="px-6 py-1">{movie.movie_rating}</td>
+            <td className="px-6 py-1">
+              <button
+                className="bg-gray-700 p-1 cursor-pointer"
+                onClick={() => addToCart(movie.movie_id, movie.movie_title, movie.movie_price)}
+              >
+                Add
+              </button>
+            </td>
+          </tr>
+        ))}
         </tbody>
       </table>
     </div>
