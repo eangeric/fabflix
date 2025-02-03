@@ -60,6 +60,8 @@ export default function BrowseMovieTitle() {
             setPage={setPage}
             maxResults={maxResults}
             numResults={numResults}
+            setSearchUrl={setSearchUrl} // Pass this for URL updates
+            searchUrl={searchUrl} // Current search URL
           />
         )}
 

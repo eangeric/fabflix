@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export function PageControls({ page, setPage, maxResults, numResults }) {
+export function PageControls({ page, setPage, maxResults, numResults, setSearchUrl, searchUrl }) {
   const [pageInput, setPageInput] = useState(page.toString());
 
   useEffect(() => {
@@ -11,6 +11,7 @@ export function PageControls({ page, setPage, maxResults, numResults }) {
     const maxPages = Math.ceil(maxResults / numResults);
     if (newPage > 0 && newPage <= maxPages) {
       setPage(newPage);
+      setSearchUrl(searchUrl.replace(/page=\d+/, `page=${newPage}`)); // Ensure URL updates
     }
   };
 
