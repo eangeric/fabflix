@@ -16,6 +16,10 @@ export default function BrowseMovieTitle() {
     `/fabflix/api/search?char=${char}&page=1&num_results=${numResults}`
   );
 
+  if (char) {
+    sessionStorage.setItem("returnPage", `/browse/title/${char}`);
+  }
+
   const { data, maxResults, loading, error } = useFetchPages(searchUrl);
 
   useEffect(() => {

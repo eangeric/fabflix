@@ -10,6 +10,8 @@ export default function Search() {
   const [numResults, setNumResults] = useState(10);
   const { data, maxResults, loading, error } = useFetchPages(searchUrl);
 
+  sessionStorage.setItem("returnPage", "/search");
+
   useEffect(() => {
     const savedState = sessionStorage.getItem("movieSearchState");
     if (savedState) {

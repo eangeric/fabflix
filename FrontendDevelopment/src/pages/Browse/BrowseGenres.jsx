@@ -16,6 +16,10 @@ export default function BrowseGenres() {
     `/fabflix/api/search?genre=${genre}&page=1&num_results=${numResults}`
   );
 
+  if (genre) {
+    sessionStorage.setItem("returnPage", `/browse/genre/${genre}`);
+  }
+
   const { data, maxResults, loading, error } = useFetchPages(searchUrl);
 
   useEffect(() => {
@@ -37,7 +41,7 @@ export default function BrowseGenres() {
     <BgMain>
       <div className="text-white">
         <h1 className="flex text-4xl font-bold text-gray-900 dark:text-white justify-center">
-          {genre.charAt(0).toUpperCase() + genre.slice(1)}
+          {genre && genre.charAt(0).toUpperCase() + genre.slice(1)}
         </h1>
 
         <Sorting setSortOrder={setSortOrder} />
