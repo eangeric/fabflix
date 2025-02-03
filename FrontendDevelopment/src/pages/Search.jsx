@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { SearchBar } from "../components/SearchBar.jsx";
 import { MovieTable } from "../components/MovieTable.jsx";
-import { useFetchPages } from "../hooks/useFetchPages.js";
 import { PageControls } from "../components/Browse/PageControls.jsx";
+import { useFetchSearch } from "../hooks/useFetchSearch.js";
 
 export default function Search() {
   const [searchUrl, setSearchUrl] = useState("");
   const [page, setPage] = useState(1);
   const [numResults, setNumResults] = useState(10);
-  const { data, maxResults, loading, error } = useFetchPages(searchUrl);
+  const { data, maxResults, loading, error } = useFetchSearch(searchUrl);
 
   sessionStorage.setItem("returnPage", "/search");
 
