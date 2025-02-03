@@ -36,19 +36,10 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
     if (year) queryParams.append("year", year);
     if (director) queryParams.append("director", director);
     if (sortOrder) {
-      if (sortOrder === "t-r-asc") {
-        queryParams.append("sort", "title");
-        queryParams.append("order", "ASC");
-      } else if (sortOrder === "t-r-desc") {
-        queryParams.append("sort", "title");
-        queryParams.append("order", "DESC");
-      } else if (sortOrder === "r-t-asc") {
-        queryParams.append("sort", "rating");
-        queryParams.append("order", "ASC");
-      } else if (sortOrder === "r-t-desc") {
-        queryParams.append("sort", "rating");
-        queryParams.append("order", "DESC");
-      }
+      const sortParams = sortOrder.split("-");
+      queryParams.append("sort", sortParams[0]);
+      queryParams.append("order1", sortParams[1]);
+      queryParams.append("order2", sortParams[3]);
     }
     queryParams.append("num_results", tempNumResults); // Use pendingNumResults
 

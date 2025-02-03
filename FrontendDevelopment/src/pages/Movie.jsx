@@ -24,7 +24,7 @@ export default function Movie() {
   return (
     <BgMain>
 
-      <div className="relative p-4 flex justify-center"> {/* This is the movie photo */}
+      <div className="relative p-4 flex justify-center">
         <figure className="relative">
           {imageData ? (
             <img className="rounded-lg" src={imageData} alt="movie poster"
