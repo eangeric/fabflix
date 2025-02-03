@@ -40,7 +40,7 @@ export default function BrowseGenres() {
           {genre.charAt(0).toUpperCase() + genre.slice(1)}
         </h1>
 
-        <Sorting sortOrder={sortOrder} setSortOrder={setSortOrder} />
+        <Sorting setSortOrder={setSortOrder} />
         <ResultsPerPage numResults={numResults} setNumResults={setNumResults} />
 
         {data && <MovieTable movieData={data} />}
