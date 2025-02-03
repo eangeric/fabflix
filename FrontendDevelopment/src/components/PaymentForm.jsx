@@ -20,17 +20,18 @@ export const PaymentForm = () => {
           // @ts-ignore
           total.total.toFixed(2)}
       </p>
-      {/* First and last name */}
       <div>
+        {/* First and last name */}
         <label htmlFor="first">First Name</label>
         <input id="first"></input>
+        <br />
         <label htmlFor="last">Last Name</label>
         <input id="last"></input>
-      </div>
-      {/* Credit card info */}
-      <div>
+        <br />
+        {/* Credit card info */}
         <label htmlFor="credit">Credit Card Number</label>
         <input id="credit"></input>
+        <br />
         <label htmlFor="date">Expiration Date</label>
         <input id="date"></input>
       </div>

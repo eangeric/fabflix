@@ -1,5 +1,10 @@
 import React from "react";
+import { PaymentForm } from "../components/PaymentForm";
 
 export default function Payment() {
-  return <p>Hi</p>;
+  return (
+    <div>
+      <PaymentForm />
+    </div>
+  );
 }

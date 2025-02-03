@@ -18,13 +18,14 @@ export const MovieTable = ({ movieData }) => {
       });
 
       const data = await response.json();
+
       if (data.status === "success") {
         setAddedMovie(movieTitle);
         setShowMessage(true);
         // Hide message after 2 seconds
         setTimeout(() => {
           setShowMessage(false);
-        }, 2000);
+        }, 3000);
       }
     } catch (error) {
       console.log(error);
