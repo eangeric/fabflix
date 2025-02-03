@@ -20,19 +20,6 @@ export function PageControls({
       setPage(newPage);
       const newUrl = searchUrl.replace(/page=\d+/, `page=${newPage}`);
       setSearchUrl(newUrl); // Ensure URL updates
-
-      const savedState = sessionStorage.getItem("movieSearchState");
-      if (savedState) {
-        const movieSearchState = JSON.parse(savedState);
-        sessionStorage.setItem(
-          "movieSearchState",
-          JSON.stringify({
-            ...movieSearchState,
-            page: newPage,
-            searchUrl: newUrl,
-          })
-        );
-      }
     }
   };
 

@@ -12,6 +12,7 @@ export default function BrowseGenres() {
   const [page, setPage] = useState(1);
   const [numResults, setNumResults] = useState(10);
   const [sortOrder, setSortOrder] = useState("t-r-asc");
+
   const [searchUrl, setSearchUrl] = useState(
     `/fabflix/api/search?genre=${genre}&page=1&num_results=${numResults}`
   );
@@ -49,7 +50,7 @@ export default function BrowseGenres() {
           {genre.charAt(0).toUpperCase() + genre.slice(1)}
         </h1>
 
-        <Sorting setSortOrder={setSortOrder} />
+        <Sorting sortOrder={sortOrder} setSortOrder={setSortOrder} />
         <ResultsPerPage numResults={numResults} setNumResults={setNumResults} />
 
         {data && <MovieTable movieData={data} />}

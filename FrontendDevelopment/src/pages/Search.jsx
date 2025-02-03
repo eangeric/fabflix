@@ -34,16 +34,18 @@ export default function Search() {
 
       {data && <MovieTable movieData={data} />}
 
-      {data && data.length > 0 && (
-        <PageControls
-          page={page}
-          setPage={setPage}
-          maxResults={maxResults}
-          numResults={numResults}
-          setSearchUrl={setSearchUrl} // Pass this for URL updates
-          searchUrl={searchUrl} // Current search URL
-        />
-      )}
+      {data &&
+        // @ts-ignore
+        data.length > 0 && (
+          <PageControls
+            page={page}
+            setPage={setPage}
+            maxResults={maxResults}
+            numResults={numResults}
+            setSearchUrl={setSearchUrl} // Pass this for URL updates
+            searchUrl={searchUrl} // Current search URL
+          />
+        )}
 
       {/* Change loading text to a loading animation later */}
       {loading && searchUrl && (
