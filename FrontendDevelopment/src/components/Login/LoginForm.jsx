@@ -35,6 +35,7 @@ export const LoginForm = () => {
       if (data.status === "success") {
         navigate("/", { replace: true });
       }
+      setMessage(data.message);
     } catch (error) {
       setMessage("An error occurred. Please try again.");
       console.log("Error:", error);
