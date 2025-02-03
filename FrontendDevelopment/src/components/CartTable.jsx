@@ -1,13 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
-export const CartTable = ({ cartData, setCart, total, setTotal }) => {
+export const CartTable = ({cartData, setCart, total, setTotal}) => {
   const updateQuantity = async (movieId, operation) => {
     console.log("updating");
     try {
       const response = await fetch("/fabflix/api/cart", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
         body: new URLSearchParams({
           movieId: movieId,
           operation: operation,
@@ -39,79 +39,70 @@ export const CartTable = ({ cartData, setCart, total, setTotal }) => {
   };
 
   return (
-    <div>
-      <div className="flex justify-end items-center gap-2 m-2 p-2">
-        <p>Total: ${total ? total.total.toFixed(2) : "0.00"}</p>
-        <button className="bg-gray-700 p-1">
-          <Link to="/payment">Proceed to payment</Link>
-        </button>
-      </div>
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-1">
-                Title
-              </th>
-              <th scope="col" className="px-6 py-1">
-                Quantity
-              </th>
-              <th scope="col" className="px-6 py-1">
-                Price
-              </th>
-              <th scope="col" className="px-6 py-1">
-                Total Price
-              </th>
-              <th scope="col" className="px-6 py-1">
-                Delete
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {cartData.map((movie) => {
-              return (
-                <tr key={movie.id}>
-                  {/* Use a unique key here */}
-                  <td className="px-6 py-1">{movie.title}</td>
-                  <td className="px-6 py-1">
+    <section className="relative">
+      <div className="max-w-7xl px-4 mx-auto">
+        <div className="grid grid-cols-12">
+          <div className="col-span-12 xl:col-span-8 lg:pr-8 py-8">
+            <div className="flex items-center justify-between pb-6 border-b border-gray-300">
+              <h2 className="font-bold text-3xl text-black">Shopping Cart</h2>
+              <h2 className="font-bold text-xl text-gray-600">{cartData.length} Items</h2>
+            </div>
+            {cartData.map((movie) => (
+              <div key={movie.id}
+                   className="flex flex-col md:flex-row items-center gap-5 py-6 border-b border-gray-200">
+                <div className="w-full md:max-w-[126px]">
+                  <img src={movie.image} alt={movie.title} className="mx-auto rounded-xl"/>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-4 w-full">
+                  <div className="md:col-span-2 flex flex-col items-center gap-2">
+                    <h6 className="font-semibold text-base text-black">{movie.title}</h6>
+                    <h6 className="font-medium text-base text-gray-600">${movie.price.toFixed(2)}</h6>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    {movie.quantity > 1 && (
+                      <button
+                        className="bg-gray-700 px-3 py-1"
+                        onClick={() => updateQuantity(movie.id, "decrease")}
+                      >
+                        -
+                      </button>
+                    )}
+                    <input
+                      type="text"
+                      className="border-y border-gray-200 text-gray-900 font-semibold text-lg w-12 text-center bg-transparent"
+                      value={movie.quantity}
+                      readOnly
+                    />
                     <button
-                      className="bg-gray-700 p-1"
-                      onClick={() => {
-                        updateQuantity(movie.id, "decrease");
-                      }}
-                    >
-                      -
-                    </button>
-                    <span className="mx-1">{movie.quantity}</span>
-                    <button
-                      className="bg-gray-700 p-1"
-                      onClick={() => {
-                        updateQuantity(movie.id, "increase");
-                      }}
+                      className="bg-gray-700 px-3 py-1"
+                      onClick={() => updateQuantity(movie.id, "increase")}
                     >
                       +
                     </button>
-                  </td>
-                  <td className="px-6 py-1">${movie.price}</td>
-                  <td className="px-6 py-1">
-                    ${(movie.quantity * movie.price).toFixed(2)}
-                  </td>
-                  <td className="px-6 py-1">
-                    <button
-                      className="bg-gray-700 p-1 cursor-pointer"
-                      onClick={() => {
-                        updateQuantity(movie.id, "delete");
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  </div>
+                  <div className="flex items-center justify-end h-full">
+                    <p className="font-bold text-lg text-gray-600">${(movie.quantity * movie.price).toFixed(2)}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="col-span-12 xl:col-span-4 bg-gray-50 px-6 py-8">
+            <h2 className="font-bold text-3xl text-black pb-6 border-b border-gray-300">Order Summary</h2>
+            <div className="mt-6">
+              <div className="flex items-center justify-between pb-4">
+                <p className="text-lg text-black">{cartData.length} Items</p>
+                <p className="font-medium text-lg text-black">
+                  ${typeof total?.total === "number" ? total.total.toFixed(2) : "0.00"}
+                </p>
+              </div>
+              <button className="w-full bg-gray-700 rounded py-3 text-lg text-white hover:bg-gray-800">
+                <Link to="/payment">Proceed to Payment</Link>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };

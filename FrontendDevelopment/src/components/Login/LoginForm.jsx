@@ -48,7 +48,7 @@ export const LoginForm = () => {
       onSubmit={handleLogin}
       className="bg-fabflix-primary rounded-lg p-6 w-96 mx-auto shadow-lg"
     >
-      <div className="flex items-center justify-center space-x-3 mb-6">
+      <div className="flex items-center justify-center space-x-3 mb-2">
         <img
           src="/fabflix/images/logo.png"
           style={{ height: "100px", width: "auto" }} // Increased size
@@ -86,7 +86,7 @@ export const LoginForm = () => {
         </button>
       </div>
 
-      <p className="text-center text-pink-400 mt-4">{message}</p>
+      <p className="text-center text-sm text-pink-400">{message}</p>
     </form>
   );
 };
