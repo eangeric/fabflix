@@ -140,10 +140,12 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
                     <option value="100">100</option>
                   </select>
                 </div>
+
                 <div className="flex items-center space-x-2">
                   <label htmlFor="sortOrder" className="text-white">
                     Sort by
                   </label>
+
                   <select
                     id="sortOrder"
                     value={sortOrder}
@@ -156,6 +158,7 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
                     <option value="r-t-desc">Rating DESC</option>
                   </select>
                 </div>
+
               </div>
             </div>
           </form>
