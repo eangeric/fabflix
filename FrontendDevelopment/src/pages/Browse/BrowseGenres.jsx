@@ -11,7 +11,7 @@ export default function BrowseGenres() {
   const { genre } = useParams();
   const [page, setPage] = useState(1);
   const [numResults, setNumResults] = useState(10);
-  const [sortOrder, setSortOrder] = useState("");
+  const [sortOrder, setSortOrder] = useState("t-r-asc");
   const [searchUrl, setSearchUrl] = useState(
     `/fabflix/api/search?genre=${genre}&page=1&num_results=${numResults}`
   );
@@ -40,7 +40,7 @@ export default function BrowseGenres() {
     setSearchUrl(
       `/fabflix/api/search?genre=${genre}&page=${page}&num_results=${numResults}&${queryParams.toString()}`
     );
-  }, [genre, page, numResults]);
+  }, [genre, page, numResults, sortOrder]);
 
   return (
     <BgMain>
