@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Sorting} from "./Browse/Sorting.jsx";
+import { Sorting } from "./Browse/Sorting.jsx";
 
 export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
   const [title, setTitle] = useState("");
@@ -87,7 +87,6 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
             onSubmit={searchHandler}
           >
             <div className="max-w-full">
-
               <input
                 type="text"
                 placeholder="Movie Title"
@@ -118,7 +117,7 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
               />
               <div className="flex justify-between items-center mt-4 space-x-4">
                 <button
-                  className="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800"
+                  className="rounded-lg px-5 py-2.5 text-sm font-medium text-white bg-fabflix-secondary hover:bg-gray-700"
                   type="submit"
                 >
                   Search
@@ -142,8 +141,7 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
                   </select>
                 </div>
 
-                <Sorting setSortOrder={setSortOrder} />
-
+                <Sorting sortOrder={sortOrder} setSortOrder={setSortOrder} />
               </div>
             </div>
           </form>

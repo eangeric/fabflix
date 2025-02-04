@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export const Genres = ({ data }) => {
-
   if (!data || data.length === 0) {
     return <p className="text-white text-center">Fetching genres...</p>;
   }
@@ -24,7 +23,7 @@ export const Genres = ({ data }) => {
             <li key={genre.id}>
               <Link
                 to={`/browse/genre/${sanitizeName(genre.name)}`}
-                className="text-white hover:text-blue-700 transition duration-300 ease-in-out"
+                className="text-white hover:text-fabflix-primary transition duration-300 ease-in-out"
               >
                 {genre.name}
               </Link>

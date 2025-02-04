@@ -13,7 +13,7 @@ export const MovieTableLinks = ({ items, itemIds, basePath }) => {
           <React.Fragment key={itemId}>
             <Link
               to={`${basePath}/${itemId}`}
-              className="hover:text-blue-700 transition duration-300 ease-in-out"
+              className="hover:text-fabflix-primary transition duration-300 ease-in-out"
             >
               {item}
             </Link>

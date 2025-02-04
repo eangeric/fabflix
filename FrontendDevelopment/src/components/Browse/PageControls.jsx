@@ -47,14 +47,14 @@ export function PageControls({
         className={`px-5 py-2 text-sm font-medium rounded-lg ${
           page === 1
             ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-700 hover:bg-blue-800"
+            : "bg-fabflix-primary hover:bg-blue-600 cursor-pointer"
         } text-white`}
       >
         Previous
       </button>
 
       <h2 className="px-5 py-2 text-sm space-x-3">
-        Page
+        <span>Page </span>
         <input
           type="text"
           value={pageInput}
@@ -84,7 +84,7 @@ export function PageControls({
             color: "#666",
           }}
         />
-        of {Math.ceil(maxResults / numResults)}
+        <span>of {Math.ceil(maxResults / numResults)}</span>
       </h2>
 
       <button
@@ -96,7 +96,7 @@ export function PageControls({
         className={`px-5 py-2 text-sm font-medium rounded-lg ${
           page >= Math.ceil(maxResults / numResults)
             ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-700 hover:bg-blue-800"
+            : "bg-fabflix-primary hover:bg-blue-600 cursor-pointer"
         } text-white`}
       >
         Next

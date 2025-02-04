@@ -9,24 +9,14 @@ export default function Browse() {
 
   return (
     <BgMain>
-      <div>
-        <table className="flex justify-center h-10">
-          <thead className="flex justify-center">
-            <tr className="text-white space-x-4">
-              <th>Browse by genre / title</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <Genres data={data} />
-              </td>
-              <td>
-                <MovieTitle />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="text-white w-full">
+        <h1 className="text-center font-bold text-[2.75rem]">
+          Browse by genre / title
+        </h1>
+        <div className="flex gap-x-24 justify-center items-center mt-24">
+          <Genres data={data} />
+          <MovieTitle />
+        </div>
       </div>
     </BgMain>
   );

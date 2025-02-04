@@ -16,12 +16,8 @@ export default function BrowseMovieTitle() {
     `/fabflix/api/search?char=${char}&page=${page}&num_results=${numResults}`
   );
 
-  if (char) {
-    sessionStorage.setItem("returnPage", `/browse/title/${char}`);
-  }
-
   const { data, maxResults, loading, error } = useFetchPages(
-    "title",
+    "char",
     char,
     sortOrder,
     page,
@@ -30,13 +26,27 @@ export default function BrowseMovieTitle() {
 
   useEffect(() => {
     const titleState = sessionStorage.getItem("browseState");
+    const prevPage = sessionStorage.getItem("returnPage");
 
     if (titleState) {
+      if (prevPage) {
+        const value = prevPage.split("/").at(-1);
+        if (value !== char) {
+          setPage(1);
+          setSortOrder("title-asc-rating-asc");
+          setNumResults(10);
+          return;
+        }
+      }
       const { savedSortOrder, savedPage, savedNumResults } =
         JSON.parse(titleState);
       setSortOrder(savedSortOrder);
       setPage(savedPage);
       setNumResults(savedNumResults);
+    }
+
+    if (char) {
+      sessionStorage.setItem("returnPage", `/browse/title/${char}`);
     }
   }, []);
 
@@ -51,11 +61,18 @@ export default function BrowseMovieTitle() {
         </h1>
 
         <div className="flex mt-4 items-center space-x-2 justify-center text-sm">
-          <ResultsPerPage numResults={numResults} setNumResults={setNumResults}/>
-          <Sorting setSortOrder={setSortOrder}/>
+          <ResultsPerPage
+            numResults={numResults}
+            setNumResults={setNumResults}
+          />
+          <Sorting sortOrder={sortOrder} setSortOrder={setSortOrder} />
         </div>
 
-        {data && <MovieTable movieData={data}/>}
+        {loading && searchUrl && (
+          <p className="text-white text-center">Loading...</p>
+        )}
+
+        {data && <MovieTable movieData={data} />}
 
         {data &&
           // @ts-ignore
@@ -69,10 +86,6 @@ export default function BrowseMovieTitle() {
               searchUrl={searchUrl} // Current search URL
             />
           )}
-
-        {loading && searchUrl && (
-          <p className="text-white text-center">Loading...</p>
-        )}
         {error && <p className="text-white text-center">Error: {error}</p>}
         {!loading && !error && !data && (
           <h1 className="text-white text-center">No results</h1>

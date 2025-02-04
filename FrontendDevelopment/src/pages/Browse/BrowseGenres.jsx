@@ -16,10 +16,6 @@ export default function BrowseGenres() {
     `/fabflix/api/search?genre=${genre}&page=${page}&num_results=${numResults}`
   );
 
-  if (genre) {
-    sessionStorage.setItem("returnPage", `/browse/genre/${genre}`);
-  }
-
   const { data, maxResults, loading, error } = useFetchPages(
     "genre",
     genre,
@@ -30,13 +26,27 @@ export default function BrowseGenres() {
 
   useEffect(() => {
     const genreState = sessionStorage.getItem("browseState");
+    const prevPage = sessionStorage.getItem("returnPage");
 
     if (genreState) {
+      if (prevPage) {
+        const value = prevPage.split("/").at(-1);
+        if (value !== genre) {
+          setPage(1);
+          setSortOrder("title-asc-rating-asc");
+          setNumResults(10);
+          return;
+        }
+      }
       const { savedSortOrder, savedPage, savedNumResults } =
         JSON.parse(genreState);
       setSortOrder(savedSortOrder);
       setPage(savedPage);
       setNumResults(savedNumResults);
+    }
+
+    if (genre) {
+      sessionStorage.setItem("returnPage", `/browse/genre/${genre}`);
     }
   }, []);
 
@@ -48,9 +58,16 @@ export default function BrowseGenres() {
         </h1>
 
         <div className="flex mt-4 items-center space-x-2 justify-center text-sm">
-          <ResultsPerPage numResults={numResults} setNumResults={setNumResults} />
-          <Sorting setSortOrder={setSortOrder} />
+          <ResultsPerPage
+            numResults={numResults}
+            setNumResults={setNumResults}
+          />
+          <Sorting sortOrder={sortOrder} setSortOrder={setSortOrder} />
         </div>
+
+        {loading && searchUrl && (
+          <p className="text-white text-center">Loading...</p>
+        )}
 
         {data && <MovieTable movieData={data} />}
 
@@ -67,9 +84,6 @@ export default function BrowseGenres() {
             />
           )}
 
-        {loading && searchUrl && (
-          <p className="text-white text-center">Loading...</p>
-        )}
         {error && <p className="text-white text-center">Error: {error}</p>}
         {!loading && !error && !data && (
           <h1 className="text-white text-center">No results</h1>

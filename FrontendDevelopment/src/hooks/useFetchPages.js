@@ -24,6 +24,7 @@ export const useFetchPages = (
         queryParams.append("order2", sortParams[3]);
 
         const updatedUrl = `/fabflix/api/search?${searchKey}=${searchValue}&page=${page}&num_results=${numResults}&${queryParams.toString()}`;
+        console.log(updatedUrl);
 
         const response = await fetch(updatedUrl);
         sessionStorage.setItem(
