@@ -46,9 +46,9 @@ export const LoginForm = () => {
     <form
       autoComplete="off"
       onSubmit={handleLogin}
-      className="bg-fabflix-primary rounded-lg p-6 w-96 mx-auto shadow-lg"
+      className="bg-fabflix-primary rounded-lg w-80 mx-auto shadow-lg p-8"
     >
-      <div className="flex items-center justify-center space-x-3 mb-6">
+      <div className="flex items-center justify-center space-x-3 mb-2">
         <img
           src="/fabflix/images/logo.png"
           style={{ height: "100px", width: "auto" }} // Increased size
@@ -64,7 +64,7 @@ export const LoginForm = () => {
           autoComplete="off"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-400 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-100 dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-black  dark:placeholder-gray-400"
           placeholder="Email"
         />
       </div>
@@ -75,18 +75,17 @@ export const LoginForm = () => {
           id="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-400 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-100 dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-black  dark:placeholder-gray-400"
           placeholder="Password"
         />
       </div>
 
-      <div className="flex justify-center mt-4">
-        <button className="cursor-pointer me-2 mb-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      <div className="flex flex-col justify-center mt-8">
+        <button className="cursor-pointer me-2 mb-2 rounded-lg bg-fabflix-secondary hover:bg-gray-700 px-5 py-2.5 text-sm font-medium text-white">
           Login
         </button>
+        <p className="text-center text-sm text-red-400">{message}</p>
       </div>
-
-      <p className="text-center text-pink-400 mt-4">{message}</p>
     </form>
   );
 };

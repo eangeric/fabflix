@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Sorting } from "./Browse/Sorting.jsx";
 
 export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
   const [title, setTitle] = useState("");
@@ -86,38 +87,37 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
             onSubmit={searchHandler}
           >
             <div className="max-w-full">
-              {/* I don't know why input text is now gray, fix later */}
               <input
                 type="text"
                 placeholder="Movie Title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-400"
+                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
               />
               <input
                 type="text"
                 placeholder="Star Name"
                 value={star}
                 onChange={(e) => setStar(e.target.value)}
-                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-400"
+                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
               />
               <input
                 type="number"
                 placeholder="Year Released"
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
-                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-400"
+                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
               />
               <input
                 type="text"
                 placeholder="Director"
                 value={director}
                 onChange={(e) => setDirector(e.target.value)}
-                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-400"
+                className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
               />
-              <div className="flex justify-between items-center mt-4">
+              <div className="flex justify-between items-center mt-4 space-x-4">
                 <button
-                  className="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800"
+                  className="rounded-lg px-5 py-2.5 text-sm font-medium text-white bg-fabflix-secondary hover:bg-gray-700"
                   type="submit"
                 >
                   Search
@@ -132,7 +132,7 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
                     id="num_results"
                     value={tempNumResults} // Use buffer state to prevent live updates
                     onChange={(e) => setTempNumResults(e.target.value)}
-                    className="rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-black"
+                    className="rounded-lg border border-gray-300 bg-gray-100 p-1 text-sm text-black"
                   >
                     <option value="10">10</option>
                     <option value="25">25</option>
@@ -140,22 +140,8 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
                     <option value="100">100</option>
                   </select>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <label htmlFor="sortOrder" className="text-white">
-                    Sort by
-                  </label>
-                  <select
-                    id="sortOrder"
-                    value={sortOrder}
-                    onChange={(e) => setSortOrder(e.target.value)}
-                    className="rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-black"
-                  >
-                    <option value="t-r-asc">Title ASC</option>
-                    <option value="t-r-desc">Title DESC</option>
-                    <option value="r-t-asc">Rating ASC</option>
-                    <option value="r-t-desc">Rating DESC</option>
-                  </select>
-                </div>
+
+                <Sorting sortOrder={sortOrder} setSortOrder={setSortOrder} />
               </div>
             </div>
           </form>

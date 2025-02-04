@@ -1,31 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export const useFetchSearch = (options = {}) => {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+export const useFetchSearch = (url, options = {}) => {
+  const [data, setData] = useState(null);
+  const [maxResults, setMaxResults] = useState(0); // Ensure we store max results
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const fetchData = async (url) => {
-        if (!url) {
-            setError("No URL provided");
-            return;
+  useEffect(() => {
+    if (!url) return;
+
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        setLoading(true);
-        setError(null); // Reset any previous errors
-        setData(null); // Clears old data
-        try {
-            const response = await fetch(url, options);
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const result = await response.json();
-            setData(result);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
+        const result = await response.json();
+
+        //console.log("Fetched Data:", result); // Debugging to ensure API response
+
+        setMaxResults(result.max_results || 0);
+        setData(result.movies);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    return { data, loading, error, fetchData };
+    fetchData();
+  }, [url]);
+
+  return { data, maxResults, loading, error };
 };

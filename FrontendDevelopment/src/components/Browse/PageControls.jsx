@@ -26,19 +26,22 @@ export function PageControls({
   return (
     <div className="flex justify-center mt-4 mb-4">
       <button
-        onClick={() => updatePage(page - 1)}
+        onClick={() => {
+          updatePage(page - 1);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
         disabled={page === 1}
         className={`px-5 py-2 text-sm font-medium rounded-lg ${
           page === 1
             ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-700 hover:bg-blue-800"
+            : "bg-fabflix-primary hover:bg-blue-600 cursor-pointer"
         } text-white`}
       >
         Previous
       </button>
 
-      <h2 className="px-5 py-2 text-sm">
-        Page
+      <h2 className="px-5 py-2 text-sm space-x-3">
+        <span>Page </span>
         <input
           type="text"
           value={pageInput}
@@ -58,18 +61,29 @@ export function PageControls({
             }
           }}
           onBlur={() => setPageInput(page.toString())}
-          className="px-5 py-2 mb-2 rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-400"
+          className="px-5 py-2 text-sm font-medium rounded-lg"
+          style={{
+            width: "40px",
+            padding: "5px 4px",
+            textAlign: "center",
+            border: "1px",
+            backgroundColor: "#f9f9f9",
+            color: "#666",
+          }}
         />
-        of {Math.ceil(maxResults / numResults)}
+        <span>of {Math.ceil(maxResults / numResults)}</span>
       </h2>
 
       <button
-        onClick={() => updatePage(page + 1)}
+        onClick={() => {
+          updatePage(page + 1);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
         disabled={page >= Math.ceil(maxResults / numResults)}
         className={`px-5 py-2 text-sm font-medium rounded-lg ${
           page >= Math.ceil(maxResults / numResults)
             ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-700 hover:bg-blue-800"
+            : "bg-fabflix-primary hover:bg-blue-600 cursor-pointer"
         } text-white`}
       >
         Next

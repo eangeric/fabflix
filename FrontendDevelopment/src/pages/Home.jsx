@@ -1,8 +1,8 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import { MovieTable } from "../components/MovieTable.jsx";
-//import { SearchBar } from "../components/SearchBar.jsx";
 import { useFetch } from "../hooks/useFetch";
+
+// --- DEPRECATED ---
 
 export default function Home() {
   // --- BEGIN: Movie Table from Stage 1 ----

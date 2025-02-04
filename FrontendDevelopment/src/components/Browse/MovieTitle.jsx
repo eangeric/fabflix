@@ -10,7 +10,7 @@ export const MovieTitle = () => {
   const numbers = Array.from({ length: 10 }, (_, i) => i.toString());
   letters.push("*");
 
-  const allCharacters = [ ...numbers, ...letters];
+  const allCharacters = [...numbers, ...letters];
 
   // Chunk into 4 columns for readability
   const chunkSize = Math.ceil(allCharacters.length / 4);
@@ -25,8 +25,10 @@ export const MovieTitle = () => {
           {chunk.map((char) => (
             <li key={char}>
               <Link
-                to={`/browse/title/${char === "*" ? "other" : char.toLowerCase()}`}
-                className="text-white hover:text-blue-700 transition duration-300 ease-in-out"
+                to={`/browse/title/${
+                  char === "*" ? "other" : char.toLowerCase()
+                }`}
+                className="text-white hover:text-fabflix-primary transition duration-300 ease-in-out"
               >
                 {char}
               </Link>

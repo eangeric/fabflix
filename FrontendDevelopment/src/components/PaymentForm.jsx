@@ -63,10 +63,10 @@ export const PaymentForm = () => {
   return (
     <form
       autoComplete="off"
-      className="bg-fabflix-primary rounded-lg p-6 w-96 mx-auto shadow-lg"
+      className="bg-fabflix-primary rounded-lg p-4 w-96 mx-auto shadow-lg"
       onSubmit={handleSubmit}
     >
-      <p className="m-b-2">
+      <p className="text-center mb-4">
         Total $
         {total &&
           // @ts-ignore
@@ -77,30 +77,36 @@ export const PaymentForm = () => {
       <label htmlFor="first">First Name</label>
       <input
         id="first"
+        placeholder="John"
         value={first}
         onChange={(event) => {
           setFirst(event.target.value);
         }}
+        className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-lg text-black"
       ></input>
       <br />
       <label htmlFor="last">Last Name</label>
       <input
         id="last"
+        placeholder="Doe"
         value={last}
         onChange={(event) => {
           setLast(event.target.value);
         }}
+        className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-lg text-black"
       ></input>
       <br />
       {/* Credit card info */}
       <label htmlFor="credit">Credit Card Number</label>
       <input
         id="credit"
+        placeholder="xxxx-xxxx-xxxx-xxxx"
         value={card}
         onChange={(event) => {
           setCard(event.target.value);
         }}
         type="number"
+        className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-lg text-black"
       ></input>
       <br />
       <label htmlFor="date">Expiration Date</label>
@@ -111,11 +117,12 @@ export const PaymentForm = () => {
           setDate(event.target.value);
         }}
         type="date"
+        className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-lg text-black"
       ></input>
       <br />
       <button
         type="submit"
-        className="bg-blue-700 p-2 m-t-2 rounded-xl cursor-pointer"
+        className="cursor-pointer me-2 mb-2 rounded-lg bg-fabflix-secondary hover:bg-gray-700 p-4 text-sm font-medium text-white w-full mt-8"
       >
         Place order
       </button>

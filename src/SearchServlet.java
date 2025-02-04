@@ -119,9 +119,11 @@ public class SearchServlet extends HttpServlet {
                 queryBuilder.append(" ORDER BY r.rating DESC, m.title ASC");
             } else {
                 if (sortBy.equals("title")) {
-                    queryBuilder.append(" ORDER BY m.title ").append(sortOrder1).append(", r.rating ").append(sortOrder2);
+                    queryBuilder.append(" ORDER BY m.title ").append(sortOrder1).append(", r.rating ")
+                            .append(sortOrder2);
                 } else {
-                    queryBuilder.append(" ORDER BY r.rating ").append(sortOrder1).append(", m.title ").append(sortOrder2);
+                    queryBuilder.append(" ORDER BY r.rating ").append(sortOrder1).append(", m.title ")
+                            .append(sortOrder2);
                 }
             }
 
