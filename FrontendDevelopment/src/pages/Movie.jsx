@@ -28,8 +28,9 @@ export default function Movie() {
 
   return (
     <BgMain>
-      <div className="relative p-4 flex justify-center">
-        <figure className="relative">
+      <div className="p-4 flex flex-col items-center">
+        {/* Movie poster */}
+        <figure>
           {imageData ? (
             <img
               className="rounded-lg"
@@ -47,8 +48,9 @@ export default function Movie() {
           )}
         </figure>
 
+        {/* Movie title */}
         {movieData && (
-          <div className="absolute tm-xl bottom-4 left-1 text-white p-4 rounded-lg bg-fabflix-secondary/50">
+          <div className="text-white text-center mt-4">
             <h1 className="text-2xl font-bold">{movieData.movie_title}</h1>
           </div>
         )}

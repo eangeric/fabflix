@@ -29,10 +29,9 @@ export default function Star() {
 
   return (
     <BgMain>
-      <div className="relative p-4 flex justify-center">
-        {" "}
+      <div className="p-4 flex flex-col items-center">
         {/* This is the star photo */}
-        <figure className="relative">
+        <figure>
           {imageData ? (
             <img
               className="rounded-lg"
@@ -49,8 +48,9 @@ export default function Star() {
             <h1>Loading Image...</h1>
           )}
         </figure>
+
         {star && (
-          <div className="absolute tm-xl bottom-4 left-1 text-white p-4 rounded-lg bg-fabflix-secondary/50">
+          <div className="text-white text-center mt-4">
             <h1 className="text-2xl font-bold">{star.star_name}</h1>
             <h2 className="text-lg">Born: {star.star_dob || "N/A"}</h2>
           </div>

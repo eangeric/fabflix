@@ -6,7 +6,6 @@ export const useImageSearch = (item, options = {}) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-
     if (!item) return;
 
     // Determine if we're looking for the star, or the movie
@@ -14,8 +13,9 @@ export const useImageSearch = (item, options = {}) => {
     if (!query) return;
 
     // Note: Limited to 100 searches a day
-    const url = `https://www.googleapis.com/customsearch/v1?` +
-      `key=AIzaSyATh9YaPmnLwT4XGyRit65JiHK_7jCLABg` +
+    const url =
+      `https://www.googleapis.com/customsearch/v1?` +
+      `key=AIzaSyChVT7fYPzadACh5FLP9pTjoKQYl5Z1LlU` +
       `&cx=d6d3e229fed4a4942` +
       `&q=${encodeURIComponent(query)}` +
       `&searchType=image&num=1`;
@@ -42,7 +42,6 @@ export const useImageSearch = (item, options = {}) => {
     fetchData();
   }, [item]);
 
-  if (data)
-    return { data: data.items[0].link, loading, error };
-  else return {data, loading, error};
+  if (data) return { data: data.items[0].link, loading, error };
+  else return { data, loading, error };
 };
