@@ -1,32 +1,40 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const SingleMovieTable = ({ movieData }) => {
   return (
     <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <tbody>
         <tr>
-          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">Year Released</td>
+          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">
+            Year Released
+          </td>
           <td className="px-6 py-1">{movieData.movie_year}</td>
         </tr>
         <tr>
-          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">Director</td>
+          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">
+            Director
+          </td>
           <td className="px-6 py-1">{movieData.movie_director}</td>
         </tr>
         <tr>
-          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">Genres</td>
+          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">
+            Genres
+          </td>
           <td className="px-6 py-1">
-          {movieData.movie_genres.map((genre, index) => (
-            <React.Fragment key={genre.id}>
-              <Link to={`/browse/genre/${genre.name}`}
-              className="hover:text-blue-700 transition duration-300 ease-in-out">
-                {genre.name}</Link>
-              {index < movieData.movie_genres.length - 1 && ", "}
-            </React.Fragment>
-          ))}
+            {movieData.movie_genres.map((genre, index) => (
+              <React.Fragment key={genre.id}>
+                <Link
+                  to={`/browse/genre/${genre.name}`}
+                  className="hover:text-blue-700 transition duration-300 ease-in-out"
+                >
+                  {genre.name}
+                </Link>
+                {index < movieData.movie_genres.length - 1 && ", "}
+              </React.Fragment>
+            ))}
           </td>
         </tr>
-
 
         {(() => {
           // Formats the stars into rows of 3 to prevent overextension of width
@@ -45,9 +53,12 @@ export const SingleMovieTable = ({ movieData }) => {
               <td className="px-6 py-1">
                 {chunk.map((star, index) => (
                   <React.Fragment key={star.id}>
-                    <Link to={`/star/${star.id}`}
-                    className ="hover:text-blue-700 transition duration-300 ease-in-out">
-                      {star.name}</Link>
+                    <Link
+                      to={`/star/${star.id}`}
+                      className="hover:text-fabflix-primary transition duration-300 ease-in-out"
+                    >
+                      {star.name}
+                    </Link>
                     {index < chunk.length - 1 && ", "}
                   </React.Fragment>
                 ))}
@@ -56,9 +67,10 @@ export const SingleMovieTable = ({ movieData }) => {
           ));
         })()}
 
-
         <tr>
-          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">Rating</td>
+          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">
+            Rating
+          </td>
           <td className="px-6 py-1">{movieData.movie_rating}</td>
         </tr>
       </tbody>

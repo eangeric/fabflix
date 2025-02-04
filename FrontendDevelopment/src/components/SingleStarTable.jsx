@@ -24,7 +24,7 @@ export const SingleStarTable = ({ starData }) => {
               <td className="px-6 py-1">
                 <Link
                   to={`/movie/${star.movie_id}`}
-                  className="hover:text-blue-700 transition duration-300 ease-in-out"
+                  className="hover:text-fabflix-primary transition duration-300 ease-in-out"
                 >
                   {star.movie_title}
                 </Link>

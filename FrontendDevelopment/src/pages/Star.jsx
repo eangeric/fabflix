@@ -50,7 +50,7 @@ export default function Star() {
           )}
         </figure>
         {star && (
-          <div className="absolute tm-xl bottom-4 left-1 text-white p-4 rounded-lg">
+          <div className="absolute tm-xl bottom-4 left-1 text-white p-4 rounded-lg bg-fabflix-secondary/50">
             <h1 className="text-2xl font-bold">{star.star_name}</h1>
             <h2 className="text-lg">Born: {star.star_dob || "N/A"}</h2>
           </div>
@@ -66,7 +66,7 @@ export default function Star() {
       {star ? (
         <div className="p-4 flex flex-col gap-4">
           <SingleStarTable starData={starData} />
-          <button>
+          <button className="hover:text-fabflix-primary">
             <Link to={returnPage}>Return to Movie Listings</Link>
           </button>
         </div>
