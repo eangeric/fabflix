@@ -56,20 +56,7 @@ public class SearchServlet extends HttpServlet {
                             "JOIN ratings r ON m.id = r.movieId " +
                             "JOIN genres_in_movies gim ON m.id = gim.movieId " +
                             "JOIN genres g ON gim.genreId = g.id " +
-                            "WHERE 1=1"); // 1=1 makes it easier to add search params
-
-            // max counts should use this:
-            /*
-             * SELECT COUNT(DISTINCT m.id) AS total_results
-             * FROM movies m
-             * JOIN stars_in_movies sim ON m.id = sim.movieId
-             * JOIN stars s ON sim.starId = s.id
-             * JOIN ratings r ON m.id = r.movieId
-             * JOIN genres_in_movies gim ON m.id = gim.movieId
-             * JOIN genres g ON gim.genreId = g.id
-             * WHERE m.year = "2002";
-             * 
-             */
+                            "WHERE 1=1");
 
             // Get title, year, director, star params
             String requestedTitle = request.getParameter("title");
