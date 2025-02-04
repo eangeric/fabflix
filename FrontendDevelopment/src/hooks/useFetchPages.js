@@ -50,7 +50,7 @@ export const useFetchPages = (
     };
 
     fetchData();
-  }, [sortOrder, page, numResults]);
+  }, [searchValue, sortOrder, page, numResults]);
 
   return { data, maxResults, loading, error };
 };

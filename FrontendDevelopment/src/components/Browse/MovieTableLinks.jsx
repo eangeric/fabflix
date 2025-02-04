@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const MovieTableLinks = ({ items, itemIds, basePath }) => {
+export const MovieTableLinks = ({ items, itemIds = "", basePath }) => {
   const itemArray = items.split(", ").slice(0, 3);
   const itemIdArray = itemIds ? itemIds.split(", ") : [];
 

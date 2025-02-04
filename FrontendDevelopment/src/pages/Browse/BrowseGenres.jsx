@@ -38,6 +38,7 @@ export default function BrowseGenres() {
           return;
         }
       }
+
       const { savedSortOrder, savedPage, savedNumResults } =
         JSON.parse(genreState);
       setSortOrder(savedSortOrder);
@@ -48,7 +49,7 @@ export default function BrowseGenres() {
     if (genre) {
       sessionStorage.setItem("returnPage", `/browse/genre/${genre}`);
     }
-  }, []);
+  }, [genre]);
 
   return (
     <BgMain>
