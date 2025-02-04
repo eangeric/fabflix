@@ -15,15 +15,15 @@ export default function Search() {
   useEffect(() => {
     const savedState = sessionStorage.getItem("movieSearchState");
     if (savedState) {
-      const { page, searchUrl } = JSON.parse(savedState);
-      setPage(page);
-      setSearchUrl(searchUrl);
+      const { savedPage, savedSearchUrl } = JSON.parse(savedState);
+      setPage(savedPage);
+      setSearchUrl(savedSearchUrl);
     }
   }, []);
 
   const handleSearch = (url) => {
     setPage(1);
-    const newSearchUrl = `${url}&page=1&num_results=${numResults}`;
+    const newSearchUrl = `${url}&page=1`;
     setSearchUrl(newSearchUrl);
   };
 

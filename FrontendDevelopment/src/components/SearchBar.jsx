@@ -12,14 +12,20 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
   useEffect(() => {
     const savedState = sessionStorage.getItem("movieSearchState");
     if (savedState) {
-      const { title, star, year, director, sortOrder, numResults } =
-        JSON.parse(savedState);
-      setTitle(title);
-      setStar(star);
-      setYear(year);
-      setDirector(director);
-      setSortOrder(sortOrder);
-      setTempNumResults(numResults);
+      const {
+        savedTitle,
+        savedStar,
+        savedYear,
+        savedDirector,
+        savedSortOrder,
+        savedNumResults,
+      } = JSON.parse(savedState);
+      setTitle(savedTitle);
+      setStar(savedStar);
+      setYear(savedYear);
+      setDirector(savedDirector);
+      setSortOrder(savedSortOrder);
+      setTempNumResults(savedNumResults);
     }
   }, []);
 
@@ -52,14 +58,14 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
     sessionStorage.setItem(
       "movieSearchState",
       JSON.stringify({
-        title,
-        star,
-        year,
-        director,
-        searchUrl: queryString,
-        page: 1,
-        numResults: tempNumResults,
-        sortOrder: sortOrder,
+        savedTitle: title,
+        savedStar: star,
+        savedYear: year,
+        savedDirector: director,
+        savedSearchUrl: queryString,
+        savedPage: 1,
+        savedNumResults: tempNumResults,
+        savedSortOrder: sortOrder,
       })
     );
   };

@@ -66,9 +66,13 @@ export default function Star() {
       {star ? (
         <div className="p-4 flex flex-col gap-4">
           <SingleStarTable starData={starData} />
-          <button className="hover:text-fabflix-primary">
-            <Link to={returnPage}>Return to Movie Listings</Link>
-          </button>
+          <div className="flex justify-center gap-2 text-2xl">
+            <Link to={returnPage} className="w-1/2">
+              <button className="bg-red-400 text-white font-semibold px-6 py-3 rounded-lg w-full shadow-md transition hover:bg-red-500 hover:shadow-lg">
+                Return to Movie Listings
+              </button>
+            </Link>
+          </div>
         </div>
       ) : (
         !loading && !error && <h1>No star data available</h1>
