@@ -32,7 +32,8 @@ public class MoviesServlet extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -41,14 +42,14 @@ public class MoviesServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
-        // Get a connection from dataSource and let resource manager close the connection after usage.
+        // Get a connection from dataSource and let resource manager close the
+        // connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Create query string for movies
             StringBuilder queryBuilder = new StringBuilder(
-                    "SELECT m.id, m.title, m.year, m.director, r.rating " +
+                    "SELECT m.id, m.title, m.year, m.director, m.price, r.rating " +
                             "FROM movies m " +
-                            "JOIN ratings r ON m.id = r.movieId "
-            );
+                            "JOIN ratings r ON m.id = r.movieId ");
 
             // Get request parameter (?id=movieId)
             String requestedMovieId = request.getParameter("id");
@@ -82,6 +83,7 @@ public class MoviesServlet extends HttpServlet {
                 String movieTitle = rs.getString("m.title");
                 String movieYear = rs.getString("m.year");
                 String movieDirector = rs.getString("m.director");
+                String moviePrice = rs.getString("m.price");
                 String movieRating = rs.getString("r.rating");
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
@@ -89,6 +91,7 @@ public class MoviesServlet extends HttpServlet {
                 jsonObject.addProperty("movie_title", movieTitle);
                 jsonObject.addProperty("movie_year", movieYear);
                 jsonObject.addProperty("movie_director", movieDirector);
+                jsonObject.addProperty("movie_price", moviePrice);
                 jsonObject.addProperty("movie_rating", movieRating);
 
                 // QUERY TO GET STARS
@@ -149,7 +152,6 @@ public class MoviesServlet extends HttpServlet {
                 // Add genres list to main json object
                 jsonObject.add("movie_genres", jsonGenres);
 
-
                 // Add all json objects into json array
                 jsonArray.add(jsonObject);
             }
@@ -177,7 +179,8 @@ public class MoviesServlet extends HttpServlet {
             out.close();
         }
 
-        // Always remember to close db connection after usage. Here it's done by try-with-resources
+        // Always remember to close db connection after usage. Here it's done by
+        // try-with-resources
 
     }
 }
