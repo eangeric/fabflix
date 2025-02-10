@@ -18,8 +18,6 @@ export const useFetchSearch = (url, options = {}) => {
         }
         const result = await response.json();
 
-        //console.log("Fetched Data:", result); // Debugging to ensure API response
-
         setMaxResults(result.max_results || 0);
         setData(result.movies);
       } catch (error) {
