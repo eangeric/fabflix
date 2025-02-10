@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const Navbar = () => {
   return (
@@ -9,12 +9,10 @@ export const Navbar = () => {
         <Link to="/" className="flex items-center space-x-2">
           <img
             src="/fabflix/images/1.png"
-            style={{height: "50px", width: "auto"}} // Custom size
+            style={{ height: "50px", width: "auto" }} // Custom size
             alt="Fabflix Logo"
           />
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-            Fabflix
-          </h1>
+          <h1 className="text-4xl font-bold text-white">Fabflix</h1>
         </Link>
 
         {/* Right Section */}
@@ -26,8 +24,7 @@ export const Navbar = () => {
             <img
               src="/fabflix/images/2.png"
               alt="Search"
-              style={{width: "40px",
-                    marginRight:"10px"}}
+              style={{ width: "40px", marginRight: "10px" }}
             />
           </Link>
           <Link
@@ -37,11 +34,9 @@ export const Navbar = () => {
             <img
               src="/fabflix/images/3.png"
               alt="Cart"
-              style={{width: "40px"}}
+              style={{ width: "40px" }}
             />
           </Link>
-
-
         </div>
 
         {/* Centered Browse Section */}
@@ -51,14 +46,14 @@ export const Navbar = () => {
         >
           <ul
             className="flex flex-col p-4  font-medium
-            dark:border-gray-700 items-center"
+            border-gray-700 items-center"
           >
             <li>
               <Link
                 to="/"
-                className="block py-2 px-3 md:p-0 md:dark:hover:text-blue-500
-                dark:text-white dark:hover:text-white
-                dark:border-gray-700
+                className="block py-2 px-3 md:p-0 hover:text-blue-500
+                text-white
+                border-gray-700
                 transition duration-300 ease-in-out"
               >
                 Browse

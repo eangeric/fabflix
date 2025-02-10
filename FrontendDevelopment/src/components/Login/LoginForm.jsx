@@ -64,7 +64,7 @@ export const LoginForm = () => {
           autoComplete="off"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-black  dark:placeholder-gray-400"
+          className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-black placeholder-gray-400"
           placeholder="Email"
         />
       </div>
@@ -75,7 +75,7 @@ export const LoginForm = () => {
           id="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-black  dark:placeholder-gray-400"
+          className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-black  placeholder-gray-400"
           placeholder="Password"
         />
       </div>

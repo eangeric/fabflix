@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 export const SingleStarTable = ({ starData }) => {
   return (
-    <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
-      <thead className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table className="w-full text-lg text-left rtl:text-right text-gray-400">
+      <thead className="text-lg  uppercase bg-gray-700 text-gray-400">
         <tr>
           <th scope="col" className="px-6 py-1">
             Movie Title

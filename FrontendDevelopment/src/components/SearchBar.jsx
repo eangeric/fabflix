@@ -84,7 +84,7 @@ export const SearchBar = ({ onSearchUrl, onNumResultsChange }) => {
           className="relative mx-10 my-8 max-w-xl items-center justify-between
                       overflow-x-auto bg-fabflix-primary p-6 text-white shadow-md sm:rounded-lg"
         >
-          <h2 className="mb-4 text-lg font-medium text-gray-900 dark:text-white text-center">
+          <h2 className="mb-4 text-lg font-medium text-white text-center">
             Search by title / stars / year / director
           </h2>
           <form

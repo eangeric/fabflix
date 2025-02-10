@@ -54,7 +54,7 @@ export default function BrowseGenres() {
   return (
     <BgMain>
       <div className="text-white">
-        <h1 className="flex text-4xl font-bold text-gray-900 dark:text-white justify-center">
+        <h1 className="flex text-4xl font-bold  text-white justify-center">
           {genre && genre.charAt(0).toUpperCase() + genre.slice(1)}
         </h1>
 

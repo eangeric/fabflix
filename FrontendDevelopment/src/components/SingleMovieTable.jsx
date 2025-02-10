@@ -3,22 +3,22 @@ import { Link } from "react-router-dom";
 
 export const SingleMovieTable = ({ movieData }) => {
   return (
-    <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <table className="w-full text-lg text-left rtl:text-right  text-gray-400">
       <tbody>
         <tr>
-          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">
+          <td className="text-lg text-gray-700 uppercase  bg-gray-700 text-gray-400 px-6 py-1">
             Year Released
           </td>
           <td className="px-6 py-1">{movieData.movie_year}</td>
         </tr>
         <tr>
-          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">
+          <td className="text-lg  uppercase  bg-gray-700 text-gray-400 px-6 py-1">
             Director
           </td>
           <td className="px-6 py-1">{movieData.movie_director}</td>
         </tr>
         <tr>
-          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">
+          <td className="text-lg  uppercase bg-gray-700 text-gray-400 px-6 py-1">
             Genres
           </td>
           <td className="px-6 py-1">
@@ -47,7 +47,7 @@ export const SingleMovieTable = ({ movieData }) => {
 
           return starChunks.map((chunk, rowIndex) => (
             <tr key={rowIndex}>
-              <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">
+              <td className="text-lg  uppercase bg-gray-700 text-gray-400 px-6 py-1">
                 {rowIndex === 0 ? "Stars" : ""}
               </td>
               <td className="px-6 py-1">
@@ -68,7 +68,7 @@ export const SingleMovieTable = ({ movieData }) => {
         })()}
 
         <tr>
-          <td className="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 px-6 py-1">
+          <td className="text-lg  uppercase bg-gray-700 text-gray-400 px-6 py-1">
             Rating
           </td>
           <td className="px-6 py-1">{movieData.movie_rating}</td>
