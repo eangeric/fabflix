@@ -28,7 +28,8 @@ public class LoginServlet extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
@@ -45,22 +46,22 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        // Get a connection from dataSource and let resource manager close the connection after usage.
+        // Get a connection from dataSource and let resource manager close the
+        // connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Work on connecting to db
             // Create query string for movies
-            String query = 
-                        "SELECT c.email, c.password " +
-                        "FROM customers c " +
-                        "WHERE c.email = ? AND c.password = ? " +
-                        "LIMIT 1";
+            String query = "SELECT c.email, c.password " +
+                    "FROM customers c " +
+                    "WHERE c.email = ? AND c.password = ? " +
+                    "LIMIT 1";
 
             // Prepare the statement
             PreparedStatement statement = conn.prepareStatement(query);
             // Set email parameter
             statement.setString(1, email);
             // Set password parameter
-            statement.setString(2, password); 
+            statement.setString(2, password);
 
             // Execute the query
             ResultSet rs = statement.executeQuery();
@@ -84,7 +85,7 @@ public class LoginServlet extends HttpServlet {
                 responseJsonObject.addProperty("status", "failed");
                 responseJsonObject.addProperty("message", "Invalid email or password");
             }
- 
+
         } catch (Exception e) {
             // Write error message JSON object to output
             responseJsonObject = new JsonObject();
@@ -92,10 +93,10 @@ public class LoginServlet extends HttpServlet {
             // Log error to localhost log
             request.getServletContext().log("Error:", e);
 
-        } 
+        }
 
         // Write to response
         response.getWriter().write(responseJsonObject.toString());
-        
+
     }
 }

@@ -11,19 +11,6 @@ import java.util.List;
 // Declaring a WebServlet called ShoppingCartServlet, which maps to url "/api/shopping"
 @WebServlet(name = "CartServlet", urlPatterns = "/api/cart")
 public class CartServlet extends HttpServlet {
-
-  // // Create a dataSource which registered in web.
-  // private DataSource dataSource;
-
-  // public void init(ServletConfig config) {
-  // try {
-  // dataSource = (DataSource) new
-  // InitialContext().lookup("java:comp/env/jdbc/moviedb");
-  // } catch (NamingException e) {
-  // e.printStackTrace();
-  // }
-  // }
-
   /**
    * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
    *      response)
