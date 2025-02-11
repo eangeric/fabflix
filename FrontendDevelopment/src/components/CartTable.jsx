@@ -115,9 +115,11 @@ export const CartTable = ({ cartData, setCart, total, setTotal }) => {
                     : "0.00"}
                 </p>
               </div>
-              <button className="w-full bg-fabflix-secondary rounded py-3 text-lg text-white hover:bg-gray-700">
-                <Link to="/payment">Proceed to Payment</Link>
-              </button>
+              <Link to="/payment">
+                <button className="w-full bg-fabflix-secondary rounded py-3 text-lg text-white hover:bg-gray-700 hover:cursor-pointer">
+                  Proceed to Payment
+                </button>
+              </Link>
             </div>
           </div>
         </div>

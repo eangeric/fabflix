@@ -49,7 +49,7 @@ export const PaymentForm = () => {
 
       // Redirect to home page
       if (data.status === "success") {
-        navigate("/success", { replace: true });
+        navigate("/success", { replace: true, state: { paymentData: data } });
       }
       setMessage(data.message);
     } catch (error) {

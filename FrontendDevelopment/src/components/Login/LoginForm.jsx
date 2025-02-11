@@ -1,15 +1,42 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [captchaValue, setCaptchaValue] = useState(null);
 
   const navigate = useNavigate(); // Hook for navigation
 
+  const handleCaptcha = (value) => {
+    setCaptchaValue(value);
+  };
+
   const handleLogin = async (event) => {
     event.preventDefault();
+    if (!captchaValue) {
+      setMessage("Please complete the reCAPTCHA.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/fabflix/form-recaptcha", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ captcha: captchaValue }),
+      });
+
+      const data = await response.json();
+      if (!data.success) {
+        setMessage("reCAPTCHA failed. Try again.");
+      }
+    } catch (error) {
+      setMessage("An error occurred. Please try again.");
+      console.log("Error:", error);
+    }
+
     // Validation: Ensure username and password are filled in
     if (!email || !password) {
       setMessage("Please enter both email and password.");
@@ -77,6 +104,13 @@ export const LoginForm = () => {
           onChange={(event) => setPassword(event.target.value)}
           className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-black  placeholder-gray-400"
           placeholder="Password"
+        />
+      </div>
+
+      <div className="flex flex-col items-center scale-90 origin-center">
+        <ReCAPTCHA
+          sitekey="6LeyE9QqAAAAADj7Kj0xLEUGCOnH6-Hl7awjRCNB"
+          onChange={handleCaptcha}
         />
       </div>
 

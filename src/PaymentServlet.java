@@ -1,4 +1,5 @@
 import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -84,22 +85,48 @@ public class PaymentServlet extends HttpServlet {
         int customerId = rs.getInt("customerId"); // Get customer ID
 
         String insertSaleQuery = "INSERT INTO sales (customerId, movieId, quantity, saleDate) VALUES (?, ?, ?, CURDATE())";
-        PreparedStatement insertStatement = conn.prepareStatement(insertSaleQuery);
+        PreparedStatement insertStatement = conn.prepareStatement(insertSaleQuery,
+            PreparedStatement.RETURN_GENERATED_KEYS);
 
         for (Movie movie : shoppingCart) {
           insertStatement.setInt(1, customerId);
           insertStatement.setString(2, movie.getId());
-          insertStatement.setInt(3, movie.getQuantity()); // Assuming Movie class has `getQuantity()`
-          insertStatement.addBatch(); // Add to batch processing
+          insertStatement.setInt(3, movie.getQuantity());
+          insertStatement.addBatch();
         }
 
         insertStatement.executeBatch();
 
+        ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+        JsonArray moviesArray = new JsonArray();
+        int index = 0;
+
+        while (generatedKeys.next() && index < shoppingCart.size()) {
+          int saleId = generatedKeys.getInt(1);
+          Movie movie = shoppingCart.get(index);
+
+          JsonObject saleJson = new JsonObject();
+          saleJson.addProperty("saleId", saleId);
+          saleJson.addProperty("title", movie.getTitle());
+          saleJson.addProperty("quantity", movie.getQuantity());
+
+          moviesArray.add(saleJson);
+          index++;
+        }
+
+        // Get total price from user's shopping cart
+        double totalPrice = user.getTotalPrice();
         user.clearShoppingCart();
 
-        // Write to json object
+        // Construct salesInfo object
+        JsonObject salesInfoJson = new JsonObject();
+        salesInfoJson.addProperty("totalPrice", totalPrice);
+        salesInfoJson.add("movies", moviesArray);
+
+        // Construct final response
         responseJsonObject.addProperty("status", "success");
         responseJsonObject.addProperty("message", "Order placed!");
+        responseJsonObject.add("salesInfo", salesInfoJson);
       } else {
         // Log to localhost log
         request.getServletContext().log("Payment failed");
