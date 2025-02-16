@@ -6,7 +6,7 @@ export const SingleMovieTable = ({ movieData }) => {
     <table className="w-full text-lg text-left rtl:text-right  text-gray-400">
       <tbody>
         <tr>
-          <td className="text-lg text-gray-700 uppercase  bg-gray-700 text-gray-400 px-6 py-1">
+          <td className="text-lg  uppercase  bg-gray-700 text-gray-400 px-6 py-1">
             Year Released
           </td>
           <td className="px-6 py-1">{movieData.movie_year}</td>
