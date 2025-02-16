@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +15,8 @@ import java.sql.ResultSet;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
@@ -51,25 +55,28 @@ public class LoginServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
             // Work on connecting to db
             // Create query string for movies
-            String query = "SELECT c.email, c.password " +
-                    "FROM customers c " +
-                    "WHERE c.email = ? AND c.password = ? " +
-                    "LIMIT 1";
+
+            String query = "SELECT * FROM customers WHERE email = ? ";
 
             // Prepare the statement
             PreparedStatement statement = conn.prepareStatement(query);
             // Set email parameter
             statement.setString(1, email);
-            // Set password parameter
-            statement.setString(2, password);
 
             // Execute the query
             ResultSet rs = statement.executeQuery();
 
-            // Check if a result was returned
+            boolean success = false;
             if (rs.next()) {
-                // Login success:
+                // get the encrypted password from the database
+                String encryptedPassword = rs.getString("password");
 
+                // use the same encryptor to compare the user input password with encrypted password stored in DB
+                success = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
+            }
+
+            if (success) {
+                // Login success:
                 // set this user into the session
                 request.getSession().setAttribute("user", new User(email));
                 System.out.println("User added to session: " + email);
@@ -78,13 +85,13 @@ public class LoginServlet extends HttpServlet {
                 responseJsonObject.addProperty("message", "Logged in");
             } else {
                 // Login failed:
-
                 // Log to localhost log
                 request.getServletContext().log("Login failed");
                 // Write to json object
                 responseJsonObject.addProperty("status", "failed");
                 responseJsonObject.addProperty("message", "Invalid email or password");
             }
+
 
         } catch (Exception e) {
             // Write error message JSON object to output
