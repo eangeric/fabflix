@@ -5,13 +5,13 @@ import java.util.ArrayList;
  */
 public class Movie {
 
-  private String id;
-  private String title;
-  private int quantity;
+  private String id = "null";
+  private String title = "null";
+  private int quantity = 0;
   private double price;
   private ArrayList<String> genres;
-  private int year;
-  private String director;
+  private int year = -1;
+  private String director = "null";
 
   public Movie(){
     genres = new ArrayList<String>();
@@ -80,7 +80,7 @@ public class Movie {
   }
 
   public String toString(){
-    return (this.id + " " + this.title + " " + this.director + " " + this.genres.toString() + " " + this.year);
+    return String.format("\tId: %s \n\tTitle: '%s' \n\tYear: %s \n\tDirector: %s", id, title, year, director);
   }
 
 }

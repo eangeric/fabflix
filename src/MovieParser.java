@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,8 +16,7 @@ public class MovieParser extends DefaultHandler {
     Set<String> genres;
     private String tempVal;
     private Movie tempMovie;
-    private String uri = "src/stanfordmovies/mains243.xml";
-    private int nullCounter = 0;
+    private String uri = "src/stanfordmovies/mains243.xml"; // change this to wherever the mains243.xml is
 
     public MovieParser() {
         movies = new LinkedHashSet<Movie>();
@@ -33,7 +31,6 @@ public class MovieParser extends DefaultHandler {
         parseDocument();
     }
 
-    @SuppressWarnings("unchecked")
     public ArrayList<Movie> getMovies() {
         return new ArrayList<Movie>(movies);
     }
@@ -48,9 +45,15 @@ public class MovieParser extends DefaultHandler {
         }
     }
 
-    private void printData() {
+    private void inconsistencyReport() {
+
+        System.out.println("\n\n---- MovieParser Inconsistency Report ----");
+        int i = 0;
         for (Movie movie : movies) {
-            System.out.println(movie.toString());
+            if (movie.getId().equals("null")) System.out.println(uri + "\nIdError : movies[i=" +i+  "] {\n" + movie + "\n}\n");
+            if (movie.getDirector().equals("null")) System.out.println(uri + "\nDirectorError : movies[i=" +i+ "] {\n" + movie + "\n}\n");
+            if (movie.getYear() == -1) System.out.println(uri + "\nYearError : movies[i=" +i+ "] {\n" + movie+ "\n}\n");
+            i++;
         }
         System.out.println("Number of movies: " + movies.size());
     }
@@ -76,29 +79,20 @@ public class MovieParser extends DefaultHandler {
             movies.add(tempMovie);
         }
         else if (qName.equalsIgnoreCase("fid")) {
-            if (tempVal != null){
-                tempMovie.setId(tempVal);
-            } else {
-                tempMovie.setId("NULL" + nullCounter++);
-                System.out.println(tempMovie.getId());
-            }
+            tempMovie.setId(tempVal);
         }
         else if (qName.equalsIgnoreCase("year")) {
             try {
                 tempMovie.setYear(Integer.parseInt(tempVal));
             } catch (NumberFormatException ne){
-                tempMovie.setYear(-1);
+                tempMovie.setYear(-1); // During insertion into database, use NULL
             }
         }
         else if (qName.equalsIgnoreCase("t")) {
             tempMovie.setTitle(tempVal);
         }
         else if (qName.equalsIgnoreCase("dir")) {
-            if (tempVal != null) {
-                tempMovie.setDirector(tempVal);
-            } else {
-                tempMovie.setDirector("Unknown");
-            }
+            tempMovie.setDirector(tempVal);
         }
         else if (qName.equalsIgnoreCase("cat")) {
             genreSelector(tempVal);
@@ -172,11 +166,10 @@ public class MovieParser extends DefaultHandler {
         genres.add(g);
     }
 
-
     public static void main(String[] args){
         MovieParser parser = new MovieParser();
-        System.out.println("Parsing movies!");
-        //parser.printData();
+        //System.out.println("Parsing movies!");
+        parser.inconsistencyReport();
         //System.out.println(parser.genres.toString());
     }
 
