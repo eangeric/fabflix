@@ -23,15 +23,21 @@ export default function DashboardMetadata() {
   }, []);
 
   return (
-    <div>
-      {tables &&
-        tables.map((table) => {
-          return (
-            <div key={table.table_name}>
-              <Metadata tableName={table.table_name} columns={table.columns} />
-            </div>
-          );
-        })}
+    <div className="flex flex-col items-center mt-12 pb-12">
+      <h1 className="text-center text-3xl">Metadata</h1>
+      <div className="grid grid-cols-3 gap-12 w-[80vw]">
+        {tables &&
+          tables.map((table) => {
+            return (
+              <div key={table.table_name}>
+                <Metadata
+                  tableName={table.table_name}
+                  columns={table.columns}
+                />
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 }
