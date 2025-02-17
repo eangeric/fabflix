@@ -70,15 +70,23 @@ public class AddMovieServlet extends HttpServlet {
       ResultSet rs = statement.executeQuery();
 
       if (rs.next()) {
-        String resultMessage = rs.getString("message");
+        String status = rs.getString("status");
+        String movieId = rs.getString("movie_id");
+        String starId = rs.getString("star_id");
+        String genreId = rs.getString("genre_id");
+        String message = rs.getString("message");
 
-        if (resultMessage.startsWith("ERROR:")) {
+        if ("ERROR".equals(status)) {
           responseJsonObject.addProperty("status", "failed");
           responseJsonObject.addProperty("message", "Movie '" + title + "' already exists.");
-        } else {
-          responseJsonObject.addProperty("status", "success");
-          responseJsonObject.addProperty("message", "Movie '" + title + "' added successfully.");
+          return;
         }
+
+        responseJsonObject.addProperty("status", "success");
+        responseJsonObject.addProperty("movieId", movieId);
+        responseJsonObject.addProperty("starId", starId);
+        responseJsonObject.addProperty("genreId", genreId);
+        responseJsonObject.addProperty("message", message);
       }
 
     } catch (Exception e) {
