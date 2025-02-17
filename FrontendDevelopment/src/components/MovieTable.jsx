@@ -93,7 +93,9 @@ export const MovieTable = ({ movieData }) => {
                   basePath="/star"
                 />
               </td>
-              <td className="px-6 py-1">{movie.movie_rating}</td>
+              <td className="px-6 py-1">
+                {movie.movie_rating ? movie.movie_rating : "N/A"}
+              </td>
               <td className="px-6 py-1">
                 <button
                   className="bg-fabflix-primary px-4 cursor-pointer rounded-sm hover:bg-blue-600"
