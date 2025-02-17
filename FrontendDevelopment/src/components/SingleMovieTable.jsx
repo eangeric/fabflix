@@ -71,7 +71,9 @@ export const SingleMovieTable = ({ movieData }) => {
           <td className="text-lg  uppercase bg-gray-700 text-gray-400 px-6 py-1">
             Rating
           </td>
-          <td className="px-6 py-1">{movieData.movie_rating}</td>
+          <td className="px-6 py-1">
+            {movieData.movie_rating ? movieData.movie_rating : "N/A"}
+          </td>
         </tr>
       </tbody>
     </table>
