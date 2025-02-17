@@ -38,10 +38,11 @@ export default function DashboardStarForm() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-fabflix-primary w-[300px] p-8 rounded-sm h-full">
+      <h1 className="text-center text-xl mb-2">Add a new star</h1>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col"
+        className="flex flex-col gap-0.5"
         autoComplete="off"
       >
         <label htmlFor="name">Star Name</label>
@@ -60,9 +61,14 @@ export default function DashboardStarForm() {
             setStarYear(event.target.value);
           }}
         ></input>
-        <button type="submit">Add</button>
+        <button
+          type="submit"
+          className="cursor-pointer me-2 mb-2 rounded-lg bg-fabflix-secondary hover:bg-gray-700 p-4 text-sm font-medium text-white w-full mt-8"
+        >
+          Add
+        </button>
       </form>
-      <p>{message}</p>
+      {message && <p className="text-red-500">{message}</p>}
     </div>
   );
 }
