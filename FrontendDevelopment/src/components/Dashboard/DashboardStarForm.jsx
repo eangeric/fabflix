@@ -29,6 +29,8 @@ export default function DashboardStarForm() {
       if (data.status === "success") {
         setMessage(data.message);
       }
+      setStarName("");
+      setStarYear("");
     } catch (error) {
       setMessage("An error occurred. Please try again.");
       console.log("Error:", error);

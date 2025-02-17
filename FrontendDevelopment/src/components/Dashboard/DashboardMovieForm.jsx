@@ -32,7 +32,13 @@ export default function DashboardMovieForm() {
       });
 
       const data = await response.json();
-      setMessage(data.message);
+      if (data.status === "success") {
+        setMessage(
+          `Movie added successfully with movie ID ${data.movieId}, star ID ${data.starId}, and genre ID ${data.genreId}`
+        );
+      } else {
+        setMessage(data.message);
+      }
       setTitle("");
       setMovieYear("");
       setDirector("");
