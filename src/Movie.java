@@ -57,9 +57,15 @@ public class Movie {
   public ArrayList<String> getGenres() {
     return genres;
   }
+
   public void addGenre(String genre) {
-    this.genres.add(genre);
+    if (genre.contains("Dram")){
+      genres.add("Drama");
+    } else {
+      genres.add(genre);
+    }
   }
+
   public int getYear() {
     return year;
   }
