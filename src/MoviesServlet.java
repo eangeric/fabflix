@@ -49,7 +49,7 @@ public class MoviesServlet extends HttpServlet {
             StringBuilder queryBuilder = new StringBuilder(
                     "SELECT m.id, m.title, m.year, m.director, m.price, r.rating " +
                             "FROM movies m " +
-                            "JOIN ratings r ON m.id = r.movieId ");
+                            "LEFT JOIN ratings r ON m.id = r.movieId ");
 
             // Get request parameter (?id=movieId)
             String requestedMovieId = request.getParameter("id");

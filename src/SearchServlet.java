@@ -53,7 +53,7 @@ public class SearchServlet extends HttpServlet {
                             "FROM movies m " +
                             "JOIN stars_in_movies sim ON m.id = sim.movieId " +
                             "JOIN stars s ON sim.starId = s.id " +
-                            "JOIN ratings r ON m.id = r.movieId " +
+                            "LEFT JOIN ratings r ON m.id = r.movieId " +
                             "JOIN genres_in_movies gim ON m.id = gim.movieId " +
                             "JOIN genres g ON gim.genreId = g.id " +
                             "WHERE 1=1");
