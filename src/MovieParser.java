@@ -19,11 +19,11 @@ public class MovieParser extends DefaultHandler {
     Map<String, ArrayList<String>> unlinkedActors;
     private String tempVal, tempID;
     private Movie tempMovie;
-    private String uri = "src/stanfordmovies/mains243.xml"; // change this to wherever the mains243.xml is
+    private String uri = "stanfordmovies/mains243.xml"; // change this to wherever the mains243.xml is
     private int nullIdCounter = 0;
     private int counter = 0;
     private String tempTitle;
-    StarParser sp;
+    public StarParser sp;
     private DataSource dataSource;
 
 
@@ -33,7 +33,7 @@ public class MovieParser extends DefaultHandler {
         unlinkedActors = new LinkedHashMap<String, ArrayList<String>>();
         missingStars = new HashSet<>();
         parseDocument();
-        uri = "src/stanfordmovies/casts124.xml";
+        uri = "stanfordmovies/casts124.xml";
         parseDocument();
         inconsistencyReport();
         sp = new StarParser();

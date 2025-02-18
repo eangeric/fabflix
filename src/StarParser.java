@@ -11,10 +11,10 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class StarParser extends DefaultHandler {
-    Map<String, Star> stars;
+    public Map<String, Star> stars;
     private String tempVal;
     private Star tempStar;
-    private String uri = "src/stanfordmovies/actors63.xml"; // change this to wherever the actors63.xml is
+    private String uri = "stanfordmovies/actors63.xml"; // change this to wherever the actors63.xml is
 
     public StarParser() {
         stars = new LinkedHashMap<>();
