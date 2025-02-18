@@ -1,12 +1,15 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.DriverManager;
 import java.util.*;
 
-import java.util.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -17,6 +20,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class MovieParser extends DefaultHandler {
     public Map<String, Movie> movies;
+    // sp.stars.get("STARNAME").getBirthYear()
     Set<String> genres;
     Set<String> missingStars;
     Map<String, ArrayList<String>> unlinkedActors;
@@ -27,6 +31,8 @@ public class MovieParser extends DefaultHandler {
     private int counter = 0;
     private String tempTitle;
     StarParser sp;
+    private DataSource dataSource;
+
 
     public MovieParser() {
         movies = new LinkedHashMap<String, Movie>();
@@ -40,6 +46,7 @@ public class MovieParser extends DefaultHandler {
         sp = new StarParser();
         missingStars();
     }
+
 
     private void parseDocument() {
         SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -232,33 +239,15 @@ public class MovieParser extends DefaultHandler {
         genres.add(g);
     }
 
-    public void addMoviesToDatabase(Connection conn) {
-        String sql = "INSERT INTO movies (id, title, year, director) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            for (Movie movie : movies.values()) {
-                statement.setString(1, movie.getId());
-                statement.setString(2, movie.getTitle());
-                statement.setInt(3, movie.getYear());
-                statement.setString(4, movie.getDirector());
-                statement.addBatch();
-            }
-            statement.executeBatch();
-            System.out.println("Movies successfully added to the database.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String[] args){
         MovieParser parser = new MovieParser();
         // Testing "The Princess Diaries"
         Movie m = parser.movies.get("GyM35");
-        System.out.println(m.getId());
-        System.out.println(m.getTitle());
-        System.out.println(m.getYear());
-        System.out.println(m.getStars());
-        System.out.println(m.getGenres());
-
+        //System.out.println(m.getTitle());
+        //System.out.println(m.getYear());
+        //System.out.println(m.getDirector());
+        //System.out.println(m.getStars().get(0));
 
     }
 
