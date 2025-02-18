@@ -2,6 +2,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -225,6 +230,23 @@ public class MovieParser extends DefaultHandler {
         }
         tempMovie.addGenre(g);
         genres.add(g);
+    }
+
+    public void addMoviesToDatabase(Connection conn) {
+        String sql = "INSERT INTO movies (id, title, year, director) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            for (Movie movie : movies.values()) {
+                statement.setString(1, movie.getId());
+                statement.setString(2, movie.getTitle());
+                statement.setInt(3, movie.getYear());
+                statement.setString(4, movie.getDirector());
+                statement.addBatch();
+            }
+            statement.executeBatch();
+            System.out.println("Movies successfully added to the database.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args){
