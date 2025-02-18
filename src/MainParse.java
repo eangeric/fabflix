@@ -8,7 +8,6 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class MainParse {
 
-    private static DataSource dataSource;
     private static final String ADD_MOVIE_QUERY = "{CALL add_movie(?, ?, ?, ?, ?, ?)}";
 
     private static DataSource setupDataSource() {
@@ -22,7 +21,7 @@ public class MainParse {
     public static void main(String[] args) {
         try {
             // Lookup the DataSource
-            dataSource = setupDataSource();
+            DataSource dataSource = setupDataSource();
             // Get connection from DataSource
             try (Connection conn = dataSource.getConnection()) {
                 // Parse movies from XML
