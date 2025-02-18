@@ -1,8 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -10,17 +8,18 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
 import org.xml.sax.helpers.DefaultHandler;
+
 public class StarParser extends DefaultHandler {
-    List<Star> stars;
+    Map<String, Star> stars;
     private String tempVal;
     private Star tempStar;
     private String uri = "src/stanfordmovies/actors63.xml"; // change this to wherever the actors63.xml is
 
     public StarParser() {
-        stars = new ArrayList<Star>();
+        stars = new LinkedHashMap<>();
         parseDocument();
+        inconsistencyReport();
     }
 
     public void parseDocument() {
@@ -38,19 +37,17 @@ public class StarParser extends DefaultHandler {
         out.append("\n\n---- StarParser Inconsistency Report ----\n");
         out.append("src file = ").append(uri).append("\n");
         int i = 0;
-        for (Star s : stars) {
-            //System.out.println(s);
-            //if (s.getId().equals("null")) System.out.println(uri + "\nIdError : stars[i=" +i+  "] {\n" + s + "\n}\n");
-            if (s.getName().equals("null"))
+        for (String name : stars.keySet()) {
+            Star s = stars.get(name);
+            if (s.getName().equals("null")) {
                 out.append("\nNullName: stars[i=").append(i).append("]{\t").append(s).append("}");
-            //if (s.getBirthYear() == -1)
-            //    out.append("\nNullBirthYear: stars[i=").append(i).append("]{\t").append(s).append("}");
+            }
             i++;
         }
         out.append("\nNumber of stars: ").append(stars.size());
-        try (FileWriter writer = new FileWriter("Star_Report.txt")) {
+        try (FileWriter writer = new FileWriter("Report.txt", true)) {
             writer.write(out.toString());
-            System.out.println("Inconsistency report saved to Star_Report.txt");
+            System.out.println("Stars with missing movies added to Report.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,15 +74,12 @@ public class StarParser extends DefaultHandler {
                 tempStar.setBirthYear(-1); // During insertion into database, use NULL
             }
         } else if (qName.equalsIgnoreCase("actor")) {
-            stars.add(tempStar);
+            stars.put(tempStar.getName(), tempStar);
         }
     }
 
     public static void main(String[] args){
         StarParser parser = new StarParser();
-        //System.out.println("Parsing movies!");
         parser.inconsistencyReport();
-        //System.out.println(parser.genres.toString());
     }
-
 }

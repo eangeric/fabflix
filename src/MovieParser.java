@@ -13,6 +13,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class MovieParser extends DefaultHandler {
     public Map<String, Movie> movies;
     Set<String> genres;
+    Set<String> missingStars;
     Map<String, ArrayList<String>> unlinkedActors;
     private String tempVal, tempID;
     private Movie tempMovie;
@@ -20,14 +21,19 @@ public class MovieParser extends DefaultHandler {
     private int nullIdCounter = 0;
     private int counter = 0;
     private String tempTitle;
+    StarParser sp;
 
     public MovieParser() {
         movies = new LinkedHashMap<String, Movie>();
         genres = new LinkedHashSet<String>();
         unlinkedActors = new LinkedHashMap<String, ArrayList<String>>();
+        missingStars = new HashSet<>();
         parseDocument();
         uri = "src/stanfordmovies/casts124.xml";
         parseDocument();
+        inconsistencyReport();
+        sp = new StarParser();
+        missingStars();
     }
 
     private void parseDocument() {
@@ -67,9 +73,28 @@ public class MovieParser extends DefaultHandler {
 
         out.append("\nNumber of movies: ").append(movies.size()).append("\n");
 
-        try (FileWriter writer = new FileWriter("Movie_Report.txt")) {
+        try (FileWriter writer = new FileWriter("Report.txt")) {
             writer.write(out.toString());
-            System.out.println("Inconsistency report saved to Movie_Report.txt");
+            System.out.println("Null movies added to Report.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void missingStars() {
+        StringBuilder out = new StringBuilder();
+        out.append("\n\n---- Missing star information ----\n");
+        for (Movie m: movies.values()) {
+            for (String s : m.getStars()){
+                if (!sp.stars.containsKey(s) && !missingStars.contains(s)) {
+                    out.append("\n\t").append(s);
+                    missingStars.add(s);
+                }
+            }
+        }
+        try (FileWriter writer = new FileWriter("Report.txt", true)) {
+            writer.write(out.toString());
+            System.out.println("Missing stars added to Report.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,8 +135,7 @@ public class MovieParser extends DefaultHandler {
             }
         }
         else if (qName.equalsIgnoreCase("t")) {
-            if (tempMovie.getTitle().isEmpty())
-                tempMovie.setTitle(tempVal);
+            tempMovie.setTitle(tempVal);
             tempTitle = tempVal;
         }
         else if (qName.equalsIgnoreCase("dir")) {
@@ -205,16 +229,15 @@ public class MovieParser extends DefaultHandler {
 
     public static void main(String[] args){
         MovieParser parser = new MovieParser();
-        //System.out.println("Parsing movies!");
-        parser.inconsistencyReport();
-        //System.out.println(parser.genres.toString());
-        // Testing
-        Movie m = parser.movies.get("BLe8");
+        // Testing "The Princess Diaries"
+        Movie m = parser.movies.get("GyM35");
         System.out.println(m.getId());
         System.out.println(m.getTitle());
         System.out.println(m.getYear());
         System.out.println(m.getStars());
         System.out.println(m.getGenres());
+
+
     }
 
 }
