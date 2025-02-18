@@ -27,10 +27,10 @@ public class MainParse {
             try (Connection conn = dataSource.getConnection()) {
                 // Parse movies from XML
                 MovieParser parser = new MovieParser();
-                Map<String, Movie> movies = parser.movies;
-                Map<String, Star> stars = parser.sp.stars;
+                //Map<String, Movie> movies = parser.movies;
+                //Map<String, Star> stars = parser.sp.stars;
 
-                insertMoviesIntoDatabase(conn, movies, stars);
+                insertMoviesIntoDatabase(conn, parser.movies, parser.sp.stars);
 
                 System.out.println("New movies added to the database!");
             }
