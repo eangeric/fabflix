@@ -1,7 +1,6 @@
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -9,30 +8,26 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
 import org.xml.sax.helpers.DefaultHandler;
+
 public class MovieParser extends DefaultHandler {
-    Set<Movie> movies;
+    public Map<String, Movie> movies;
     Set<String> genres;
-    private String tempVal;
+    Map<String, ArrayList<String>> unlinkedActors;
+    private String tempVal, tempID;
     private Movie tempMovie;
     private String uri = "src/stanfordmovies/mains243.xml"; // change this to wherever the mains243.xml is
+    private int nullIdCounter = 0;
+    private int counter = 0;
+    private String tempTitle;
 
     public MovieParser() {
-        movies = new LinkedHashSet<Movie>();
+        movies = new LinkedHashMap<String, Movie>();
         genres = new LinkedHashSet<String>();
+        unlinkedActors = new LinkedHashMap<String, ArrayList<String>>();
         parseDocument();
-    }
-
-    public MovieParser(String uri) {
-        movies = new LinkedHashSet<Movie>();
-        genres = new LinkedHashSet<String>();
-        this.uri = uri;
+        uri = "src/stanfordmovies/casts124.xml";
         parseDocument();
-    }
-
-    public ArrayList<Movie> getMovies() {
-        return new ArrayList<Movie>(movies);
     }
 
     private void parseDocument() {
@@ -46,18 +41,39 @@ public class MovieParser extends DefaultHandler {
     }
 
     private void inconsistencyReport() {
-
-        System.out.println("\n\n---- MovieParser Inconsistency Report ----");
+        StringBuilder out = new StringBuilder();
+        out.append("\n\n---- MovieParser Inconsistency Report ----\n");
+        out.append("src file = ").append(uri).append("\n");
         int i = 0;
-        for (Movie movie : movies) {
-            if (movie.getId().equals("null")) System.out.println(uri + "\nIdError : movies[i=" +i+  "] {\n" + movie + "\n}\n");
-            if (movie.getDirector().equals("null")) System.out.println(uri + "\nDirectorError : movies[i=" +i+ "] {\n" + movie + "\n}\n");
-            if (movie.getYear() == -1) System.out.println(uri + "\nYearError : movies[i=" +i+ "] {\n" + movie+ "\n}\n");
+        for (String s : movies.keySet()) {
+            if (movies.get(s).getId().contains("NULL")) {
+                out.append("\nNullId: movies[i=").append(i).append("]{\n\t").append(movies.get(s)).append("}");
+            }
+            if (movies.get(s).getTitle().isEmpty()) {
+                out.append("\nNullTitle: movies[i=").append(i).append("]{\n\t").append(movies.get(s)).append("}");
+            }
+            if (movies.get(s).getDirector().equals("null")) {
+                out.append("\nNullDirector: movies[i=").append(i).append("]{\n\t").append(movies.get(s)).append("}");
+            }
+            if (movies.get(s).getYear() == -1) {
+                out.append("\nNullYear: movies[i=").append(i).append("]{\n\t").append(movies.get(s)).append("}");
+            }
             i++;
         }
-        System.out.println("Number of movies: " + movies.size());
-    }
+        out.append("\n\n -- Actors without a valid movie to attach to --\n");
+        for (String s : unlinkedActors.keySet()) {
+            out.append(s+ " ").append(unlinkedActors.get(s)).append("\n");
+        }
 
+        out.append("\nNumber of movies: ").append(movies.size()).append("\n");
+
+        try (FileWriter writer = new FileWriter("Movie_Report.txt")) {
+            writer.write(out.toString());
+            System.out.println("Inconsistency report saved to Movie_Report.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         tempVal = "";
@@ -76,7 +92,12 @@ public class MovieParser extends DefaultHandler {
             if (tempMovie.getGenres().isEmpty()){
                 tempMovie.addGenre("Uncategorized");
             }
-            movies.add(tempMovie);
+            if (tempMovie.getId() == null || tempMovie.getId().equals("null") || tempMovie.getId().trim().isEmpty()) {
+                tempMovie.setId("NULL" + nullIdCounter++);
+                //System.out.println(tempMovie);
+            }
+
+            movies.put(tempMovie.getId(), tempMovie);
         }
         else if (qName.equalsIgnoreCase("fid")) {
             tempMovie.setId(tempVal);
@@ -89,16 +110,32 @@ public class MovieParser extends DefaultHandler {
             }
         }
         else if (qName.equalsIgnoreCase("t")) {
-            tempMovie.setTitle(tempVal);
+            if (tempMovie.getTitle().isEmpty())
+                tempMovie.setTitle(tempVal);
+            tempTitle = tempVal;
         }
         else if (qName.equalsIgnoreCase("dir")) {
             tempMovie.setDirector(tempVal);
         }
         else if (qName.equalsIgnoreCase("cat")) {
             genreSelector(tempVal);
-
         }
-        //System.out.println(qName+ " " + tempVal);
+        else if(qName.equalsIgnoreCase("f")) {
+            tempID = tempVal;
+        }
+        else if(qName.equalsIgnoreCase("a")) {
+            //System.out.println(tempTitle);
+            if (movies.containsKey(tempID)) {
+                movies.get(tempID).addStar(tempVal);
+            } else {
+                // For the movies that were not processed correctly from mains243
+                // Will be recorded to put into the inconsistency report
+                if (!unlinkedActors.containsKey(tempVal)) {
+                    unlinkedActors.put(tempVal, new ArrayList<String>());
+                }
+                unlinkedActors.get(tempVal).add(tempTitle);
+            }
+        }
     }
 
     public void genreSelector(String g){
@@ -171,6 +208,13 @@ public class MovieParser extends DefaultHandler {
         //System.out.println("Parsing movies!");
         parser.inconsistencyReport();
         //System.out.println(parser.genres.toString());
+        // Testing
+        Movie m = parser.movies.get("BLe8");
+        System.out.println(m.getId());
+        System.out.println(m.getTitle());
+        System.out.println(m.getYear());
+        System.out.println(m.getStars());
+        System.out.println(m.getGenres());
     }
 
 }
