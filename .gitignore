@@ -5,6 +5,8 @@
 FrontendDevelopment/node_modules/
 FrontendDevelopment/.env
 
+/src/stuff/
+
 ### Eclipse ###
 
 .metadata
