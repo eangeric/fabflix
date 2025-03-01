@@ -21,11 +21,8 @@ public class MovieParser extends DefaultHandler {
     private Movie tempMovie;
     private String uri = "stanfordmovies/mains243.xml"; // change this to wherever the mains243.xml is
     private int nullIdCounter = 0;
-    private int counter = 0;
     private String tempTitle;
     public StarParser sp;
-    private DataSource dataSource;
-
 
     public MovieParser() {
         movies = new LinkedHashMap<String, Movie>();
@@ -39,7 +36,6 @@ public class MovieParser extends DefaultHandler {
         sp = new StarParser();
         missingStars();
     }
-
 
     private void parseDocument() {
         SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -73,7 +69,7 @@ public class MovieParser extends DefaultHandler {
         }
         out.append("\n\n -- Actors without a valid movie to attach to --\n");
         for (String s : unlinkedActors.keySet()) {
-            out.append(s+ " ").append(unlinkedActors.get(s)).append("\n");
+            out.append(s + " ").append(unlinkedActors.get(s)).append("\n");
         }
 
         out.append("\nNumber of movies: ").append(movies.size()).append("\n");
@@ -89,8 +85,8 @@ public class MovieParser extends DefaultHandler {
     private void missingStars() {
         StringBuilder out = new StringBuilder();
         out.append("\n\n---- Missing star information ----\n");
-        for (Movie m: movies.values()) {
-            for (String s : m.getStars()){
+        for (Movie m : movies.values()) {
+            for (String s : m.getStars()) {
                 if (!sp.stars.containsKey(s) && !missingStars.contains(s)) {
                     out.append("\n\t").append(s);
                     missingStars.add(s);
@@ -119,41 +115,34 @@ public class MovieParser extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
 
         if (qName.equalsIgnoreCase("film")) {
-            if (tempMovie.getGenres().isEmpty()){
+            if (tempMovie.getGenres().isEmpty()) {
                 tempMovie.addGenre("Uncategorized");
             }
             if (tempMovie.getId() == null || tempMovie.getId().equals("null") || tempMovie.getId().trim().isEmpty()) {
                 tempMovie.setId("NULL" + nullIdCounter++);
-                //System.out.println(tempMovie);
+                // System.out.println(tempMovie);
             }
 
             movies.put(tempMovie.getId(), tempMovie);
-        }
-        else if (qName.equalsIgnoreCase("fid")) {
+        } else if (qName.equalsIgnoreCase("fid")) {
             tempMovie.setId(tempVal);
-        }
-        else if (qName.equalsIgnoreCase("year")) {
+        } else if (qName.equalsIgnoreCase("year")) {
             try {
                 tempMovie.setYear(Integer.parseInt(tempVal));
-            } catch (NumberFormatException ne){
+            } catch (NumberFormatException ne) {
                 tempMovie.setYear(-1); // During insertion into database, use NULL
             }
-        }
-        else if (qName.equalsIgnoreCase("t")) {
+        } else if (qName.equalsIgnoreCase("t")) {
             tempMovie.setTitle(tempVal);
             tempTitle = tempVal;
-        }
-        else if (qName.equalsIgnoreCase("dir")) {
+        } else if (qName.equalsIgnoreCase("dir")) {
             tempMovie.setDirector(tempVal);
-        }
-        else if (qName.equalsIgnoreCase("cat")) {
+        } else if (qName.equalsIgnoreCase("cat")) {
             genreSelector(tempVal);
-        }
-        else if(qName.equalsIgnoreCase("f")) {
+        } else if (qName.equalsIgnoreCase("f")) {
             tempID = tempVal;
-        }
-        else if(qName.equalsIgnoreCase("a")) {
-            //System.out.println(tempTitle);
+        } else if (qName.equalsIgnoreCase("a")) {
+            // System.out.println(tempTitle);
             if (movies.containsKey(tempID)) {
                 movies.get(tempID).addStar(tempVal);
             } else {
@@ -167,80 +156,79 @@ public class MovieParser extends DefaultHandler {
         }
     }
 
-    public void genreSelector(String g){
+    public void genreSelector(String g) {
         g = g.toLowerCase();
-        if (g.contains("dram") || g.contains("draam") || g.contains("rfp") || g.contains("road")){
+        if (g.contains("dram") || g.contains("draam") || g.contains("rfp") || g.contains("road")) {
             g = "Drama";
-        } else if (g.contains("susp") || (g.contains("scat")) || (g.contains("h**"))){
+        } else if (g.contains("susp") || (g.contains("scat")) || (g.contains("h**"))) {
             g = "Thriller";
-        } else if (g.contains("romt") || g.contains("ram") || g.equals("h") || g.equals("ront")){
+        } else if (g.contains("romt") || g.contains("ram") || g.equals("h") || g.equals("ront")) {
             g = "Romance";
-        } else if (g.contains("musc") || g.contains("musical") || g.contains("muusc")){
+        } else if (g.contains("musc") || g.contains("musical") || g.contains("muusc")) {
             g = "Musical";
-        } else if (g.contains("myst") || (g.contains("psyc"))){
+        } else if (g.contains("myst") || (g.contains("psyc"))) {
             g = "Mystery";
         } else if (g.contains("comd") || g.contains("cond") || g.contains("homo")
-                || g.contains("h0") || g.contains("undr")){
+                || g.contains("h0") || g.contains("undr")) {
             g = "Comedy";
         } else if (g.contains("docu") || g.contains("ducu") || g.contains("duco") || g.contains("dicu") ||
-                    g.equals("natu")){
+                g.equals("natu")) {
             g = "Documentary";
-        } else if (g.contains("advt") || g.contains("adct")){
+        } else if (g.contains("advt") || g.contains("adct")) {
             g = "Adventure";
         } else if (g.contains("actn") || g.contains("sctn") || g.equals("act")
                 || g.equals("cnr") || g.equals("viol")
-                || g.equals("ca") || g.equals("axtn")){
+                || g.equals("ca") || g.equals("axtn")) {
             g = "Action";
-        } else if (g.contains("west")){
+        } else if (g.contains("west")) {
             g = "Western";
-        } else if (g.contains("fant")){
+        } else if (g.contains("fant")) {
             g = "Fantasy";
-        } else if (g.contains("cart")){
+        } else if (g.contains("cart")) {
             g = "Animation";
-        } else if (g.contains("scfi") || g.contains("scif") || g.contains("sxfi") || g.contains("s.f.")){
+        } else if (g.contains("scfi") || g.contains("scif") || g.contains("sxfi") || g.contains("s.f.")) {
             g = "Sci-Fi";
-        } else if (g.contains("hor") || g.equals("expm")){
+        } else if (g.contains("hor") || g.equals("expm")) {
             g = "Horror";
-        } else if (g.contains("bio")){
+        } else if (g.contains("bio")) {
             g = "Biography";
-        } else if (g.contains("hist") || g.contains("epic") || g.contains("sati") || g.contains("allegory")){
+        } else if (g.contains("hist") || g.contains("epic") || g.contains("sati") || g.contains("allegory")) {
             g = "History";
-        } else if (g.contains("cnrb") || g.contains("crim") || g.contains("cmr")){
+        } else if (g.contains("cnrb") || g.contains("crim") || g.contains("cmr")) {
             g = "Crime";
         } else if (g.contains("surr") || g.contains("camp") || g.contains("surl")
-                    || g.contains("weird") || g.contains ("avant garde") || g.contains("cult")
-                    || g.contains("dream") || g.contains("art") || g.contains("avga")
-                    || g.contains("verite")){
+                || g.contains("weird") || g.contains("avant garde") || g.contains("cult")
+                || g.contains("dream") || g.contains("art") || g.contains("avga")
+                || g.contains("verite")) {
             g = "Surreal";
-        } else if (g.contains("porn") || g.contains("porb") || g.equals("kinky")){
+        } else if (g.contains("porn") || g.contains("porb") || g.equals("kinky")) {
             g = "Adult";
         } else if (g.contains("ctxx") || g.contains("txx") || g.contains("ctxxx")
-                    || g.contains("ctcxx") || g.isEmpty() || g.equals(" ")){
+                || g.contains("ctcxx") || g.isEmpty() || g.equals(" ")) {
             g = "Uncategorized";
-        } else if (g.contains("disa")){
+        } else if (g.contains("disa")) {
             g = "Disaster";
-        } else if (g.contains("noir") || g.contains("h*")){
+        } else if (g.contains("noir") || g.contains("h*")) {
             g = "Noir";
-        } else if (g.contains("tv")){
+        } else if (g.contains("tv")) {
             g = "TV-Movie";
-        } else if (g.contains("dist") || g.contains("sport")){
+        } else if (g.contains("dist") || g.contains("sport")) {
             g = "Sport";
-        } else if (g.contains("faml")){
+        } else if (g.contains("faml")) {
             g = "Family";
         }
         tempMovie.addGenre(g);
         genres.add(g);
     }
 
-
-    public static void main(String[] args){
+    public static void main(String[] args) {
         MovieParser parser = new MovieParser();
         // Testing "The Princess Diaries"
         Movie m = parser.movies.get("GyM35");
-        //System.out.println(m.getTitle());
-        //System.out.println(m.getYear());
-        //System.out.println(m.getDirector());
-        //System.out.println(m.getStars().get(0));
+        // System.out.println(m.getTitle());
+        // System.out.println(m.getYear());
+        // System.out.println(m.getDirector());
+        // System.out.println(m.getStars().get(0));
 
     }
 
