@@ -14,7 +14,8 @@ public class MainParse {
     public static void main(String[] args) {
         try {
             // Lookup the DataSource
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedbWrite"); // Use Write
+                                                                                                      // DataSource
             // Get connection from DataSource
             try (Connection conn = dataSource.getConnection()) {
                 // Parse movies from XML

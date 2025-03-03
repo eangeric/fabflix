@@ -16,8 +16,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-
-
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
     // Create a dataSource which registered in web.
@@ -25,7 +23,8 @@ public class LoginServlet extends HttpServlet {
 
     public void init(ServletConfig config) {
         try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedbRead"); // Use Read
+                                                                                                     // DataSource
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -71,7 +70,8 @@ public class LoginServlet extends HttpServlet {
                 // get the encrypted password from the database
                 String encryptedPassword = rs.getString("password");
 
-                // use the same encryptor to compare the user input password with encrypted password stored in DB
+                // use the same encryptor to compare the user input password with encrypted
+                // password stored in DB
                 success = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
             }
 
@@ -91,7 +91,6 @@ public class LoginServlet extends HttpServlet {
                 responseJsonObject.addProperty("status", "failed");
                 responseJsonObject.addProperty("message", "Invalid email or password");
             }
-
 
         } catch (Exception e) {
             // Write error message JSON object to output
