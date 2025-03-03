@@ -223,10 +223,10 @@ public class MovieParser extends DefaultHandler {
         MovieParser parser = new MovieParser();
         // Testing "The Princess Diaries"
         Movie m = parser.movies.get("GyM35");
-        // System.out.println(m.getTitle());
-        // System.out.println(m.getYear());
-        // System.out.println(m.getDirector());
-        // System.out.println(m.getStars().get(0));
+        System.out.println(m.getTitle());
+        System.out.println(m.getYear());
+        System.out.println(m.getDirector());
+        System.out.println(m.getStars().get(0));
 
     }
 
