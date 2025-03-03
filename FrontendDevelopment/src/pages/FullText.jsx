@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useFetch } from "../hooks/useFetch";
 import { MovieTable } from "../components/MovieTable";
 
 export default function FullText() {
@@ -9,6 +8,8 @@ export default function FullText() {
   const [movies, setMovies] = useState();
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [jumpPage, setJumpPage] = useState("");
   const [sort, setSort] = useState("title");
   const [orderOne, setOrderOne] = useState("asc");
   const [orderTwo, setOrderTwo] = useState("asc");
@@ -77,11 +78,20 @@ export default function FullText() {
         const response = await fetch(searchURL);
         const data = await response.json();
         setMovies(data.movies);
+        setTotalPages(Math.ceil(data.max_results / limit));
       }
     };
 
     getData();
   }, [search, limit, page, sort, orderOne, orderTwo]);
+
+  const handlePageJump = () => {
+    const numPage = parseInt(jumpPage, 10);
+    if (!isNaN(numPage) && numPage >= 1 && numPage <= totalPages) {
+      setPage(numPage);
+    }
+    setJumpPage(""); // Clear input after submission
+  };
 
   return (
     <div className="text-white">
@@ -136,6 +146,52 @@ export default function FullText() {
         </label>
       </div>
       {movies && <MovieTable movieData={movies} />}
+      {/* Pagination Controls */}
+      {movies && (
+        <div className="flex justify-center items-center gap-4 mt-4">
+          {/* Previous Button */}
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page === 1}
+            className="px-4 py-2 bg-gray-700 rounded text-white disabled:opacity-50"
+          >
+            ← Previous
+          </button>
+
+          {/* Page Display */}
+          <span>
+            Page {page} of {totalPages}
+          </span>
+
+          {/* Next Button */}
+          <button
+            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={page === totalPages}
+            className="px-4 py-2 bg-gray-700 rounded text-white disabled:opacity-50"
+          >
+            Next →
+          </button>
+        </div>
+      )}
+
+      {/* Jump to Page Input */}
+      {movies && totalPages > 1 && (
+        <div className="flex justify-center m-4 gap-2">
+          <input
+            type="number"
+            placeholder="Page"
+            value={jumpPage}
+            onChange={(e) => setJumpPage(e.target.value)}
+            className="p-1 bg-gray-700 text-white rounded w-24 text-center"
+          />
+          <button
+            onClick={handlePageJump}
+            className="px-4 py-2 bg-blue-600 rounded text-white"
+          >
+            Go
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -122,6 +122,7 @@ export const Navbar = () => {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               onKeyDown={handleKeyDown}
+              onClick={() => setSelectedIndex(-1)}
               onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // Delay hiding dropdown
               onFocus={() => search.length >= 3 && setShowDropdown(true)}
             />
