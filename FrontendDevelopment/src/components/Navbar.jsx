@@ -1,9 +1,95 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
   const [search, setSearch] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
+
+  // Cache to store previous queries
+  const cache = JSON.parse(sessionStorage.getItem("autocompleteCache")) || {};
+  const suggestionRefs = useRef([]); // Stores refs for list items
+
+  useEffect(() => {
+    if (search.length < 3) {
+      setSuggestions([]);
+      setShowDropdown(false);
+      return;
+    }
+
+    console.log(`Autocomplete search initiated for query: "${search}"`);
+
+    const fetchSuggestions = async () => {
+      if (cache[search]) {
+        console.log(`Using cached results for autocomplete: "${search}"`);
+        setSuggestions(cache[search]);
+        setShowDropdown(true);
+        console.log("Used suggestion list (from cache):", cache[search]);
+        return;
+      }
+
+      console.log(
+        `Using AJAX request to server results for autocomplete: "${search}"`
+      );
+      try {
+        const response = await fetch(
+          `/fabflix/api/search?fulltext=true&title=${encodeURIComponent(
+            search
+          )}&num_results=10`
+        );
+        const data = await response.json();
+        const movies = data.movies;
+
+        setSuggestions(movies);
+        setShowDropdown(true);
+        console.log("Used suggestion list (from server):", movies);
+        // Cache the result
+        cache[search] = movies;
+        sessionStorage.setItem("autocompleteCache", JSON.stringify(cache));
+      } catch (error) {
+        console.error("Error fetching autocomplete results:", error);
+      }
+    };
+
+    const delay = setTimeout(fetchSuggestions, 300); // Debounce time
+
+    return () => clearTimeout(delay);
+  }, [search]);
+
+  // Handle keyboard navigation
+  const handleKeyDown = (event) => {
+    if (event.key === "ArrowDown") {
+      setSelectedIndex((prev) => {
+        const newIndex = Math.min(prev + 1, suggestions.length - 1);
+        scrollToHighlighted(newIndex);
+        return newIndex;
+      });
+    } else if (event.key === "ArrowUp") {
+      setSelectedIndex((prev) => {
+        const newIndex = Math.max(prev - 1, 0);
+        scrollToHighlighted(newIndex);
+        return newIndex;
+      });
+    } else if (event.key === "Enter" && selectedIndex !== -1) {
+      navigateToMovie(suggestions[selectedIndex]);
+    }
+  };
+
+  // Scroll to the highlighted item
+  const scrollToHighlighted = (index) => {
+    if (suggestionRefs.current[index]) {
+      suggestionRefs.current[index].scrollIntoView({ block: "nearest" });
+    }
+  };
+
+  // Navigate to single movie page
+  const navigateToMovie = (movie) => {
+    setSearch("");
+    setShowDropdown(false);
+    navigate(`/movie/${movie.movie_id}`);
+  };
 
   return (
     <nav className="bg-fabflix-primary fixed w-full z-20 top-0 start-0">
@@ -24,29 +110,42 @@ export const Navbar = () => {
             onSubmit={(event) => {
               event.preventDefault();
               if (search.trim()) {
+                setSearch("");
                 navigate(`/fulltext?search=${encodeURIComponent(search)}`);
               }
             }}
           >
             <input
               type="text"
-              placeholder="Type here"
+              placeholder="Title Search"
               className="input w-[15rem] bg-white text-black"
               value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-              }}
+              onChange={(event) => setSearch(event.target.value)}
+              onKeyDown={handleKeyDown}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // Delay hiding dropdown
+              onFocus={() => search.length >= 3 && setShowDropdown(true)}
             />
-            <div className="hidden absolute w-full max-h-50 overflow-y-scroll bg-white text-black rounded-md divide-y-2">
-              {/* {data.map((d, i) => {
-                return (
-                  <div key={i} className="flex items-center h-10">
-                    {d}
-                  </div>
-                );
-              })} */}
-            </div>
           </form>
+          {/* Autocomplete Dropdown */}
+          {showDropdown && suggestions.length > 0 && (
+            <ul className="absolute w-full bg-white text-black rounded-md shadow-md max-h-60 overflow-y-auto">
+              {suggestions.map((movie, index) => (
+                <li
+                  key={movie.movie_id}
+                  ref={(el) => (suggestionRefs.current[index] = el)}
+                  className={`px-3 py-2 cursor-pointer ${
+                    index === selectedIndex
+                      ? "bg-gray-300"
+                      : "hover:bg-gray-200"
+                  }`}
+                  onMouseDown={() => navigateToMovie(movie)}
+                  onMouseEnter={() => setSelectedIndex(index)}
+                >
+                  {movie.movie_title}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {/* Right Section */}
