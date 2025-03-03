@@ -168,6 +168,7 @@ public class SearchServlet extends HttpServlet {
 
                     // Set Fuzzy Search parameter (edth)
                     statement.setString(paramIndex++, requestedTitle);
+                    maxStatement.setString(maxParamIndex++, requestedTitle);
                 } else {
                     statement.setString(paramIndex++, "%" + requestedTitle + "%");
                     maxStatement.setString(maxParamIndex++, "%" + requestedTitle + "%");
