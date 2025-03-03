@@ -25,7 +25,8 @@ public class SingleStarServlet extends HttpServlet {
 
     public void init(ServletConfig config) {
         try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedbRead"); // Use Read
+                                                                                                     // DataSource
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -33,7 +34,7 @@ public class SingleStarServlet extends HttpServlet {
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     * response)
+     *      response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -48,7 +49,8 @@ public class SingleStarServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
-        // Get a connection from dataSource and let resource manager close the connection after usage.
+        // Get a connection from dataSource and let resource manager close the
+        // connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
 
@@ -115,7 +117,8 @@ public class SingleStarServlet extends HttpServlet {
             out.close();
         }
 
-        // Always remember to close db connection after usage. Here it's done by try-with-resources
+        // Always remember to close db connection after usage. Here it's done by
+        // try-with-resources
 
     }
 

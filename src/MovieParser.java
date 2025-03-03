@@ -2,7 +2,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -13,7 +12,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class MovieParser extends DefaultHandler {
     public Map<String, Movie> movies;
-    // sp.stars.get("STARNAME").getBirthYear()
     Set<String> genres;
     Set<String> missingStars;
     Map<String, ArrayList<String>> unlinkedActors;
@@ -225,10 +223,10 @@ public class MovieParser extends DefaultHandler {
         MovieParser parser = new MovieParser();
         // Testing "The Princess Diaries"
         Movie m = parser.movies.get("GyM35");
-        // System.out.println(m.getTitle());
-        // System.out.println(m.getYear());
-        // System.out.println(m.getDirector());
-        // System.out.println(m.getStars().get(0));
+        System.out.println(m.getTitle());
+        System.out.println(m.getYear());
+        System.out.println(m.getDirector());
+        System.out.println(m.getStars().get(0));
 
     }
 

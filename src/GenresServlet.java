@@ -23,14 +23,16 @@ public class GenresServlet extends HttpServlet {
 
     public void init(ServletConfig config) {
         try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedbRead"); // Use Read
+                                                                                                     // DataSource
         } catch (NamingException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -39,13 +41,14 @@ public class GenresServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
-        // Get a connection from dataSource and let resource manager close the connection after usage.
+        // Get a connection from dataSource and let resource manager close the
+        // connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Create query string for genres
             String query = "SELECT id, name FROM genres";
             // Create statement
             Statement genresStatement = conn.createStatement();
-            // Perform query 
+            // Perform query
             ResultSet rs = genresStatement.executeQuery(query);
 
             // Create a JSON array to hold genres
@@ -56,7 +59,7 @@ public class GenresServlet extends HttpServlet {
                 jsonGenres.addProperty("name", rs.getString("name"));
                 jsonArray.add(jsonGenres);
             }
-    
+
             // Write JSON string to output
             out.write(jsonArray.toString());
             // Set response status to 200 (OK)
