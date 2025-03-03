@@ -60,8 +60,15 @@ public class SearchServlet extends HttpServlet {
 
             // Get title, year, director, star params
             String requestedTitle = request.getParameter("title");
+            String requestedFullText = request.getParameter("fulltext"); // true or false
+            boolean useFullText = requestedFullText != null && requestedFullText.equalsIgnoreCase("true");
+
             if (requestedTitle != null && !requestedTitle.isEmpty()) {
-                queryBuilder.append(" AND m.title LIKE ?");
+                if (useFullText) {
+                    queryBuilder.append(" AND MATCH(m.title) AGAINST(? IN BOOLEAN MODE)");
+                } else {
+                    queryBuilder.append(" AND m.title LIKE ?");
+                }
             }
 
             String requestedYear = request.getParameter("year");
@@ -149,8 +156,18 @@ public class SearchServlet extends HttpServlet {
             int paramIndex = 1;
             int maxParamIndex = 1;
             if (requestedTitle != null && !requestedTitle.isEmpty()) {
-                statement.setString(paramIndex++, "%" + requestedTitle + "%");
-                maxStatement.setString(maxParamIndex++, "%" + requestedTitle + "%");
+                if (useFullText) {
+                    String[] tokens = requestedTitle.split(" ");
+                    for (int i = 0; i < tokens.length; i++) {
+                        tokens[i] = "+" + tokens[i] + "*";
+                    }
+                    String formattedSearch = String.join(" ", tokens);
+                    statement.setString(paramIndex++, formattedSearch);
+                    maxStatement.setString(maxParamIndex++, formattedSearch);
+                } else {
+                    statement.setString(paramIndex++, "%" + requestedTitle + "%");
+                    maxStatement.setString(maxParamIndex++, "%" + requestedTitle + "%");
+                }
             }
             if (requestedYear != null && !requestedYear.isEmpty()) {
                 statement.setInt(paramIndex++, Integer.parseInt(requestedYear));
