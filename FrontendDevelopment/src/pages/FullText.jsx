@@ -74,7 +74,6 @@ export default function FullText() {
         )}&sort=${encodeURIComponent(sort)}&order1=${encodeURIComponent(
           orderOne
         )}&order2=${encodeURIComponent(orderTwo)}`;
-        console.log(searchURL);
         const response = await fetch(searchURL);
         const data = await response.json();
         setMovies(data.movies);
