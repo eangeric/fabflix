@@ -13,6 +13,7 @@ import Cart from "./pages/Cart";
 import Payment from "./pages/Payment";
 import Success from "./pages/Success";
 import Dashboard from "./pages/Dashboard";
+import FullText from "./pages/FullText";
 
 export default function App() {
   const location = useLocation();
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
         <Route path="/success" element={<Success />}></Route>
+        <Route path="/fulltext" element={<FullText />}></Route>
       </Routes>
     </>
   );

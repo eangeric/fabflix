@@ -46,9 +46,12 @@ public class FullTextServlet extends HttpServlet {
           "SELECT m.id, m.title, m.year " +
               "FROM movies m " +
               "LEFT JOIN ratings r ON m.id = r.movieId " +
-              "WHERE MATCH(m.title) AGAINST(? IN BOOLEAN MODE)");
+              "WHERE MATCH(m.title) AGAINST(? IN BOOLEAN MODE) " +
+              "LIMIT ? OFFSET ?");
 
       String requestedSearch = request.getParameter("search");
+      String limitParam = request.getParameter("limit");
+      String pageParam = request.getParameter("page");
 
       // Convert query to string
       String query = queryBuilder.toString();
@@ -65,12 +68,31 @@ public class FullTextServlet extends HttpServlet {
         }
 
         String formattedSearch = String.join(" ", tokens);
-        System.out.println(formattedSearch);
 
         statement.setString(1, formattedSearch);
       } else {
         statement.setString(1, "");
       }
+
+      int limit = 10; // Default limit
+
+      if (limitParam != null && limitParam.matches("\\d+")) {
+        int parsedLimit = Integer.parseInt(limitParam);
+        if (parsedLimit == 10 || parsedLimit == 25 || parsedLimit == 50 || parsedLimit == 100) {
+          limit = parsedLimit;
+        }
+      }
+
+      int page = 1; // Default page
+      if (pageParam != null && pageParam.matches("\\d+")) {
+        page = Math.max(1, Integer.parseInt(pageParam));
+      }
+
+      int offset = (page - 1) * limit;
+
+      // Set limit and offset parameters
+      statement.setInt(2, limit);
+      statement.setInt(3, offset);
 
       // Get results
       ResultSet rs = statement.executeQuery();

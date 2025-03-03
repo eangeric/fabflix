@@ -1,8 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
-  const data = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   return (
     <nav className="bg-fabflix-primary fixed w-full z-20 top-0 start-0">
@@ -19,20 +20,33 @@ export const Navbar = () => {
 
         {/* Middle */}
         <div className="relative">
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input w-[15rem] bg-white text-black"
-          />
-          <div className="hidden absolute w-full max-h-50 overflow-y-scroll bg-white text-black rounded-md divide-y-2">
-            {data.map((d, i) => {
-              return (
-                <div key={i} className="flex items-center h-10">
-                  {d}
-                </div>
-              );
-            })}
-          </div>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              if (search.trim()) {
+                navigate(`/fulltext?search=${encodeURIComponent(search)}`);
+              }
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Type here"
+              className="input w-[15rem] bg-white text-black"
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
+            />
+            <div className="hidden absolute w-full max-h-50 overflow-y-scroll bg-white text-black rounded-md divide-y-2">
+              {/* {data.map((d, i) => {
+                return (
+                  <div key={i} className="flex items-center h-10">
+                    {d}
+                  </div>
+                );
+              })} */}
+            </div>
+          </form>
         </div>
 
         {/* Right Section */}
