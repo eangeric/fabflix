@@ -53,7 +53,7 @@ export const Navbar = () => {
       }
     };
 
-    const delay = setTimeout(fetchSuggestions, 300); // Debounce time
+    const delay = setTimeout(fetchSuggestions, 300); // Debounce time 300ms
 
     return () => clearTimeout(delay);
   }, [search]);
