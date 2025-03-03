@@ -1,33 +1,26 @@
+import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
-import com.mysql.cj.jdbc.MysqlDataSource;
-
 
 public class MainParse {
 
     private static final String ADD_MOVIE_QUERY = "{CALL add_movie(?, ?, ?, ?, ?, ?)}";
 
-    private static DataSource setupDataSource() {
-        MysqlDataSource ds = new MysqlDataSource();
-        ds.setURL("jdbc:mysql://localhost:3306/moviedb");
-        ds.setUser("mytestuser");
-        ds.setPassword("My6$Password");
-        return ds;
-    }
+    private static DataSource dataSource;
 
     public static void main(String[] args) {
         try {
             // Lookup the DataSource
-            DataSource dataSource = setupDataSource();
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
             // Get connection from DataSource
             try (Connection conn = dataSource.getConnection()) {
                 // Parse movies from XML
                 MovieParser parser = new MovieParser();
-                //Map<String, Movie> movies = parser.movies;
-                //Map<String, Star> stars = parser.sp.stars;
+                // Map<String, Movie> movies = parser.movies;
+                // Map<String, Star> stars = parser.sp.stars;
 
                 insertMoviesIntoDatabase(conn, parser.movies, parser.sp.stars);
 
@@ -46,7 +39,7 @@ public class MainParse {
                 stmt.setInt(2, movie.getYear());
                 stmt.setString(3, movie.getDirector());
 
-                if (movie.getStars().size() > 0 ) {
+                if (movie.getStars().size() > 0) {
                     s = movie.getStars().get(0);
                 } else {
                     s = "NULL";
@@ -60,7 +53,7 @@ public class MainParse {
                 }
                 stmt.setString(6, movie.getGenres().get(0));
                 stmt.executeUpdate();
-                //System.out.println("Added " + movie.getTitle());
+                // System.out.println("Added " + movie.getTitle());
             }
         } catch (SQLException e) {
             e.printStackTrace();

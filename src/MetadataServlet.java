@@ -14,7 +14,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 // Declaring a WebServlet called MetadataServlet, which maps to url "/api/metadata"
 @WebServlet(name = "MetadataServlet", urlPatterns = "/api/metadata")

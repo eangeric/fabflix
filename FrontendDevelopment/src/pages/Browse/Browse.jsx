@@ -13,7 +13,7 @@ export default function Browse() {
         <h1 className="text-center font-bold text-[2.75rem]">
           Browse by genre / title
         </h1>
-        <div className="flex gap-x-24 justify-center items-center mt-24">
+        <div className="flex gap-x-24 justify-center items-center mt-8">
           <Genres data={data} />
           <MovieTitle />
         </div>
