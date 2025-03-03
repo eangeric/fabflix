@@ -66,7 +66,7 @@ public class SearchServlet extends HttpServlet {
 
             if (requestedTitle != null && !requestedTitle.isEmpty()) {
                 if (useFullText) {
-                    queryBuilder.append(" AND MATCH(m.title) AGAINST(? IN BOOLEAN MODE)");
+                    queryBuilder.append(" AND (MATCH(m.title) AGAINST(? IN BOOLEAN MODE) OR edth(m.title, ?, 3)) ");
                 } else {
                     queryBuilder.append(" AND m.title LIKE ?");
                 }
