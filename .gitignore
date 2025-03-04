@@ -1,7 +1,7 @@
 
 # Created by https://www.gitignore.io/api/java,maven,eclipse,java-web,intellij
 
-.Report.txt
+Report.txt
 
 ### React Development
 FrontendDevelopment/node_modules/
