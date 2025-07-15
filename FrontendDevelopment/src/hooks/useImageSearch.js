@@ -15,7 +15,7 @@ export const useImageSearch = (item, options = {}) => {
     // Note: Limited to 100 searches a day
     const url =
       `https://www.googleapis.com/customsearch/v1?` +
-      `key=AIzaSyChVT7fYPzadACh5FLP9pTjoKQYl5Z1LlU` +
+      `key=${process.env.GOOGLE_API_KEY}` +
       `&cx=d6d3e229fed4a4942` +
       `&q=${encodeURIComponent(query)}` +
       `&searchType=image&num=1`;
